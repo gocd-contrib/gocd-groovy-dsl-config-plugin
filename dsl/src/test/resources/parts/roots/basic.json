@@ -1,0 +1,19 @@
+{
+  "target_version": 2,
+  "pipelines": [
+    {
+      "name": "pipe1"
+    },
+    {
+      "name": "pipe2"
+    }
+  ],
+  "environments": [
+    {
+      "name": "first"
+    },
+    {
+      "name": "second"
+    }
+  ]
+}

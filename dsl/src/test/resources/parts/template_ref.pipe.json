@@ -1,0 +1,15 @@
+{
+  "group": "group1",
+  "name": "pipe2",
+  "label_template": "foo-1.0-${COUNT}",
+  "lock_behavior": "lockOnFailure",
+  "tracking_tool": {
+    "link": "http://your-trackingtool/yourproject/${ID}",
+    "regex": "evo-(\\d+)"
+  },
+  "timer": {
+    "spec": "0 15 10 * * ? *",
+    "only_on_changes": true
+  },
+  "template": "template"
+}

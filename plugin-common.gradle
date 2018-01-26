@@ -1,0 +1,92 @@
+/*
+ * Copyright 2018 ThoughtWorks, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+  options.deprecation = true
+  options.encoding = 'utf-8'
+  options.warnings = true
+  options.compilerArgs << "-Xlint:all"
+  options.compilerArgs << "-Xlint:-serial,-rawtypes"
+}
+
+tasks.withType(Jar) { jarTask ->
+  includeEmptyDirs false
+  duplicatesStrategy DuplicatesStrategy.EXCLUDE
+
+  preserveFileTimestamps = false
+  reproducibleFileOrder = true
+
+  ['MD5', 'SHA1', 'SHA-256'].each { algo ->
+    jarTask.outputs.files("${jarTask.archivePath}.${algo}")
+    jarTask.doLast {
+      ant.checksum file: jarTask.archivePath, format: 'MD5SUM', algorithm: algo
+    }
+  }
+
+  manifest {
+    attributes(
+      'Go-Version': project.pluginDesc.goCdVersion,
+      'Plugin-Revision': project.pluginDesc.version,
+      'Implementation-Title': project.name,
+      'Implementation-Version': project.version,
+      'Source-Compatibility': project.sourceCompatibility,
+      'Target-Compatibility': project.targetCompatibility,
+      'Git-SHA': project.gitRevision,
+    )
+  }
+}
+
+def generatedResourcesOutput = file("src/main/resources-generated")
+def generatedResourcesInput = file('src/main/resource-templates')
+
+if (generatedResourcesInput.exists()) {
+  sourceSets {
+    main {
+      resources {
+        output.dir generatedResourcesOutput, builtBy: 'generateResources'
+        srcDirs += generatedResourcesOutput
+      }
+    }
+
+    test {
+      java {
+        compileClasspath += configurations.compileOnly
+        runtimeClasspath += configurations.compileOnly
+      }
+    }
+  }
+
+  task generateResources {
+    inputs.dir(generatedResourcesInput)
+    outputs.dir(generatedResourcesOutput)
+    inputs.properties(project.pluginDesc)
+
+    doFirst {
+      project.delete(generatedResourcesOutput)
+      generatedResourcesOutput.mkdirs()
+
+      project.copy {
+        into generatedResourcesOutput
+        from(generatedResourcesInput) {
+          expand(project.pluginDesc)
+        }
+      }
+    }
+  }
+}

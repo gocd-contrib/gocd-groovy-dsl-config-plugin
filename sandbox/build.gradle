@@ -1,0 +1,30 @@
+/*
+ * Copyright 2018 ThoughtWorks, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+dependencies {
+  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.versions.groovy
+  compile group: 'org.apache.commons', name: 'commons-lang3', version: project.versions.commonsLang
+
+  compile group: 'org.kohsuke', name: 'groovy-sandbox', version: project.versions.groovySandbox
+  compile(group: 'com.google.guava', name: 'guava', version: project.versions.guava) {
+    transitive = false
+  }
+
+  testCompile group: 'junit', name: 'junit', version: project.versions.junit4
+  testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: project.versions.hamcrest
+  testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: project.versions.hamcrest
+  testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: project.versions.junit5
+}

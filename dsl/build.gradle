@@ -1,0 +1,180 @@
+/*
+ * Copyright 2018 ThoughtWorks, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'groovy'
+apply plugin: 'jacoco'
+apply plugin: 'com.bmuschko.nexus'
+apply plugin: 'maven-publish'
+
+configurations {
+  doclet
+}
+
+dependencies {
+  doclet project(':doclet')
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: project.versions.lombok
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: project.versions.lombok
+
+  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.versions.groovy
+  compile project(':sandbox')
+
+  compile group: 'com.google.code.gson', name: 'gson', version: project.versions.gson
+  compile group: 'org.apache.commons', name: 'commons-lang3', version: project.versions.commonsLang
+
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: project.versions.junit5
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: project.versions.junit5
+  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.versions.junit5
+
+  testCompile group: 'org.assertj', name: 'assertj-core', version: project.versions.assertj
+  testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: project.versions.jsonAssert
+}
+
+extraArchive {
+  sources = false
+  tests = true
+  javadoc = false
+}
+
+sourceSets {
+  main.compileClasspath += project.configurations.compileOnly
+
+  examples {
+    compileClasspath += sourceSets.main.output
+    compileClasspath += sourceSets.main.compileClasspath
+  }
+}
+
+test {
+  useJUnitPlatform()
+}
+
+task delombok(type: JavaExec) {
+  inputs.files(sourceSets.main.compileClasspath.files)
+
+  ext.outputDir = file("${buildDir}/delombok")
+  outputs.dir(outputDir)
+  outputs.cacheIf { true }
+
+  classpath = sourceSets.main.compileClasspath
+  main 'lombok.launch.Main'
+
+  args("delombok")
+//  args("-v")
+
+  sourceSets.main.java.srcDirs.each {
+    inputs.dir(it)
+    args(it, "-d", outputDir)
+  }
+}
+
+task sourcesJar(type: Jar) {
+  dependsOn delombok
+  classifier = 'sources'
+  from delombok.outputDir
+}
+
+task javadocJar(type: Jar) {
+  dependsOn javadoc
+  from javadoc
+  classifier = 'javadoc'
+}
+
+javadoc {
+  dependsOn delombok
+  dependsOn configurations.doclet
+
+  source = delombok.outputDir
+  options.tagletPath = (configurations.doclet.files + sourceSets.examples.allSource.srcDirs) as List
+  options.taglets = ['cd.go.contrib.plugins.configrepo.doclet.IncludeCodeTaglet']
+
+  options.encoding = 'utf-8'
+  options.docEncoding = 'utf-8'
+  options.charSet = 'utf-8'
+  options.addStringOption 'Xdoclint:-syntax,-html,-reference'
+  options.overview('overview.html')
+  options.showFromPublic()
+
+  options.links('https://docs.oracle.com/javase/8/docs/api', "http://docs.groovy-lang.org/docs/groovy-${versions.groovy}/html/gapi")
+  title = "GoCD Groovy DSL API ${version}"
+  options.footer = 'Copyright (c) 2018 ThoughtWorks, Inc.'
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+      artifact sourcesJar
+      artifact javadocJar
+    }
+  }
+}
+
+modifyPom {
+  project {
+    name project.name
+    packaging 'jar'
+    description project.description
+    url 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
+    inceptionYear 2018
+
+    scm {
+      url 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
+      connection 'scm:https://github.com/ketan/gocd-groovy-dsl-config-plugin'
+      developerConnection 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
+    }
+
+    issueManagement {
+      url 'https://github.com/ketan/gocd-groovy-dsl-config-plugin/issues'
+      system 'GitHub'
+    }
+
+    licenses {
+      license {
+        name 'Apache License, Version 2.0'
+        url 'https://www.apache.org/licenses/LICENSE-2.0'
+        distribution 'repo'
+      }
+    }
+
+    organization {
+      name 'ThoughtWorks, Inc.'
+      url 'https://www.thoughtworks.com'
+    }
+
+    developers {
+      developer {
+        id 'GoCD Committers'
+        email 'go-cd-dev@googlegroups.com'
+        url 'https://www.gocd.org'
+      }
+    }
+  }
+}
+
+nexusStaging {
+  packageGroup = 'com.github.ketan'
+
+  /* To get the staging id, you can either:
+    - Use the 'getStagingProfile' task added by the 'io.codearte.nexus-staging' plugin
+    - Log-in on sonatype.org, go to staging profile, select `cd.go`, id = last part of URL */
+  stagingProfileId = '29d66ca6d2a84d'
+}
+
+artifacts {
+  archives jar
+  archives javadocJar
+  archives sourcesJar
+}

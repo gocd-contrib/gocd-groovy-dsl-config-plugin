@@ -1,0 +1,78 @@
+/*
+ * Copyright 2018 ThoughtWorks, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'groovy'
+
+configurations {
+  extractedAtTopLevel
+}
+
+dependencies {
+  compile project(':dsl')
+  compile project(':cli')
+
+  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.versions.groovy
+
+  extractedAtTopLevel project(':jar-class-loader')
+
+  compile group: 'com.google.code.gson', name: 'gson', version: project.versions.gson
+  compile group: 'org.apache.ant', name: 'ant', version: project.versions.ant
+  compile group: 'org.apache.commons', name: 'commons-lang3', version: project.versions.commonsLang
+
+  compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: project.versions.gocdPluginApi
+
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: project.versions.junit5
+  testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.versions.junit5
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: project.versions.junit5
+
+  testCompile group: 'org.mockito', name: 'mockito-core', version: project.versions.mockito
+  testCompile group: 'org.assertj', name: 'assertj-core', version: project.versions.assertj
+  testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: project.versions.jsonAssert
+}
+
+sourceSets {
+  main.compileClasspath += project.configurations.compileOnly
+}
+
+jar {
+  dependsOn project.configurations.extractedAtTopLevel
+
+  manifest {
+    attributes 'Main-Class': 'com.thoughtworks.gocd.Boot'
+    attributes 'GoCD-Main-Class': 'cd.go.contrib.plugins.configrepo.groovy.cli.Main'
+  }
+
+  from(configurations.compile) {
+    into "lib/"
+  }
+
+//    This is useful for debugging
+  from(sourceSets.main.java) {
+    into "/"
+  }
+
+  from(project.configurations.extractedAtTopLevel.collect { it.isDirectory() ? it : zipTree(it) }) {
+    into("/")
+  }
+}
+
+task deploy(type: Copy) {
+  inputs.files(jar.outputs.files)
+  dependsOn assemble
+  from(jar)
+  include('*.jar')
+  into '../../gocd-master/server/plugins/external'
+}

@@ -1,0 +1,5 @@
+{
+  "group": "group1",
+  "name": "pipe2",
+  "lock_behavior": "lockOnFailure"
+}

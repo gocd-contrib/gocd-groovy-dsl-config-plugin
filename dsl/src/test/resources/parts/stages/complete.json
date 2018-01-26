@@ -1,0 +1,33 @@
+{
+  "name": "test",
+  "fetch_materials": true,
+  "never_cleanup_artifacts": true,
+  "clean_working_directory": true,
+  "approval": {
+    "type": "success",
+    "roles": [
+      "manager"
+    ],
+    "users": [
+      "john"
+    ]
+  },
+  "environment_variables": [
+    {
+      "name": "TEST_NUM",
+      "value": "1"
+    },
+    {
+      "name": "PASSWORD",
+      "encrypted_value": "AES:rzIrGQcbIX9e/J5Ic0WHcA==:nam+Ne5mUtS0TILGu4zHlw=="
+    }
+  ],
+  "jobs": [
+    {
+      "name": "one"
+    },
+    {
+      "name": "two"
+    }
+  ]
+}
