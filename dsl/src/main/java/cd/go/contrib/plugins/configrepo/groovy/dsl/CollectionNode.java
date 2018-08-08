@@ -24,6 +24,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Getter
@@ -35,10 +36,18 @@ abstract class CollectionNode<T extends Node> extends Node<T> {
     @Setter(value = AccessLevel.NONE)
     private final List<T> elements = new ArrayList<>();
 
-    protected T create(Factory<T> callable) {
-        T newObj = callable.call();
-        elements.add(newObj);
+    public T create(Supplier<T> callable) {
+        T newObj = callable.get();
+        add(newObj);
         return newObj;
+    }
+
+    public void add(T newObj) {
+        elements.add(newObj);
+    }
+
+    public void leftShift(T newObj) {
+        add(newObj);
     }
 
     public void forEach(Consumer<T> tConsumer) {

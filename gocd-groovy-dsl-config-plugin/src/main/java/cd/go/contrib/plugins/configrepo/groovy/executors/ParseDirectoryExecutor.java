@@ -24,6 +24,7 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
@@ -39,7 +40,7 @@ import java.util.Map;
 
 public class ParseDirectoryExecutor {
 
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private final PluginRequest pluginRequest;
 

@@ -17,6 +17,7 @@
 
 dependencies {
   compile project(':dsl')
+  compile project(':sandbox')
   compile group: 'com.beust', name: 'jcommander', version: project.versions.jcommander
   compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.versions.groovy
 }

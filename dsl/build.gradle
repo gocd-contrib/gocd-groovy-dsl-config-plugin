@@ -29,7 +29,6 @@ dependencies {
   compileOnly group: 'org.projectlombok', name: 'lombok', version: project.versions.lombok
 
   compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.versions.groovy
-  compile project(':sandbox')
 
   compile group: 'com.google.code.gson', name: 'gson', version: project.versions.gson
   compile group: 'org.apache.commons', name: 'commons-lang3', version: project.versions.commonsLang
@@ -38,6 +37,7 @@ dependencies {
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: project.versions.junit5
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.versions.junit5
 
+  testCompile project(':sandbox')
   testCompile group: 'org.assertj', name: 'assertj-core', version: project.versions.assertj
   testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: project.versions.jsonAssert
 }
