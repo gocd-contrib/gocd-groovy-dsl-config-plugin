@@ -141,7 +141,7 @@ public class Pipeline extends NamedNode<Pipeline> {
      * <p>
      * {@includeCode plain-environment-variables.groovy }
      *
-     * @see #secureVariables
+     * @see #secureEnvironmentVariables
      */
     private Map<String, String> environmentVariables;
 
@@ -153,7 +153,7 @@ public class Pipeline extends NamedNode<Pipeline> {
      * @see #environmentVariables
      * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
      */
-    private Map<String, String> secureVariables;
+    private Map<String, String> secureEnvironmentVariables;
 
     /**
      * The list of parameter substitutions to be used in a pipeline or a template.
@@ -223,7 +223,7 @@ public class Pipeline extends NamedNode<Pipeline> {
 
     @Override
     public JsonElement toJson() {
-        return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureVariables());
+        return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureEnvironmentVariables());
     }
 
     public void setLockBehavior(String newValue) {

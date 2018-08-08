@@ -49,7 +49,7 @@ public class Environment extends NamedNode<Environment> {
      * <p>
      * {@includeCode plain-environment-variables.groovy }
      *
-     * @see #secureVariables
+     * @see #secureEnvironmentVariables
      */
     private Map<String, String> environmentVariables;
 
@@ -61,7 +61,7 @@ public class Environment extends NamedNode<Environment> {
      * @see #environmentVariables
      * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
      */
-    private Map<String, String> secureVariables;
+    private Map<String, String> secureEnvironmentVariables;
 
     /**
      * The list of pipelines that should be added into this environment.
@@ -92,6 +92,6 @@ public class Environment extends NamedNode<Environment> {
 
     @Override
     public JsonElement toJson() {
-        return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureVariables());
+        return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureEnvironmentVariables());
     }
 }

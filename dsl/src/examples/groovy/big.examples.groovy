@@ -4,7 +4,7 @@ GoCD.script {
   environments {
     environment('production') {
       environmentVariables = [SSH_HOST: '192.168.1.100']
-      secureVariables = [SSH_PASSWORD: 's^Du#@$xsSa']
+      secureEnvironmentVariables = [SSH_PASSWORD: 's^Du#@$xsSa']
       pipelines = ['website']
       agents = ['agent1-uuid', 'agent2-uuid']
     }

@@ -81,7 +81,7 @@ public class Stage extends NamedNode<Stage> {
      * <p>
      * {@includeCode plain-environment-variables.groovy }
      *
-     * @see #secureVariables
+     * @see #secureEnvironmentVariables
      */
     private Map<String, String> environmentVariables;
 
@@ -93,7 +93,7 @@ public class Stage extends NamedNode<Stage> {
      * @see #environmentVariables
      * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
      */
-    private Map<String, String> secureVariables;
+    private Map<String, String> secureEnvironmentVariables;
 
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
@@ -126,7 +126,7 @@ public class Stage extends NamedNode<Stage> {
 
     @Override
     public JsonElement toJson() {
-        return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureVariables());
+        return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureEnvironmentVariables());
     }
 
 }

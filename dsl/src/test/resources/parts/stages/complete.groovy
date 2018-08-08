@@ -10,7 +10,7 @@ return new Stages().stage("test") {
     users = ['john']
   }
   environmentVariables = ['TEST_NUM': 1]
-  secureVariables = ['PASSWORD': "AES:rzIrGQcbIX9e/J5Ic0WHcA==:nam+Ne5mUtS0TILGu4zHlw=="]
+  secureEnvironmentVariables = ['PASSWORD': "AES:rzIrGQcbIX9e/J5Ic0WHcA==:nam+Ne5mUtS0TILGu4zHlw=="]
   jobs {
     job('one') {}
     job('two') {}

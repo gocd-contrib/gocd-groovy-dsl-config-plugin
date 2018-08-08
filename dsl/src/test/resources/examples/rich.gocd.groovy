@@ -38,7 +38,7 @@ GoCD.script {
             job('csharp') {
               runInstanceCount = 3
               environmentVariables = [MONO_PATH: '/usr/bin/local/mono']
-              secureVariables = [PASSWORD: 'AES:yBk975e1rJiuRnAx9AZ6Og==:ee6yi/2sEh5/TUlbmNWelg==']
+              secureEnvironmentVariables = [PASSWORD: 'AES:yBk975e1rJiuRnAx9AZ6Og==:ee6yi/2sEh5/TUlbmNWelg==']
               resources = ['net45']
               tasks {
                 fetchDirectory {
