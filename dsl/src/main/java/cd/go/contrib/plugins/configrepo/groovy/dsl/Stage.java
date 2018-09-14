@@ -30,6 +30,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -74,6 +75,7 @@ public class Stage extends NamedNode<Stage> {
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("approval")
+    @Valid
     private Approval approval;
 
     /**
@@ -99,6 +101,7 @@ public class Stage extends NamedNode<Stage> {
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("jobs")
+    @Valid
     private Jobs jobs = new Jobs();
 
     public Stage(String name, @DelegatesTo(value = Stage.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Stage") Closure cl) {

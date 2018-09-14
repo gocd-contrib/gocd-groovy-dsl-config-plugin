@@ -20,6 +20,7 @@ import cd.go.contrib.plugins.configrepo.groovy.GroovyDslPlugin;
 import cd.go.contrib.plugins.configrepo.groovy.JsonConfigCollection;
 import cd.go.contrib.plugins.configrepo.groovy.PluginRequest;
 import cd.go.contrib.plugins.configrepo.groovy.ServerRequestFailedException;
+import cd.go.contrib.plugins.configrepo.groovy.cli.Main;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
@@ -34,6 +35,7 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.PatternSet;
 
+import javax.validation.ConstraintViolation;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -51,7 +53,7 @@ public class ParseDirectoryExecutor {
     public ParseDirectoryExecutor(PluginRequest pluginRequest, GoPluginApiRequest request) {
         this.pluginRequest = pluginRequest;
 
-        Map<String, Object> map = new Gson().fromJson(request.requestBody(), new TypeToken<Map<String, Object>>() {
+        Map<String, java.lang.Object> map = new Gson().fromJson(request.requestBody(), new TypeToken<Map<String, java.lang.Object>>() {
         }.getType());
 
         this.directory = (String) map.get("directory");
@@ -82,6 +84,17 @@ public class ParseDirectoryExecutor {
                     if (configFromFile.getTargetVersion() != null) {
                         result.updateFormatVersionFound((configFromFile).getTargetVersion());
                     }
+
+                    Main.validate(configFromFile, constraintViolations -> {
+                        StringBuilder buf = new StringBuilder();
+
+                        for (ConstraintViolation<Object> violation : constraintViolations) {
+                            buf.append("  - ").append(violation.getPropertyPath()).append(" ").append(violation.getMessage());
+                            buf.append("\n");
+                        }
+
+                        throw new RuntimeException(buf.toString());
+                    });
                     configFromFile.getEnvironments().forEach(environment -> result.addEnvironment(environment.toJson(), file));
                     configFromFile.getPipelines().forEach(pipeline -> result.addPipeline(pipeline.toJson(), file));
                     GroovyDslPlugin.LOG.debug("Found pipeline configs at " + new File(directory, file));

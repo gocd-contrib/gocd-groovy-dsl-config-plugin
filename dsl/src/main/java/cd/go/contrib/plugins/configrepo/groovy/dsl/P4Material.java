@@ -26,6 +26,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 /**
@@ -65,6 +67,7 @@ public class P4Material extends ScmMaterial<P4Material> {
 
     @Expose
     @SerializedName("view")
+    @NotEmpty
     private String view;
 
     P4Material() {

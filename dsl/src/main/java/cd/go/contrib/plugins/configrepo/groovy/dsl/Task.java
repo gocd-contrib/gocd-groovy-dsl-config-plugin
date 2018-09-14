@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
@@ -23,20 +24,18 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Arrays;
-import java.util.List;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 abstract class Task<T extends Node> extends Node<T> {
 
-    private static final List<String> VALID_RUN_IFS = Arrays.asList("passed", "failed", "any");
-
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @Expose
     @SerializedName("type")
+    @NotEmpty
     private final String type;
 
     /**
@@ -50,17 +49,11 @@ abstract class Task<T extends Node> extends Node<T> {
      */
     @Expose
     @SerializedName("run_if")
+    @OneOfStrings(value = {"passed", "failed", "any"})
     private String runIf;
 
     protected Task(String type) {
         this.type = type;
     }
 
-    public void setRunIf(String newValue) {
-        if (VALID_RUN_IFS.contains(newValue.toLowerCase())) {
-            this.runIf = newValue.toLowerCase();
-        } else {
-            throw new IllegalArgumentException("Illegal value for run if: " + newValue);
-        }
-    }
 }

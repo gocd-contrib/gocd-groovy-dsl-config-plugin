@@ -23,6 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Getter
@@ -60,6 +61,7 @@ abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("filter")
+    @Valid
     private Filter filter;
 
     ScmMaterial(String type) {

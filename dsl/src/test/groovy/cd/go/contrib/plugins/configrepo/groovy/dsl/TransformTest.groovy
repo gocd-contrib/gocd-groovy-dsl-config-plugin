@@ -21,8 +21,13 @@ import net.javacrumbs.jsonunit.fluent.JsonFluentAssert
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
+import javax.validation.ConstraintViolation
+import javax.validation.Validation
+import javax.validation.Validator
+import javax.validation.ValidatorFactory
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.function.Consumer
 import java.util.stream.Stream
 
 import static org.assertj.core.api.Assertions.assertThat
@@ -35,12 +40,33 @@ class TransformTest {
   void testTransformParts(String path) {
     def engine = getRunner()
     def result = engine.runScript(path + '.groovy')
+    Set<ConstraintViolation<Object>> constraintViolations = null
+    def consumer = new Consumer<Set<ConstraintViolation<Object>>>() {
+
+      @Override
+      void accept(Set<ConstraintViolation<Object>> errors) {
+        constraintViolations = errors
+      }
+    }
+    validate(result, consumer)
+
+    assertThat((Set) constraintViolations).isNullOrEmpty()
     assertThat(result).isInstanceOf(Node)
 
     def actualJson = (result as Node).toJsonString()
     def expectedJSON = new File(path + '.json').getText('utf-8')
     JsonFluentAssert.assertThatJson(actualJson).isEqualTo(expectedJSON)
   }
+
+  private static void validate(Object object, Consumer<Set<ConstraintViolation<Object>>> errorHandler) {
+    ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()
+    Validator validator = validatorFactory.getValidator()
+    Set<ConstraintViolation<Object>> violations = validator.validate(object)
+    if (!violations.isEmpty()) {
+      errorHandler.accept(violations)
+    }
+  }
+
 
   private GroovyScriptRunner getRunner() throws IOException {
     if (runner == null) {

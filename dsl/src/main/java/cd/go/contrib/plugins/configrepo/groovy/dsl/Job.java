@@ -17,6 +17,7 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.KeyValuePairSerializer;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.util.RunInstanceCount;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
@@ -30,6 +31,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +55,7 @@ public class Job extends NamedNode<Job> {
      */
     @Expose
     @SerializedName("run_instance_count")
+    @RunInstanceCount
     private Object runInstanceCount;
 
     /**
@@ -62,6 +66,7 @@ public class Job extends NamedNode<Job> {
      */
     @Expose
     @SerializedName("timeout")
+    @PositiveOrZero
     private Integer timeout;
 
     /**
@@ -107,18 +112,21 @@ public class Job extends NamedNode<Job> {
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("tabs")
+    @Valid
     private Tabs tabs = new Tabs();
 
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("artifacts")
+    @Valid
     private Artifacts artifacts = new Artifacts();
 
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("tasks")
+    @Valid
     private Tasks tasks = new Tasks();
 
     Job() {

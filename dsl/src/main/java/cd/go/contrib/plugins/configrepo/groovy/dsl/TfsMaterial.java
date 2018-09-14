@@ -24,6 +24,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 /**
@@ -43,6 +45,7 @@ public class TfsMaterial extends ScmMaterial<TfsMaterial> {
     /**
      * The URL of the TFS server
      */
+    @NotBlank
     private String url;
 
     /**

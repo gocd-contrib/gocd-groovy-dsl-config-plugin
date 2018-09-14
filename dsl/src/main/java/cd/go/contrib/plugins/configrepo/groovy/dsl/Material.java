@@ -22,6 +22,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * Represents a material that a pipeline polls on.
  */
@@ -32,6 +34,7 @@ abstract class Material<T extends Material> extends NamedNode<T> {
 
     @Expose
     @SerializedName("type")
+    @NotEmpty
     private final String type;
 
     Material(String type) {

@@ -17,6 +17,7 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.KeyValuePairSerializer;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
@@ -30,8 +31,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Arrays;
-import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -48,13 +49,12 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @EqualsAndHashCode(callSuper = true)
 public class Pipeline extends NamedNode<Pipeline> {
 
-    private static final List<String> VALID_LOCK_BEHAVIORS = Arrays.asList("none", "lockOnFailure", "unlockWhenFinished");
-
     /**
      * The name of the pipeline group that this pipeline belongs to.
      */
     @Expose
     @SerializedName("group")
+    @NotEmpty
     private String group;
 
     /**
@@ -105,6 +105,7 @@ public class Pipeline extends NamedNode<Pipeline> {
      */
     @Expose
     @SerializedName("lock_behavior")
+    @OneOfStrings(value = {"none", "lockOnFailure", "unlockWhenFinished"})
     private String lockBehavior;
 
     /**
@@ -116,6 +117,7 @@ public class Pipeline extends NamedNode<Pipeline> {
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("tracking_tool")
+    @Valid
     private TrackingTool trackingTool;
 
     /**
@@ -134,6 +136,7 @@ public class Pipeline extends NamedNode<Pipeline> {
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("timer")
+    @Valid
     private Timer timer;
 
     /**
@@ -168,12 +171,14 @@ public class Pipeline extends NamedNode<Pipeline> {
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("materials")
+    @Valid
     private Materials materials = new Materials();
 
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("stages")
+    @Valid
     private Stages stages = new Stages();
 
     Pipeline() {
@@ -225,13 +230,4 @@ public class Pipeline extends NamedNode<Pipeline> {
     public JsonElement toJson() {
         return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureEnvironmentVariables());
     }
-
-    public void setLockBehavior(String newValue) {
-        this.lockBehavior = VALID_LOCK_BEHAVIORS
-                .stream()
-                .filter(s -> s.equalsIgnoreCase(newValue.toLowerCase()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Illegal value for pipeline lock behavior: " + newValue));
-    }
-
 }

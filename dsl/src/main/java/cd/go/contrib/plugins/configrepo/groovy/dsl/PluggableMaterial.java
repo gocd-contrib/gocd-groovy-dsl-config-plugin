@@ -27,6 +27,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -48,19 +50,17 @@ public class PluggableMaterial extends Material<PluggableMaterial> {
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("filter")
+    @Valid
     private Filter filter;
 
     @Expose
     @SerializedName("scm_id")
+    @NotEmpty
     private String scm;
 
     @Expose
     @SerializedName("destination")
     private String destination;
-
-//    private String scm_id;
-//    protected String destination;
-//    private CRFilter filter;
 
     PluggableMaterial() {
         this(null);

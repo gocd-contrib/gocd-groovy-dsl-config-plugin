@@ -7,7 +7,11 @@ GoCD.script {
   }
 
   pipelines {
-    pipeline('pipe1') {}
-    pipeline('pipe2') {}
+    pipeline('pipe1') {
+      group = 'foo'
+    }
+    pipeline('pipe2') {
+      group = 'foo'
+    }
   }
 }

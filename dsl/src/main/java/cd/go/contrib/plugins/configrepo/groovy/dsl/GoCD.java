@@ -26,6 +26,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 /**
@@ -43,6 +46,7 @@ public class GoCD extends Node<GoCD> {
 
     @Expose
     @SerializedName("target_version")
+    @Min(3)
     private Integer targetVersion = 3;
 
     /**
@@ -50,6 +54,7 @@ public class GoCD extends Node<GoCD> {
      */
     @Expose
     @SerializedName("pipelines")
+    @Valid
     private Pipelines pipelines = new Pipelines();
 
     /**
@@ -57,6 +62,7 @@ public class GoCD extends Node<GoCD> {
      */
     @Expose
     @SerializedName("environments")
+    @Valid
     private Environments environments = new Environments();
 
     public static GoCD script(@DelegatesTo(value = GoCD.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD") Closure cl) {

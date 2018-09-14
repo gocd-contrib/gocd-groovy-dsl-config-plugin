@@ -16,13 +16,14 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,9 +46,10 @@ public class Approval extends Node<Approval> {
     /**
      * The type of the approval, either {@code 'manual'} or {@code 'success'}
      */
-    @Setter(AccessLevel.NONE)
     @Expose
     @SerializedName("type")
+    @NotEmpty
+    @OneOfStrings(value = {"success", "manual"})
     private String type = "success";
 
     /**
@@ -63,13 +65,5 @@ public class Approval extends Node<Approval> {
     @Expose
     @SerializedName("users")
     private List<String> users;
-
-    public void setType(String newValue) {
-        if (APPROVAL_TYPES.contains(newValue.toLowerCase())) {
-            this.type = newValue.toLowerCase();
-        } else {
-            throw new IllegalArgumentException("Illegal value for approval type: " + newValue);
-        }
-    }
 
 }

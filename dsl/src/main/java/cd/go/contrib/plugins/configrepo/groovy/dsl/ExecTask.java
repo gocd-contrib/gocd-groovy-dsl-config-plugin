@@ -28,6 +28,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class ExecTask extends Task<ExecTask> {
     /**
      * The command line to be executed.
      */
+    @NotEmpty
     private List<String> commandLine = new LinkedList<>();
 
     public ExecTask() {
@@ -72,6 +74,7 @@ public class ExecTask extends Task<ExecTask> {
     @Override
     public JsonObject toJson() {
         JsonObject jsonObject = (JsonObject) super.toJson();
+
         jsonObject.addProperty("command", commandLine.get(0));
 
         if (commandLine.size() > 1) {

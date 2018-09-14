@@ -26,6 +26,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 /**
@@ -44,6 +46,7 @@ public class SvnMaterial extends ScmMaterial<SvnMaterial> {
 
     @Expose
     @SerializedName("url")
+    @Valid
     private String url;
 
     @Expose

@@ -27,6 +27,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 @Getter
@@ -42,22 +44,27 @@ public class FetchArtifactTask extends Task<FetchArtifactTask> {
 
     @Expose
     @SerializedName("pipeline")
+    @NotEmpty
     private String pipeline;
 
     @Expose
     @SerializedName("stage")
+    @NotEmpty
     private String stage;
 
     @Expose
     @SerializedName("job")
+    @NotEmpty
     private String job;
 
     @Expose
     @SerializedName("source")
+    @NotEmpty
     private String source;
 
     @Expose
     @SerializedName("destination")
+    @NotEmpty
     private String destination;
 
     public FetchArtifactTask() {

@@ -32,7 +32,6 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 public class Tabs extends CollectionNode<Tab> {
 
     Tabs() {
-
     }
 
     Tabs(@DelegatesTo(value = Tabs.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Tabs") Closure cl) {

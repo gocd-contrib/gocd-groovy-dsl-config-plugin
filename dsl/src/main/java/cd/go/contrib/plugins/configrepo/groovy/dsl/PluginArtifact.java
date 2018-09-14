@@ -29,6 +29,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -46,6 +47,7 @@ public class PluginArtifact extends AbstractArtifact<PluginArtifact> {
      */
     @Expose
     @SerializedName("id")
+    @NotEmpty
     private String id;
 
     /**
@@ -53,6 +55,7 @@ public class PluginArtifact extends AbstractArtifact<PluginArtifact> {
      */
     @Expose
     @SerializedName("store_id")
+    @NotEmpty
     private String storeId;
 
     /**

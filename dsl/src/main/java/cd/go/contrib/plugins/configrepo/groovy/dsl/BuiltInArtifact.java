@@ -26,6 +26,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 /**
@@ -51,6 +53,7 @@ public class BuiltInArtifact extends AbstractArtifact<BuiltInArtifact> {
      */
     @Expose
     @SerializedName("source")
+    @NotEmpty
     private String source;
 
     /**

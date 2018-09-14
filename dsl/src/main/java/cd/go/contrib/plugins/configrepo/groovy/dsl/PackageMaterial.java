@@ -26,6 +26,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 @Getter
@@ -35,6 +37,7 @@ public class PackageMaterial extends Material<PackageMaterial> {
 
     @Expose
     @SerializedName("package_id")
+    @NotEmpty
     private String ref;
 
     PackageMaterial() {

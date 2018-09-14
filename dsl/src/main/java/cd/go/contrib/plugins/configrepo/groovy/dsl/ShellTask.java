@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.util.CheckAtLeastOneNotNull;
 import com.google.gson.JsonObject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
@@ -24,6 +25,8 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -36,11 +39,13 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@CheckAtLeastOneNotNull(fieldNames = {"commandString", "file"})
 public class ShellTask extends Task<ShellTask> {
 
     /**
      * The shell command to be executed {@code bash}, {@code zsh}. Must be on PATH.
      */
+    @NotEmpty
     private String shell;
 
     /**

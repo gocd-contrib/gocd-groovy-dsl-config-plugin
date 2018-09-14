@@ -26,6 +26,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 @Getter
@@ -35,10 +37,12 @@ public class DependencyMaterial extends Material<DependencyMaterial> {
 
     @Expose
     @SerializedName("pipeline")
+    @NotEmpty
     private String pipeline;
 
     @Expose
     @SerializedName("stage")
+    @NotEmpty
     private String stage;
 
     DependencyMaterial() {

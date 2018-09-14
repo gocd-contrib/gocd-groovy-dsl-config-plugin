@@ -27,6 +27,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -52,11 +53,11 @@ public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
      * <p>
      * {@includeCode scm.filter.groovy }
      */
-
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
     @Expose
     @SerializedName("filter")
+    @Valid
     private Filter filter;
 
     ConfigRepoMaterial() {

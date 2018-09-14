@@ -23,6 +23,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
@@ -32,6 +34,7 @@ public abstract class AbstractArtifact<T extends AbstractArtifact> extends Node<
     @SerializedName("type")
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
+    @NotEmpty
     protected final String type;
 
     AbstractArtifact(String type) {

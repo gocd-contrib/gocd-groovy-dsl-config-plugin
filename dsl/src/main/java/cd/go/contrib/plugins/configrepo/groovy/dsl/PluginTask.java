@@ -30,6 +30,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -47,6 +49,8 @@ public class PluginTask extends Task<PluginTask> {
     @Setter(AccessLevel.NONE)
     @Expose
     @SerializedName("plugin_configuration")
+    @NotNull
+    @Valid
     private Configuration configuration;
 
     public PluginTask() {

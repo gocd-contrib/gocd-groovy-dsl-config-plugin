@@ -26,6 +26,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 /**
@@ -166,6 +168,7 @@ public class Timer extends Node<Timer> {
      */
     @Expose
     @SerializedName("spec")
+    @NotEmpty
     private String spec;
 
     /**

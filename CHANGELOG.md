@@ -1,3 +1,9 @@
+# v0.4.0
+
+## Improved
+
+- Added validation of generated DSL.
+
 # v0.3.0
 
 ## Changed

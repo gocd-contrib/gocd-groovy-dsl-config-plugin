@@ -26,6 +26,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
 /**
@@ -44,6 +46,7 @@ public class HgMaterial extends ScmMaterial<HgMaterial> {
 
     @Expose
     @SerializedName("url")
+    @NotEmpty
     private String url;
 
     HgMaterial() {

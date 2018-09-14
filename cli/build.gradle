@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-
 dependencies {
   compile project(':dsl')
   compile project(':sandbox')
   compile group: 'com.beust', name: 'jcommander', version: project.versions.jcommander
   compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.versions.groovy
+  compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: project.versions.hibernateValidator
+  compile group: 'org.glassfish', name: 'javax.el', version: project.versions.javaxEL
+  compile group: 'org.glassfish.web', name: 'el-impl', version: project.versions.javaxELImpl
 }

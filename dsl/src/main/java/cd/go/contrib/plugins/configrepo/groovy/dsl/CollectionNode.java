@@ -21,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -34,6 +35,7 @@ abstract class CollectionNode<T extends Node> extends Node<T> {
 
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
+    @Valid
     private final List<T> elements = new ArrayList<>();
 
     public T create(Supplier<T> callable) {

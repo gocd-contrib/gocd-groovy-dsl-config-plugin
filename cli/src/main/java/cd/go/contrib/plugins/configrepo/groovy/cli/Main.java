@@ -22,8 +22,14 @@ import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public class Main {
 
@@ -45,10 +51,19 @@ public class Main {
         for (File file : args.files) {
             try {
                 System.out.print("Parsing file " + file + ".");
-                Object maybeConfig = getRunner().runScript(file.getPath());
+                java.lang.Object maybeConfig = getRunner().runScript(file.getPath());
                 if (maybeConfig instanceof GoCD) {
                     System.out.print(" Ok!");
                     GoCD configFromFile = (GoCD) maybeConfig;
+
+                    validate(configFromFile, violations -> {
+                        System.out.println("Found " + violations.size() + " validation errors!");
+                        for (ConstraintViolation<Object> violation : violations) {
+                            System.out.println("  - " + violation.getPropertyPath() + " " + violation.getMessage());
+                        }
+                        System.exit(1);
+                    });
+
                     System.out.print(" Found environments: " + configFromFile.getEnvironments().getNames() + ".");
                     System.out.print(" Found pipelines: " + configFromFile.getPipelines().getNames() + ".");
                     System.out.println();
@@ -64,6 +79,15 @@ public class Main {
                 e.printStackTrace();
                 System.exit(1);
             }
+        }
+    }
+
+    public static void validate(Object configFromFile, Consumer<Set<ConstraintViolation<Object>>> errorHandler) {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+        Set<ConstraintViolation<Object>> violations = validator.validate(configFromFile);
+        if (!violations.isEmpty()) {
+            errorHandler.accept(violations);
         }
     }
 

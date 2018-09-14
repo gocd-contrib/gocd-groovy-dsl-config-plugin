@@ -2,10 +2,12 @@
   "target_version": 3,
   "pipelines": [
     {
-      "name": "pipe1"
+      "name": "pipe1",
+      "group": "foo"
     },
     {
-      "name": "pipe2"
+      "name": "pipe2",
+      "group": "foo"
     }
   ],
   "environments": [

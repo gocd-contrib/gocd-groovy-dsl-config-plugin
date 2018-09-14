@@ -26,6 +26,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.regex.Pattern;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -53,6 +55,7 @@ public class TrackingTool extends Node<TrackingTool> {
      */
     @Expose
     @SerializedName("link")
+    @NotEmpty
     private String link;
 
     /**
@@ -69,6 +72,7 @@ public class TrackingTool extends Node<TrackingTool> {
      */
     @Expose
     @SerializedName("regex")
+    @NotNull
     private Pattern regex;
 
     public TrackingTool(@DelegatesTo(value = TrackingTool.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TrackingTool") Closure cl) {

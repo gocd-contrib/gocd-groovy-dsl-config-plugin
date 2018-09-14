@@ -20,6 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -37,6 +38,7 @@ public class Filter {
 
     private final boolean isWhitelist;
 
+    @NotEmpty
     private final List<String> items;
 
     public Filter(List<String> items) {
