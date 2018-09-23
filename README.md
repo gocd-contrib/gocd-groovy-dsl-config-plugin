@@ -42,7 +42,7 @@ There is some basic standalone linting abilities provided by the plugin:
 java -jar groovy-dsl-plugin.jar --files file1,file2
 ```
 
-### Lint usage
+### Lint and validation of Groovy DSL
 
 ```shell
 $ java -jar groovy-dsl-plugin.jar

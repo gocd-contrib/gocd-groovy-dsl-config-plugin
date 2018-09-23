@@ -75,6 +75,14 @@ allprojects {
     vendorName : 'GoCD Contributors',
     vendorUrl  : 'https://github.com/ketan/gocd-groovy-dsl-config-plugin',
   ]
+
+  tasks.withType(AbstractArchiveTask) {
+    includeEmptyDirs false
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+  }
 }
 
 subprojects {
