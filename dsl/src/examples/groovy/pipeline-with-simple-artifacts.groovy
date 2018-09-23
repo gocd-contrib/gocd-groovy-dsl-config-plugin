@@ -27,7 +27,7 @@ GoCD.script {
               }
 
               artifacts {
-                buildArtifact {
+                build {
                   source = 'target/jcoverage'
                   destination = 'Jcoverage'
                 }

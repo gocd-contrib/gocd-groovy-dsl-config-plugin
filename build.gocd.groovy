@@ -45,11 +45,11 @@ GoCD.script {
               }
 
               artifacts {
-                buildArtifact {
+                build {
                   source = 'dsl/libs/*'
                   destination = 'dsl'
                 }
-                buildArtifact {
+                build {
                   source = 'groovy-dsl-plugin/build/libs/*'
                   destination = 'plugin'
                 }
