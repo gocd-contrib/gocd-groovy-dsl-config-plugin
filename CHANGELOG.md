@@ -1,3 +1,9 @@
+# v0.5.0
+
+## Improved
+
+- Added support for artifact origin in fetch artifact tasks
+
 # v0.4.0
 
 ## Improved
