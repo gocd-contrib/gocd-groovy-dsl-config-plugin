@@ -93,6 +93,9 @@ subprojects {
   apply plugin: 'java'
   apply plugin: 'groovy'
 
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
   apply from: "${rootProject.projectDir}/plugin-common.gradle"
 }
 
