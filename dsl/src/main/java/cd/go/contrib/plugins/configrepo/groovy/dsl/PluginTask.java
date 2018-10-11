@@ -53,6 +53,14 @@ public class PluginTask extends Task<PluginTask> {
     @Valid
     private Configuration configuration;
 
+
+
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
+    @Expose
+    @SerializedName("artifact_origin")
+    private final String artifactOrigin = "external";
+
     public PluginTask() {
         this(null);
     }

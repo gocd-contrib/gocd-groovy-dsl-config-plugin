@@ -100,7 +100,8 @@
                   "stage": "build",
                   "job": "test",
                   "source": "test-bin/",
-                  "destination": "bin/"
+                  "destination": "bin/",
+                  "artifact_origin": "gocd"
                 },
                 {
                   "type": "exec",

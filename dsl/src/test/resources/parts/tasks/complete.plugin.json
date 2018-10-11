@@ -1,5 +1,6 @@
 {
   "type": "plugin",
+  "artifact_origin": "external",
   "configuration": [
     {
       "key": "ConverterType",

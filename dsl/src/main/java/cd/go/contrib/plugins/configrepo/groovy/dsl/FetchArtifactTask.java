@@ -42,6 +42,12 @@ public class FetchArtifactTask extends Task<FetchArtifactTask> {
     @SerializedName("is_source_a_file")
     private final Boolean isFile;
 
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
+    @Expose
+    @SerializedName("artifact_origin")
+    private final String artifactOrigin = "gocd";
+
     @Expose
     @SerializedName("pipeline")
     @NotEmpty
