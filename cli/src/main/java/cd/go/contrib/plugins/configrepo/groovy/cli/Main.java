@@ -120,7 +120,7 @@ public class Main {
         StringBuilder out = new StringBuilder();
         JCommander jCommander = new JCommander(new Args());
         jCommander.setProgramName("java -jar groovy-dsl-plugin.jar");
-        jCommander.usage(out);
+        jCommander.getUsageFormatter().usage(out);
         System.err.print(out);
         System.exit(exitCode);
     }
