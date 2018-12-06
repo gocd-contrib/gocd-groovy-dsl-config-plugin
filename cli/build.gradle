@@ -17,9 +17,8 @@
 dependencies {
   compile project(':dsl')
   compile project(':sandbox')
-  compile group: 'com.beust', name: 'jcommander', version: project.versions.jcommander
-  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.versions.groovy
-  compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: project.versions.hibernateValidator
-  compile group: 'org.glassfish', name: 'javax.el', version: project.versions.javaxEL
-  compile group: 'org.glassfish.web', name: 'el-impl', version: project.versions.javaxELImpl
+  compile group: 'com.beust', name: 'jcommander', version: '1.72'
+  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
+  compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.13.Final'
+  compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
 }
