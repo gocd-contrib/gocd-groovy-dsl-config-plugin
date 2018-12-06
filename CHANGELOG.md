@@ -1,3 +1,9 @@
+# v0.6.0
+
+## Chores
+
+- Upgraded gradle
+
 # v0.5.0
 
 ## Improved
