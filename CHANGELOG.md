@@ -1,8 +1,13 @@
 # v0.6.0
 
+## Fixed
+
+- [#3](https://github.com/ketan/gocd-groovy-dsl-config-plugin/issues/3) - Error while parsing Config repository
+
 ## Chores
 
 - Upgraded gradle
+- Upgraded a bunch of libraries
 
 # v0.5.0
 

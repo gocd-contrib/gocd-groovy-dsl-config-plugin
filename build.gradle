@@ -38,7 +38,7 @@ apply plugin: "io.codearte.nexus-staging"
 
 allprojects {
   group = 'com.github.ketan'
-  project.ext.pluginVersion = '0.5.0'
+  project.ext.pluginVersion = '0.6.0'
   project.ext.gitRevision = Git.open(rootProject.projectDir).log().setMaxCount(1).call().first().name()
   project.ext.distVersion = Git.open(rootProject.projectDir).log().call().size()
   project.ext.fullVersion = project.distVersion ? "${project.pluginVersion}-${project.distVersion}" : project.pluginVersion
