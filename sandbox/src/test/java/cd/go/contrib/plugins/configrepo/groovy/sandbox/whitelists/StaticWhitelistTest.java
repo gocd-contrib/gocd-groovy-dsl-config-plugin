@@ -24,8 +24,6 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
-import cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists.EnumeratingWhitelist;
-import cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists.StaticWhitelist;
 import groovy.lang.GroovyObject;
 import org.junit.Assert;
 import org.junit.Test;

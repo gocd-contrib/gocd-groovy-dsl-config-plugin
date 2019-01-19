@@ -39,23 +39,26 @@ This plugin evaluates untrusted code, on the GoCD server. A malicious script can
 There is some basic standalone linting abilities provided by the plugin:
 
 ```shell
-java -jar groovy-dsl-plugin.jar --files file1,file2
+java -jar groovy-dsl-plugin.jar syntax file1
 ```
 
 ### Lint and validation of Groovy DSL
 
 ```shell
 $ java -jar groovy-dsl-plugin.jar
-The following option is required: [--files | -f]
-Usage: java -jar groovy-dsl-plugin.jar [options]
+Usage: java -jar groovy-dsl-plugin.jar [options] [command] [command options]
   Options:
-  * --files, -f
-      comma-separated list of files to verify
     --help, -h
       print this help
-    --json, -j
-      show generated json for the config
-      Default: false
+  Commands:
+    syntax      perform syntax checking of specified file
+      Usage: syntax [options] [file|-]
+        Options:
+          --help, -h
+            print this help
+          --json, -j
+            show generated json for the config
+            Default: false
 ```
 
 ## Auto complete in your IDE
@@ -67,13 +70,15 @@ If you're using an IDE like IntelliJ or Eclipse, you can import the `dsl.jar` fi
 <dependency>
   <groupId>com.github.ketan</groupId>
   <artifactId>dsl</artifactId>
-  <version>0.1.0-1</version>
+  <!-- get version from https://mvnrepository.com/artifact/com.github.ketan/dsl -->
+  <version>XXX</version>
 </dependency>
 ```
 
 ```groovy
 // gradle
-compileOnly group: 'com.github.ketan', name: 'dsl', version: '0.1.0-1'
+// get version from https://mvnrepository.com/artifact/com.github.ketan/dsl
+compileOnly group: 'com.github.ketan', name: 'dsl', version: 'XXX'
 ```
 
 ## Example

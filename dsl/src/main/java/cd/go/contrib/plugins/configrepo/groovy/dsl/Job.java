@@ -16,27 +16,23 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.util.KeyValuePairSerializer;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.RunInstanceCount;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
-import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
+import static lombok.AccessLevel.NONE;
 
 /**
  * Represents a job.
@@ -46,15 +42,15 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class Job extends NamedNode<Job> {
+@ToString(callSuper = true)
+public class Job extends HasEnvironmentVariables<Job> {
 
     /**
      * The number of agents this job should run on.
      * Defaults to {@code 1}. Set to string {@code "all"}
      * to run on all agents.
      */
-    @Expose
-    @SerializedName("run_instance_count")
+    @JsonProperty("run_instance_count")
     @RunInstanceCount
     private Object runInstanceCount;
 
@@ -64,8 +60,7 @@ public class Job extends NamedNode<Job> {
      * <p>
      * Defaults to {@code 0} to never timeout.
      */
-    @Expose
-    @SerializedName("timeout")
+    @JsonProperty("timeout")
     @PositiveOrZero
     private Integer timeout;
 
@@ -75,8 +70,7 @@ public class Job extends NamedNode<Job> {
      *
      * <strong>MUST NOT</strong> be specified along with {@link Job#resources}
      */
-    @Expose
-    @SerializedName("elastic_profile_id")
+    @JsonProperty("elastic_profile_id")
     private String elasticProfileId;
 
     /**
@@ -85,59 +79,36 @@ public class Job extends NamedNode<Job> {
      *
      * <strong>MUST NOT</strong> be specified along with {@link Job#elasticProfileId}
      */
-    @Expose
-    @SerializedName("resources")
+    @JsonProperty("resources")
     private List<String> resources;
 
-    /**
-     * The list of environment variables associated with this job.
-     * <p>
-     * {@includeCode plain-environment-variables.groovy }
-     *
-     * @see #secureEnvironmentVariables
-     */
-    private Map<String, String> environmentVariables;
-
-    /**
-     * The list of secure(encrypted) environment variables associated with this job.
-     * <p>
-     * {@includeCode secure-environment-variables.groovy }
-     *
-     * @see #environmentVariables
-     * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
-     */
-    private Map<String, String> secureEnvironmentVariables;
-
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("tabs")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("tabs")
     @Valid
     private Tabs tabs = new Tabs();
 
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("artifacts")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("artifacts")
     @Valid
     private Artifacts artifacts = new Artifacts();
 
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("tasks")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("tasks")
     @Valid
     private Tasks tasks = new Tasks();
 
-    Job() {
+    public Job() {
         this(null);
     }
 
-    Job(String name) {
+    public Job(String name) {
         this(name, null);
     }
 
-    Job(String name, @DelegatesTo(value = Job.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Job") Closure cl) {
+    public Job(String name, @DelegatesTo(value = Job.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Job") Closure cl) {
         super(name);
         configure(cl);
     }
@@ -170,11 +141,6 @@ public class Job extends NamedNode<Job> {
     public Tabs tabs(@DelegatesTo(value = Tabs.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Tabs") Closure cl) {
         tabs.configure(cl);
         return tabs;
-    }
-
-    @Override
-    public JsonElement toJson() {
-        return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureEnvironmentVariables());
     }
 
 }

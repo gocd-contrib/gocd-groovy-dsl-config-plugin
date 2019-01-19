@@ -17,11 +17,11 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
@@ -39,6 +39,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Approval extends Node<Approval> {
 
     private static final List<String> APPROVAL_TYPES = Arrays.asList("success", "manual");
@@ -46,8 +47,7 @@ public class Approval extends Node<Approval> {
     /**
      * The type of the approval, either {@code 'manual'} or {@code 'success'}
      */
-    @Expose
-    @SerializedName("type")
+    @JsonProperty("type")
     @NotEmpty
     @OneOfStrings(value = {"success", "manual"})
     private String type = "success";
@@ -55,15 +55,13 @@ public class Approval extends Node<Approval> {
     /**
      * The list of roles that are authorized to trigger
      */
-    @Expose
-    @SerializedName("roles")
+    @JsonProperty("roles")
     private List<String> roles;
 
     /**
      * The list of users that are authorized to trigger
      */
-    @Expose
-    @SerializedName("users")
+    @JsonProperty("users")
     private List<String> users;
 
 }

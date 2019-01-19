@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -26,24 +25,19 @@ import java.util.Map;
 public class Field {
     protected final String key;
 
-    @Expose
-    @SerializedName("display-name")
+    @JsonProperty("display-name")
     protected final String displayName;
 
-    @Expose
-    @SerializedName("default-value")
+    @JsonProperty("default-value")
     protected final String defaultValue;
 
-    @Expose
-    @SerializedName("required")
+    @JsonProperty("required")
     protected final Boolean required;
 
-    @Expose
-    @SerializedName("secure")
+    @JsonProperty("secure")
     protected final Boolean secure;
 
-    @Expose
-    @SerializedName("display-order")
+    @JsonProperty("display-order")
     protected final String displayOrder;
 
     public Field(String key, String displayName, String defaultValue, Boolean required, Boolean secure, String displayOrder) {

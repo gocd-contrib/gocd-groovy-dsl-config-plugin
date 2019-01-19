@@ -18,76 +18,64 @@ package cd.go.contrib.plugins.configrepo.groovy.cli;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import org.codehaus.groovy.runtime.IOGroovyMethods;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
-import java.util.function.Consumer;
+import java.io.*;
+
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.validate.Validator.validate;
 
 public class Main {
 
-    private final Args args;
+    private final Syntax args;
 
     private GroovyScriptRunner engine;
 
-    public Main(Args args) {
+    public Main(Syntax args) {
         this.args = args;
     }
 
     public static void main(String[] argv) {
-        Args args = parseArgsAndBlowUpIfRequired(argv);
+        Syntax args = parseArgsAndBlowUpIfRequired(argv);
 
         new Main(args).run();
     }
 
     private void run() {
-        for (File file : args.files) {
-            try {
-                System.out.print("Parsing file " + file + ".");
-                java.lang.Object maybeConfig = getRunner().runScript(file.getPath());
-                if (maybeConfig instanceof GoCD) {
-                    System.out.print(" Ok!");
-                    GoCD configFromFile = (GoCD) maybeConfig;
+        try {
+            System.out.print("Parsing file " + getLocation(args.file) + ".");
+            String contents = IOGroovyMethods.getText(getFileAsStream(args.file), "utf-8");
+            java.lang.Object maybeConfig = getRunner().runScriptWithText(contents);
+            if (maybeConfig instanceof GoCD) {
+                System.out.print(" Ok!");
+                GoCD configFromFile = (GoCD) maybeConfig;
 
-                    validate(configFromFile, violations -> {
-                        System.out.println("Found " + violations.size() + " validation errors!");
-                        for (ConstraintViolation<Object> violation : violations) {
-                            System.out.println("  - " + violation.getPropertyPath() + " " + violation.getMessage());
-                        }
-                        System.exit(1);
-                    });
-
-                    System.out.print(" Found environments: " + configFromFile.getEnvironments().getNames() + ".");
-                    System.out.print(" Found pipelines: " + configFromFile.getPipelines().getNames() + ".");
-                    System.out.println();
-                    String jsonString = configFromFile.toJsonString();
-                    if (args.showJson) {
-                        System.out.println();
-                        System.out.println("Showing JSON from file " + file + ":");
-                        System.out.println(jsonString);
+                validate(configFromFile, violations -> {
+                    System.out.println("Found " + violations.size() + " validation errors!");
+                    for (ConstraintViolation<Object> violation : violations) {
+                        System.out.println("  - " + violation.getPropertyPath() + " " + violation.getMessage());
                     }
-                }
-            } catch (Exception e) {
-                System.out.println(" Bad!");
-                e.printStackTrace();
-                System.exit(1);
-            }
-        }
-    }
+                    System.exit(1);
+                });
 
-    public static void validate(Object configFromFile, Consumer<Set<ConstraintViolation<Object>>> errorHandler) {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-        Set<ConstraintViolation<Object>> violations = validator.validate(configFromFile);
-        if (!violations.isEmpty()) {
-            errorHandler.accept(violations);
+                System.out.println(" Found environments: " + configFromFile.environments(null).getNames() + ".");
+                System.out.println(" Found pipelines: " + configFromFile.pipelines(null).getNames() + ".");
+                System.out.println();
+                String jsonString = GoCDJsonSerializer.toJsonString(configFromFile);
+                if (args.showJson) {
+                    System.out.println();
+                    System.out.println("Showing JSON from file " + getLocation(args.file) + ":");
+                    System.out.println(jsonString);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(" Bad!");
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -98,30 +86,59 @@ public class Main {
         return engine;
     }
 
-    private static Args parseArgsAndBlowUpIfRequired(String[] argv) {
-        Args args = new Args();
+    private static InputStream getFileAsStream(String file) {
+        InputStream s = null;
+        try {
+            s = "-".equals(file) ? System.in : new FileInputStream(new File(file));
+        } catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+        return s;
+    }
+
+    private static Syntax parseArgsAndBlowUpIfRequired(String... argv) {
+        HelpCommand root = new HelpCommand();
+        Syntax syntax = new Syntax();
+        JCommander cmd = JCommander.newBuilder()
+                .programName("java -jar groovy-dsl-plugin.jar")
+                .addObject(root)
+                .addCommand("syntax", syntax)
+                .build();
+
+        String parsedCommand = cmd.getParsedCommand();
 
         try {
-            new JCommander(args)
-                    .parse(argv);
-            if (args.help) {
-                printUsageAndExit(0);
+            cmd.parse(argv);
+
+            if (syntax.help) {
+                printUsageAndExit(1, cmd, parsedCommand);
             }
 
+            if (null == syntax.file) {
+                printUsageAndExit(1, cmd, parsedCommand);
+            }
 
         } catch (ParameterException e) {
             System.err.println(e.getMessage());
-            printUsageAndExit(1);
+            printUsageAndExit(1, cmd, parsedCommand);
         }
-        return args;
+        return syntax;
     }
 
-    private static void printUsageAndExit(int exitCode) {
+    private static String getLocation(String file) {
+        return "-".equals(file) ? "<STDIN>" : file;
+    }
+
+    private static void printUsageAndExit(int exitCode, JCommander cmd, String command) {
         StringBuilder out = new StringBuilder();
-        JCommander jCommander = new JCommander(new Args());
-        jCommander.setProgramName("java -jar groovy-dsl-plugin.jar");
-        jCommander.getUsageFormatter().usage(out);
-        System.err.print(out);
+        if (null == command) {
+            cmd.usage(out);
+        } else {
+            cmd.usage(command, out);
+        }
+        String message = out.toString();
+        System.err.println(message);
         System.exit(exitCode);
     }
 }

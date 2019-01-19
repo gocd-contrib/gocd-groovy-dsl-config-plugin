@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -25,12 +24,14 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.regex.Pattern;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
+import static lombok.AccessLevel.NONE;
 
 /**
  * Represents an issue tracker.
@@ -39,7 +40,12 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true,
+        doNotUseGetters = true // because Pattern#equals always returns false.
+)
+@ToString(callSuper = true,
+        doNotUseGetters = true // because Pattern#equals always returns false
+)
 public class TrackingTool extends Node<TrackingTool> {
 
     /**
@@ -53,8 +59,7 @@ public class TrackingTool extends Node<TrackingTool> {
      * <li>{@code https://jira.example.com/jira/browse/${ID}} — Jira Issue
      * </ul>
      */
-    @Expose
-    @SerializedName("link")
+    @JsonProperty("link")
     @NotEmpty
     private String link;
 
@@ -70,13 +75,29 @@ public class TrackingTool extends Node<TrackingTool> {
      * failure (fixes JIRA-1748).}"
      * </ul>
      */
-    @Expose
-    @SerializedName("regex")
+    @JsonProperty("regex")
     @NotNull
-    private Pattern regex;
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    private String regex;
+
+    @SuppressWarnings("unused" /*method here for deserialization only*/)
+    public TrackingTool() {
+    }
 
     public TrackingTool(@DelegatesTo(value = TrackingTool.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TrackingTool") Closure cl) {
         configure(cl);
     }
 
+    public Pattern getRegex() {
+        return regex != null ? Pattern.compile(regex) : null;
+    }
+
+    public void setRegex(Pattern regex) {
+        this.regex = regex == null ? null : regex.toString();
+    }
+
+    public void setRegex(String regex) {
+        this.regex = regex;
+    }
 }

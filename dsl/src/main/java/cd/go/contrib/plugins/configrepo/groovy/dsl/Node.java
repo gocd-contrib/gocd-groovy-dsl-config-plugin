@@ -16,57 +16,15 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import groovy.lang.Closure;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.regex.Pattern;
-
 @Getter
 @Setter
 @EqualsAndHashCode
-abstract class Node<T extends Node> {
-
-    protected static Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
-            .registerTypeHierarchyAdapter(new TypeToken<CollectionNode<? extends Node>>(){}.getRawType(), (JsonSerializer<CollectionNode<? extends Node>>) (src, typeOfSrc, context) -> {
-                if (src.size() > 0) {
-                    JsonArray jsonArray = new JsonArray(src.size());
-                    src.forEach(o -> jsonArray.add(o.toJson()));
-                    return jsonArray;
-                }
-                return JsonNull.INSTANCE;
-            })
-            .registerTypeAdapter(Filter.class, (JsonSerializer<Filter>) (src, typeOfSrc, context) -> {
-                JsonObject jsonObject = new JsonObject();
-                JsonElement itemsInFilter = context.serialize(src.getItems());
-                if (src.isWhitelist()) {
-                    jsonObject.add("whitelist", itemsInFilter);
-                } else {
-                    jsonObject.add("ignore", itemsInFilter);
-                }
-                return jsonObject;
-            })
-            .registerTypeAdapter(Pattern.class, (JsonSerializer<Pattern>) (src, typeOfSrc, context) -> {
-                if (src == null) {
-                    return context.serialize(null);
-                } else {
-                    return context.serialize(src.pattern());
-                }
-            })
-            .excludeFieldsWithoutExposeAnnotation()
-            .create();
-
-    public JsonElement toJson() {
-        return GSON.toJsonTree(this);
-    }
-
-    public String toJsonString() {
-        return GSON.toJson(toJson());
-    }
+public abstract class Node<T extends Node> {
 
     protected void configure(Closure cl) {
         if (cl != null) {

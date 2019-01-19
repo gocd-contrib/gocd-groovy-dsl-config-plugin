@@ -16,26 +16,24 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.util.KeyValuePairSerializer;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
+import static lombok.AccessLevel.NONE;
 
 /**
  * Represents a
@@ -47,13 +45,13 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class Pipeline extends NamedNode<Pipeline> {
+@ToString(callSuper = true)
+public class Pipeline extends HasEnvironmentVariables<Pipeline> {
 
     /**
      * The name of the pipeline group that this pipeline belongs to.
      */
-    @Expose
-    @SerializedName("group")
+    @JsonProperty("group")
     @NotEmpty
     private String group;
 
@@ -86,8 +84,7 @@ public class Pipeline extends NamedNode<Pipeline> {
      * <li><code>15.1-${COUNT}-${git[:7]}</code>
      * </ul>
      */
-    @Expose
-    @SerializedName("label_template")
+    @JsonProperty("label_template")
     private String labelTemplate;
 
     /**
@@ -103,8 +100,7 @@ public class Pipeline extends NamedNode<Pipeline> {
      * <p>
      * The default value is {@code none}.
      */
-    @Expose
-    @SerializedName("lock_behavior")
+    @JsonProperty("lock_behavior")
     @OneOfStrings(value = {"none", "lockOnFailure", "unlockWhenFinished"})
     private String lockBehavior;
 
@@ -113,18 +109,16 @@ public class Pipeline extends NamedNode<Pipeline> {
      * <p>
      * {@includeCode pipeline-with-tracking-tool.groovy}
      */
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("tracking_tool")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("tracking_tool")
     @Valid
     private TrackingTool trackingTool;
 
     /**
      * The name of the template that this pipeline references. If set, no stages may be defined in this pipeline.
      */
-    @Expose
-    @SerializedName("template")
+    @JsonProperty("template")
     private String template;
 
     /**
@@ -132,31 +126,11 @@ public class Pipeline extends NamedNode<Pipeline> {
      *
      * @see Timer
      */
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("timer")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("timer")
     @Valid
     private Timer timer;
-
-    /**
-     * The list of environment variables associated with this pipeline.
-     * <p>
-     * {@includeCode plain-environment-variables.groovy }
-     *
-     * @see #secureEnvironmentVariables
-     */
-    private Map<String, String> environmentVariables;
-
-    /**
-     * The list of secure(encrypted) environment variables associated with this pipeline.
-     * <p>
-     * {@includeCode secure-environment-variables.groovy }
-     *
-     * @see #environmentVariables
-     * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
-     */
-    private Map<String, String> secureEnvironmentVariables;
 
     /**
      * The list of parameter substitutions to be used in a pipeline or a template.
@@ -165,31 +139,29 @@ public class Pipeline extends NamedNode<Pipeline> {
      *
      * @see <a href='https://docs.gocd.org/current/configuration/configuration_reference.html#param'>Parameter reference</a>
      */
-    private Map<String, String> params;
+    private Map<String, String> params = new LinkedHashMap<>();
 
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("materials")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("materials")
     @Valid
     private Materials materials = new Materials();
 
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("stages")
+    @JsonProperty("stages")
     @Valid
+    @Getter(value = NONE)
+    @Setter(value = NONE)
     private Stages stages = new Stages();
 
-    Pipeline() {
+    public Pipeline() {
         this(null, null);
     }
 
-    Pipeline(String name) {
+    public Pipeline(String name) {
         this(name, null);
     }
 
-    Pipeline(String name, @DelegatesTo(value = Pipeline.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline") Closure cl) {
+    public Pipeline(String name, @DelegatesTo(value = Pipeline.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline") Closure cl) {
         super(name);
         configure(cl);
     }
@@ -226,8 +198,4 @@ public class Pipeline extends NamedNode<Pipeline> {
         return stages;
     }
 
-    @Override
-    public JsonElement toJson() {
-        return KeyValuePairSerializer.serializeVariablesInto((JsonObject) super.toJson(), getEnvironmentVariables(), getSecureEnvironmentVariables());
-    }
 }

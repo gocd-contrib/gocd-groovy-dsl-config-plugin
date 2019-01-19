@@ -16,22 +16,22 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class NamedNode<T extends Node> extends Node<T> {
 
     /**
      * The name of this configuration entity
      */
-    @Expose
-    @SerializedName("name")
+    @JsonProperty("name")
     protected String name;
 
     NamedNode(String name) {

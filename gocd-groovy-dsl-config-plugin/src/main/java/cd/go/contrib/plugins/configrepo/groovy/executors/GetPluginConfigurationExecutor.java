@@ -18,8 +18,8 @@ package cd.go.contrib.plugins.configrepo.groovy.executors;
 
 import cd.go.contrib.plugins.configrepo.groovy.Field;
 import cd.go.contrib.plugins.configrepo.groovy.RequestExecutor;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
@@ -29,9 +29,10 @@ import java.util.Map;
 
 public class GetPluginConfigurationExecutor implements RequestExecutor {
 
-    private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static final Field INCLUDE_FILE_PATTERN = new Field("include_file_pattern", "Include File Pattern", "**/*.gocd.groovy,**/GoCDFile", false, false, "1");
+
     public static final Field EXCLUDE_FILE_PATTERN = new Field("exclude_file_pattern", "Exclude File Pattern", "", false, false, "2");
 
     public static final Map<String, Field> FIELDS = new LinkedHashMap<>();
@@ -41,8 +42,8 @@ public class GetPluginConfigurationExecutor implements RequestExecutor {
         FIELDS.put(EXCLUDE_FILE_PATTERN.key(), EXCLUDE_FILE_PATTERN);
     }
 
-    public GoPluginApiResponse execute() {
-        return new DefaultGoPluginApiResponse(200, GSON.toJson(FIELDS));
+    public GoPluginApiResponse execute() throws JsonProcessingException {
+        return new DefaultGoPluginApiResponse(200, OBJECT_MAPPER.writer().writeValueAsString(FIELDS));
     }
 
 }

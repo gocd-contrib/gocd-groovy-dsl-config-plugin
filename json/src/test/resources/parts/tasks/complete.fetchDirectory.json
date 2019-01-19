@@ -1,0 +1,11 @@
+{
+  "type": "fetch",
+  "run_if": "any",
+  "pipeline": "upstream",
+  "stage": "upstream_stage",
+  "job": "upstream_job",
+  "is_source_a_file": false,
+  "artifact_origin": "gocd",
+  "source": "result",
+  "destination": "test"
+}

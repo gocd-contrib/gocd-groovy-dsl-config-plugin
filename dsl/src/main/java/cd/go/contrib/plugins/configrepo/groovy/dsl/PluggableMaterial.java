@@ -16,26 +16,28 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
+import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class PluggableMaterial extends Material<PluggableMaterial> {
 
     /**
@@ -46,32 +48,29 @@ public class PluggableMaterial extends Material<PluggableMaterial> {
      * <p>
      * {@includeCode scm.filter.groovy }
      */
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("filter")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("filter")
     @Valid
     private Filter filter;
 
-    @Expose
-    @SerializedName("scm_id")
+    @JsonProperty("scm_id")
     @NotEmpty
     private String scm;
 
-    @Expose
-    @SerializedName("destination")
+    @JsonProperty("destination")
     private String destination;
 
-    PluggableMaterial() {
+    public PluggableMaterial() {
         this(null);
     }
 
-    PluggableMaterial(@DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial") Closure cl) {
+    public PluggableMaterial(@DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial") Closure cl) {
         this(null, cl);
     }
 
-    PluggableMaterial(String name, @DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial") Closure cl) {
-        super(name, "plugin");
+    public PluggableMaterial(String name, @DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial") Closure cl) {
+        super(name);
         configure(cl);
     }
 
@@ -89,4 +88,19 @@ public class PluggableMaterial extends Material<PluggableMaterial> {
         filter = new Filter(true, whitelist);
     }
 
+    @JsonIgnore
+    public List<String> getBlacklist() {
+        if (this.filter != null && !this.filter.isWhitelist()) {
+            return this.filter.getItems();
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public List<String> getWhitelist() {
+        if (this.filter != null && this.filter.isWhitelist()) {
+            return this.filter.getItems();
+        }
+        return null;
+    }
 }

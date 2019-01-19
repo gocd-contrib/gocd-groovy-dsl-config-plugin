@@ -19,6 +19,10 @@ package cd.go.contrib.plugins.configrepo.groovy;
 public enum Request {
 
     PARSE_DIRECTORY("parse-directory"),
+    GET_CAPABILITIES("get-capabilities"),
+    PARSE_CONTENT("parse-content"),
+    PIPELINE_EXPORT("pipeline-export"),
+    GET_ICON("get-icon"),
 
     PLUGIN_SETTINGS_GET_CONFIGURATION(Constants.GO_PLUGIN_SETTINGS_PREFIX + ".get-configuration"),
     PLUGIN_SETTINGS_GET_VIEW(Constants.GO_PLUGIN_SETTINGS_PREFIX + ".get-view"),
@@ -43,6 +47,7 @@ public enum Request {
     }
 
     private static class Constants {
+
         public static final String GO_PLUGIN_SETTINGS_PREFIX = "go.plugin-settings";
     }
 }

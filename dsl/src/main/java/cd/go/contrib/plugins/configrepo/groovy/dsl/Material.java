@@ -16,13 +16,12 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotEmpty;
+import lombok.ToString;
 
 /**
  * Represents a material that a pipeline polls on.
@@ -30,19 +29,32 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-abstract class Material<T extends Material> extends NamedNode<T> {
+@ToString(callSuper = true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = GitMaterial.class, name = "git"),
+        @JsonSubTypes.Type(value = HgMaterial.class, name = "hg"),
 
-    @Expose
-    @SerializedName("type")
-    @NotEmpty
-    private final String type;
+        @JsonSubTypes.Type(value = SvnMaterial.class, name = "svn"),
+        @JsonSubTypes.Type(value = P4Material.class, name = "p4"),
+        @JsonSubTypes.Type(value = TfsMaterial.class, name = "tfs"),
 
-    Material(String type) {
-        this(null, type);
+        @JsonSubTypes.Type(value = PluggableMaterial.class, name = "plugin"),
+        @JsonSubTypes.Type(value = DependencyMaterial.class, name = "dependency"),
+        @JsonSubTypes.Type(value = ConfigRepoMaterial.class, name = "configrepo"),
+        @JsonSubTypes.Type(value = PackageMaterial.class, name = "package"),
+})
+public abstract class Material<T extends Material> extends NamedNode<T> {
+
+    Material() {
+        this(null);
     }
 
-    Material(String name, String type) {
+    Material(String name) {
         super(name);
-        this.type = type;
     }
+
 }

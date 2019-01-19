@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -25,6 +24,7 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -42,14 +42,13 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class P4Material extends ScmMaterial<P4Material> {
 
-    @Expose
-    @SerializedName("port")
+    @JsonProperty("port")
     private String port;
 
-    @Expose
-    @SerializedName("username")
+    @JsonProperty("username")
     private String username;
 
     /**
@@ -57,29 +56,26 @@ public class P4Material extends ScmMaterial<P4Material> {
      *
      * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
      */
-    @Expose
-    @SerializedName("encrypted_password")
+    @JsonProperty("encrypted_password")
     private String encryptedPassword;
 
-    @Expose
-    @SerializedName("use_tickets")
+    @JsonProperty("use_tickets")
     private Boolean useTickets;
 
-    @Expose
-    @SerializedName("view")
+    @JsonProperty("view")
     @NotEmpty
     private String view;
 
-    P4Material() {
+    public P4Material() {
         this(null);
     }
 
-    P4Material(@DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure cl) {
+    public P4Material(@DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure cl) {
         this(null, cl);
     }
 
-    P4Material(String name, @DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure cl) {
-        super(name, "p4");
+    public P4Material(String name, @DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure cl) {
+        super(name);
         configure(cl);
     }
 

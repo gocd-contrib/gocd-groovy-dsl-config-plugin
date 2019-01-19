@@ -16,26 +16,27 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.util.ToStringAdapter;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Configuration extends Node<Configuration> {
 
-    @Expose
-    @SerializedName("id")
+    @JsonProperty("id")
     private String id;
 
-    @Expose
-    @SerializedName("version")
-    @JsonAdapter(ToStringAdapter.class)
-    private Integer version = 1;
+    @JsonProperty("version")
+    private String version = "1";
+
+
+    public void setVersion(int version) {
+        this.version = String.valueOf(version);
+    }
 
 }

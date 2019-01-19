@@ -16,11 +16,10 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.util.KeyValuePairSerializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -28,8 +27,12 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -40,21 +43,20 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class PluginArtifact extends AbstractArtifact<PluginArtifact> {
 
     /**
      * The identifier of the plugin artifact.
      */
-    @Expose
-    @SerializedName("id")
+    @JsonProperty("id")
     @NotEmpty
     private String id;
 
     /**
      * The identifier of the artifact store
      */
-    @Expose
-    @SerializedName("store_id")
+    @JsonProperty("store_id")
     @NotEmpty
     private String storeId;
 
@@ -63,24 +65,67 @@ public class PluginArtifact extends AbstractArtifact<PluginArtifact> {
      *
      * @see #secureConfiguration
      */
-    private Map<String, String> configuration;
+    @JsonIgnore
+    private Map<String, String> configuration = new LinkedHashMap<>();
 
     /**
      * The secure configuration properties of this plugin artifact.
      *
      * @see #configuration
      */
-    private Map<String, String> secureConfiguration;
+    @JsonIgnore
+    private Map<String, String> secureConfiguration = new LinkedHashMap<>();
 
-    PluginArtifact(@DelegatesTo(value = PluginArtifact.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluginArtifact") Closure cl) {
+    @SuppressWarnings("unused" /*method here for serialization only*/)
+    public  PluginArtifact() {
+        this(null);
+    }
+
+    public PluginArtifact(@DelegatesTo(value = PluginArtifact.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluginArtifact") Closure cl) {
         super("external");
         configure(cl);
     }
 
-    @Override
-    public JsonElement toJson() {
-        JsonObject jsonObject = (JsonObject) super.toJson();
-        return KeyValuePairSerializer.serializePluginArtifactConfigurationInto(jsonObject, getConfiguration(), getSecureConfiguration());
+    @JsonGetter("configuration")
+    @SuppressWarnings("unused" /*method here for deserialization only*/)
+    private List<Map<String, String>> getPluginConfiguration() {
+        ArrayList<Map<String, String>> allVariables = new ArrayList<>();
+
+        if (configuration != null) {
+            configuration.forEach((k, v) -> {
+                LinkedHashMap<String, String> var = new LinkedHashMap<>();
+                var.put("key", k);
+                var.put("value", v);
+                allVariables.add(var);
+            });
+        }
+
+        if (secureConfiguration != null) {
+            secureConfiguration.forEach((k, v) -> {
+                LinkedHashMap<String, String> var = new LinkedHashMap<>();
+                var.put("key", k);
+                var.put("encrypted_value", v);
+                allVariables.add(var);
+            });
+        }
+
+        return allVariables;
+    }
+
+    @JsonSetter("configuration")
+    @SuppressWarnings("unused" /*method here for serialization only*/)
+    private void setPluginConfiguration(List<Map<String, String>> allVariables) {
+        if (allVariables == null) {
+            return;
+        }
+
+        allVariables.forEach(var -> {
+            if (var.containsKey("encrypted_value")) {
+                secureConfiguration.put(var.get("key"), var.get("encrypted_value"));
+            } else {
+                configuration.put(var.get("key"), var.get("value"));
+            }
+        });
     }
 
 }

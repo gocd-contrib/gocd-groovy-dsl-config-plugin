@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-apply plugin: 'groovy'
+apply plugin: 'groovy' // technically groovy is not needed, but the javadoc build fails for a NPE, not sure why
 apply plugin: 'jacoco'
 apply plugin: 'com.bmuschko.nexus'
 apply plugin: 'maven-publish'
@@ -28,24 +28,24 @@ dependencies {
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
   annotationProcessor group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '6.0.14.Final'
 
-  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.2'
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
 
   compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
-
-  compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.8'
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
   compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.3.2'
-  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.3.2'
+  testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
 
-  testCompile project(':sandbox')
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
-  testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: '2.3.0'
+  testCompile group: 'org.reflections', name: 'reflections', version: '0.9.11'
+  testCompile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+}
 
-  testCompile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.13.Final'
-  testCompile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
+test {
+  useJUnitPlatform()
 }
 
 extraArchive {
@@ -63,9 +63,6 @@ sourceSets {
   }
 }
 
-test {
-  useJUnitPlatform()
-}
 
 task delombok(type: JavaExec) {
   inputs.files(sourceSets.main.compileClasspath.files)

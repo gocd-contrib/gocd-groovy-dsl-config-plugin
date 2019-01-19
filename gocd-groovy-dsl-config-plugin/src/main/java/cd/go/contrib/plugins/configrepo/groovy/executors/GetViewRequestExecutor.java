@@ -18,18 +18,21 @@ package cd.go.contrib.plugins.configrepo.groovy.executors;
 
 import cd.go.contrib.plugins.configrepo.groovy.RequestExecutor;
 import cd.go.contrib.plugins.configrepo.groovy.utils.Util;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
+import java.util.Collections;
+import java.util.Map;
+
 public class GetViewRequestExecutor implements RequestExecutor {
-    private static final Gson GSON = new Gson();
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Override
-    public GoPluginApiResponse execute() {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("template", Util.readResource("/plugin-settings.template.html"));
-        return new DefaultGoPluginApiResponse(200, GSON.toJson(jsonObject));
+    public GoPluginApiResponse execute() throws JsonProcessingException {
+        Map<String, String> jsonObject = Collections.singletonMap("template", Util.readResource("/plugin-settings.template.html"));
+        return new DefaultGoPluginApiResponse(200, OBJECT_MAPPER.writer().writeValueAsString(jsonObject));
     }
 }

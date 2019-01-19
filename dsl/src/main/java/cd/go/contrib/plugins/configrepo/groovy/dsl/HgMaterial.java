@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -25,6 +24,7 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -42,23 +42,23 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class HgMaterial extends ScmMaterial<HgMaterial> {
 
-    @Expose
-    @SerializedName("url")
+    @JsonProperty("url")
     @NotEmpty
     private String url;
 
-    HgMaterial() {
+    public HgMaterial() {
         this(null);
     }
 
-    HgMaterial(@DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial") Closure cl) {
+    public HgMaterial(@DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial") Closure cl) {
         this(null, cl);
     }
 
-    HgMaterial(String name, @DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial") Closure cl) {
-        super(name, "hg");
+    public HgMaterial(String name, @DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial") Closure cl) {
+        super(name);
         configure(cl);
     }
 

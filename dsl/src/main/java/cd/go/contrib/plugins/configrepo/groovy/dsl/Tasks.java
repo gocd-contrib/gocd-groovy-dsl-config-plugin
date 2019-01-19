@@ -47,6 +47,10 @@ public class Tasks extends CollectionNode<Task> {
         return new ShellTask("zsh", cl);
     }
 
+    public FetchArtifactTask fetchArtifact(@DelegatesTo(value = FetchArtifactTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.FetchArtifactTask") Closure cl) {
+        return fetchDirectory(cl);
+    }
+
     public FetchArtifactTask fetchFile(@DelegatesTo(value = FetchArtifactTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.FetchArtifactTask") Closure cl) {
         return (FetchArtifactTask) create(() -> new FetchArtifactTask(true, cl));
     }

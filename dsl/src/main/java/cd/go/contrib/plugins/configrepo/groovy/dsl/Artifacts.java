@@ -32,7 +32,7 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
  * <p>
  * {@includeCode artifacts.big.groovy}
  *
- * @see BuiltInArtifact
+ * @see AbstractBuiltInArtifact
  * @see PluginArtifact
  */
 @Getter
@@ -49,8 +49,8 @@ public class Artifacts extends CollectionNode<AbstractArtifact> {
      * Configuration</a>
      * @see <a href="https://ant.apache.org/manual/dirtasks.html#patterns">Source pattern</a>
      */
-    public BuiltInArtifact build(@DelegatesTo(value = BuiltInArtifact.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Artifact") Closure cl) {
-        return (BuiltInArtifact) create(() -> new BuiltInArtifact("build", cl));
+    public BuildArtifact build(@DelegatesTo(value = BuildArtifact.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.BuildArtifact") Closure cl) {
+        return (BuildArtifact) create(() -> new BuildArtifact("build", cl));
     }
 
     /**
@@ -62,8 +62,8 @@ public class Artifacts extends CollectionNode<AbstractArtifact> {
      * Configuration</a>
      * @see <a href="https://ant.apache.org/manual/dirtasks.html#patterns">Source pattern</a>
      */
-    public BuiltInArtifact test(@DelegatesTo(value = BuiltInArtifact.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Artifact") Closure cl) {
-        return (BuiltInArtifact) create(() -> new BuiltInArtifact("test", cl));
+    public TestArtifact test(@DelegatesTo(value = TestArtifact.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TestArtifact") Closure cl) {
+        return (TestArtifact) create(() -> new TestArtifact("test", cl));
     }
 
     /**

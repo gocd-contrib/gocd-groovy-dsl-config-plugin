@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -25,6 +24,7 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 
@@ -42,35 +42,32 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class SvnMaterial extends ScmMaterial<SvnMaterial> {
 
-    @Expose
-    @SerializedName("url")
+    @JsonProperty("url")
     @Valid
     private String url;
 
-    @Expose
-    @SerializedName("username")
+    @JsonProperty("username")
     private String username;
 
-    @Expose
-    @SerializedName("encrypted_password")
+    @JsonProperty("encrypted_password")
     private String encryptedPassword;
 
-    @Expose
-    @SerializedName("check_externals")
+    @JsonProperty("check_externals")
     private Boolean checkExternals;
 
-    SvnMaterial() {
+    public SvnMaterial() {
         this(null);
     }
 
-    SvnMaterial(@DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial") Closure cl) {
+    public SvnMaterial(@DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial") Closure cl) {
         this(null, cl);
     }
 
-    SvnMaterial(String name, @DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial") Closure cl) {
-        super(name, "svn");
+    public SvnMaterial(String name, @DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial") Closure cl) {
+        super(name);
         configure(cl);
     }
 

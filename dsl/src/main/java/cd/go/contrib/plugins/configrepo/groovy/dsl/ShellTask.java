@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.util.CheckAtLeastOneNotNull;
-import com.google.gson.JsonObject;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.util.CheckAtLeastOneNotEmpty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -25,11 +24,11 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * Executes a shell script.
@@ -38,8 +37,9 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  */
 @Getter
 @Setter
+@CheckAtLeastOneNotEmpty(fieldNames = {"commandString", "file"})
 @EqualsAndHashCode(callSuper = true)
-@CheckAtLeastOneNotNull(fieldNames = {"commandString", "file"})
+@ToString(callSuper = true)
 public class ShellTask extends Task<ShellTask> {
 
     /**
@@ -85,12 +85,12 @@ public class ShellTask extends Task<ShellTask> {
      */
     private Boolean login;
 
-    ShellTask() {
+    public ShellTask() {
         this(null, null);
     }
 
     public ShellTask(String shell, @DelegatesTo(value = ShellTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ShellTask") Closure cl) {
-        super("exec");
+        super();
         this.shell = shell;
         configure(cl);
     }
@@ -99,25 +99,24 @@ public class ShellTask extends Task<ShellTask> {
         login = true;
     }
 
-    @Override
-    public JsonObject toJson() {
+    public ExecTask toExecTask() {
         ExecTask execTask = new ExecTask();
-        execTask.setWorkingDir(workingDir);
+        execTask.setWorkingDir(getWorkingDir());
 
-        execTask.getCommandLine().add(shell);
+        execTask.getCommandLine().add(getShell());
 
-        if (Boolean.TRUE.equals(login)) {
+        if (Boolean.TRUE.equals(getLogin())) {
             execTask.getCommandLine().add("-l");
         }
 
-        if (isNotEmpty(commandString)) {
+        if (!(getCommandString() == null || ((CharSequence) getCommandString()).length() == 0)) {
             execTask.getCommandLine().add("-c");
-            execTask.getCommandLine().add(commandString);
+            execTask.getCommandLine().add(getCommandString());
         } else {
-            execTask.getCommandLine().add(file);
+            execTask.getCommandLine().add(getFile());
         }
 
-        return execTask.toJson();
+        return execTask;
     }
 
 }

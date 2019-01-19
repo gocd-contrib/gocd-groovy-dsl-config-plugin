@@ -16,21 +16,19 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
@@ -44,7 +42,7 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class ExecTask extends Task<ExecTask> {
 
     /**
@@ -52,14 +50,13 @@ public class ExecTask extends Task<ExecTask> {
      * <p>
      * Note that this directory is relative to the directory where the agent checks out the materials.
      */
-    @Expose
-    @SerializedName("working_directory")
+    @JsonProperty("working_directory")
     private String workingDir;
 
     /**
      * The command line to be executed.
      */
-    @NotEmpty
+    @JsonIgnore
     private List<String> commandLine = new LinkedList<>();
 
     public ExecTask() {
@@ -67,23 +64,65 @@ public class ExecTask extends Task<ExecTask> {
     }
 
     public ExecTask(@DelegatesTo(value = ExecTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ExecTask") Closure cl) {
-        super("exec");
+        super();
         configure(cl);
     }
 
-    @Override
-    public JsonObject toJson() {
-        JsonObject jsonObject = (JsonObject) super.toJson();
+    @JsonAnyGetter
+    @SuppressWarnings("unused" /*method here for serialization only*/)
+    private Map<String, Object> partialSeserialize() {
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+        List<String> commandLine = getCommandLine();
 
-        jsonObject.addProperty("command", commandLine.get(0));
+        result.put("command", commandLine.get(0));
 
         if (commandLine.size() > 1) {
-            JsonArray arguments = new JsonArray();
-            commandLine.subList(1, commandLine.size()).forEach(arguments::add);
-            jsonObject.add("arguments", arguments);
+            List<String> arguments = new ArrayList<>();
+            result.put("arguments", new ArrayList<>(commandLine.subList(1, commandLine.size())));
         }
 
-        return jsonObject;
+        return result;
     }
 
+    @JsonAnySetter
+    @SuppressWarnings("unused" /*method here for deserialization only*/)
+    private void partialDeserialize(String key, Object value) {
+        if (key.equals("command")) {
+            commandLine.add(0, (String) value);
+        } else if (key.equals("arguments")) {
+            commandLine.addAll(1, (List<String>) value);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null) {
+            return false;
+        }
+
+        if (o.getClass() == ShellTask.class) {
+            return ((ShellTask) o).toExecTask().equals(this);
+        }
+
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        if (!super.equals(o)) return false;
+
+        ExecTask execTask = (ExecTask) o;
+
+        if (workingDir != null ? !workingDir.equals(execTask.workingDir) : execTask.workingDir != null) return false;
+        return commandLine != null ? commandLine.equals(execTask.commandLine) : execTask.commandLine == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (workingDir != null ? workingDir.hashCode() : 0);
+        result = 31 * result + (commandLine != null ? commandLine.hashCode() : 0);
+        return result;
+    }
 }

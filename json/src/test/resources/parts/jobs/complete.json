@@ -1,0 +1,48 @@
+{
+  "name": "test",
+  "timeout" : 5,
+  "run_instance_count": 7,
+  "environment_variables": [
+    {
+      "name": "1varWhichIsNotJavaValidIdentifier",
+      "value": "unknown"
+    },
+    {
+      "name": "LD_LIBRARY_PATH",
+      "value": "."
+    }
+  ],
+  "tabs": [
+    {
+      "name": "test",
+      "path": "results.xml"
+    }
+  ],
+  "resources": [
+    "linux"
+  ],
+  "artifacts": [
+    {
+      "source": "src",
+      "destination": "dest",
+      "type": "test"
+    },
+    {
+      "source": "bin",
+      "type": "build"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "exec",
+      "run_if": "any",
+      "command": "make",
+      "arguments": [
+        "-j3",
+        "docs",
+        "install"
+      ],
+      "working_directory": "some-dir"
+    }
+  ]
+}

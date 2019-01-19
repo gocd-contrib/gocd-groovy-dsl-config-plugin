@@ -19,7 +19,8 @@ package cd.go.contrib.plugins.configrepo.groovy.executors;
 import cd.go.contrib.plugins.configrepo.groovy.Field;
 import cd.go.contrib.plugins.configrepo.groovy.RequestExecutor;
 import cd.go.contrib.plugins.configrepo.groovy.requests.ValidatePluginSettingsRequest;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ValidateConfigurationExecutor implements RequestExecutor {
-    private static final Gson GSON = new Gson();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final ValidatePluginSettingsRequest request;
 
@@ -35,7 +36,7 @@ public class ValidateConfigurationExecutor implements RequestExecutor {
         this.request = request;
     }
 
-    public GoPluginApiResponse execute() {
+    public GoPluginApiResponse execute() throws JsonProcessingException {
         ArrayList<Map<String, String>> result = new ArrayList<>();
 
         for (Map.Entry<String, Field> entry : GetPluginConfigurationExecutor.FIELDS.entrySet()) {
@@ -47,6 +48,6 @@ public class ValidateConfigurationExecutor implements RequestExecutor {
             }
         }
 
-        return DefaultGoPluginApiResponse.success(GSON.toJson(result));
+        return DefaultGoPluginApiResponse.success(OBJECT_MAPPER.writer().writeValueAsString(result));
     }
 }

@@ -18,20 +18,20 @@ package cd.go.contrib.plugins.configrepo.groovy.requests;
 
 import cd.go.contrib.plugins.configrepo.groovy.RequestExecutor;
 import cd.go.contrib.plugins.configrepo.groovy.executors.ValidateConfigurationExecutor;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ValidatePluginSettingsRequest extends HashMap<String, String> {
-    public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+    private static final ObjectMapper MAPPER = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 
-    public static ValidatePluginSettingsRequest fromJSON(String json) {
+    public static ValidatePluginSettingsRequest fromJSON(String json) throws IOException {
         ValidatePluginSettingsRequest result = new ValidatePluginSettingsRequest();
 
-        Map<String, Map<String, String>> settings = (Map<String, Map<String, String>>) GSON.fromJson(json, HashMap.class).get("plugin-settings");
+        Map<String, Map<String, String>> settings = (Map<String, Map<String, String>>) MAPPER.readValue(json, HashMap.class).get("plugin-settings");
 
         for (Map.Entry<String, Map<String, String>> entry : settings.entrySet()) {
             result.put(entry.getKey(), entry.getValue().get("value"));

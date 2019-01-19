@@ -16,91 +16,101 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
+import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class PluginTask extends Task<PluginTask> {
 
-    private Map<String, String> options;
+    @JsonIgnore
+    private Map<String, String> options = new LinkedHashMap<>();
 
-    private Map<String, String> secureOptions;
+    @JsonIgnore
+    private Map<String, String> secureOptions = new LinkedHashMap<>();
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    @Expose
-    @SerializedName("plugin_configuration")
+    @Getter(NONE)
+    @Setter(NONE)
+    @JsonProperty("plugin_configuration")
     @NotNull
     @Valid
-    private Configuration configuration;
-
-
-
-    @Setter(AccessLevel.NONE)
-    @Getter(AccessLevel.NONE)
-    @Expose
-    @SerializedName("artifact_origin")
-    private final String artifactOrigin = "external";
+    private Configuration configuration = new Configuration();
 
     public PluginTask() {
         this(null);
     }
 
     public PluginTask(@DelegatesTo(value = PluginTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluginTask") Closure cl) {
-        super("plugin");
+        super();
         configure(cl);
     }
 
     public Configuration configuration(@DelegatesTo(value = Configuration.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Configuration") Closure cl) {
-        configuration = new Configuration();
         configuration.configure(cl);
         return configuration;
     }
 
-    @Override
-    public JsonElement toJson() {
-        JsonObject jsonObject = (JsonObject) super.toJson();
-        JsonArray configuration = new JsonArray();
-        if (this.options != null && !this.options.isEmpty()) {
+    @JsonGetter("configuration")
+    @SuppressWarnings("unused" /*method here for deserialization only*/)
+    private List<Map<String, String>> getAllConfiguration() {
+        ArrayList<Map<String, String>> allVariables = new ArrayList<>();
+
+        if (options != null) {
             options.forEach((k, v) -> {
-                JsonObject property = new JsonObject();
-                property.addProperty("key", k);
-                property.addProperty("value", String.valueOf((Object) v));
-                configuration.add(property);
+                LinkedHashMap<String, String> var = new LinkedHashMap<>();
+                var.put("key", k);
+                var.put("value", v);
+                allVariables.add(var);
             });
         }
 
-        if (this.secureOptions != null && !this.secureOptions.isEmpty()) {
+        if (secureOptions != null) {
             secureOptions.forEach((k, v) -> {
-                JsonObject property = new JsonObject();
-                property.addProperty("key", k);
-                property.addProperty("encrypted_value", String.valueOf((Object) v));
-                configuration.add(property);
+                LinkedHashMap<String, String> var = new LinkedHashMap<>();
+                var.put("key", k);
+                var.put("encrypted_value", v);
+                allVariables.add(var);
             });
         }
 
-        if (configuration.size() > 0) {
-            jsonObject.add("configuration", configuration);
+        return allVariables;
+    }
+
+    @JsonSetter("configuration")
+    @SuppressWarnings("unused" /*method here for serialization only*/)
+    private void setAllConfiguration(List<Map<String, String>> allVariables) {
+        if (allVariables == null) {
+            return;
         }
-        return jsonObject;
+
+        allVariables.forEach(var -> {
+            if (var.containsKey("encrypted_value")) {
+                secureOptions.put(var.get("key"), var.get("encrypted_value"));
+            } else {
+                options.put(var.get("key"), var.get("value"));
+            }
+        });
     }
 }

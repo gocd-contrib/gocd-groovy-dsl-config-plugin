@@ -17,26 +17,28 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import lombok.AccessLevel;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotEmpty;
+import lombok.ToString;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-abstract class Task<T extends Node> extends Node<T> {
-
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    @Expose
-    @SerializedName("type")
-    @NotEmpty
-    private final String type;
+@ToString(callSuper = true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ExecTask.class, name = "exec"),
+        @JsonSubTypes.Type(value = FetchArtifactTask.class, name = "fetch"),
+        @JsonSubTypes.Type(value = PluginTask.class, name = "plugin"),
+})
+public abstract class Task<T extends Node> extends Node<T> {
 
     /**
      * Specifies when a task should be allowed to run. Multiple conditions may be defined for each task.
@@ -47,13 +49,12 @@ abstract class Task<T extends Node> extends Node<T> {
      * A task can specify any of three possible runif filters: {@code passed}, {@code failed} or {@code any}. Defaults
      * to {@code passed}.
      */
-    @Expose
-    @SerializedName("run_if")
+    @JsonProperty("run_if")
     @OneOfStrings(value = {"passed", "failed", "any"})
     private String runIf;
 
-    protected Task(String type) {
-        this.type = type;
+    @SuppressWarnings("unused" /*method here for serialization only*/)
+    protected Task() {
     }
 
 }

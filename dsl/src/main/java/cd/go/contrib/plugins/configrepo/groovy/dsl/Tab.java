@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -25,7 +24,9 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -38,19 +39,19 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class Tab extends Node<Tab> {
+@ToString(callSuper = true)
+@Valid
+public class Tab extends NamedNode<Tab> {
 
-    @Expose
-    @SerializedName("name")
-    @NotEmpty
-    private String name;
-
-    @Expose
-    @SerializedName("path")
+    @JsonProperty("path")
     @NotEmpty
     private String path;
 
-    Tab(String name, @DelegatesTo(value = Tab.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Tab") Closure cl) {
+    public Tab() {
+        this(null, null);
+    }
+
+    public Tab(String name, @DelegatesTo(value = Tab.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Tab") Closure cl) {
         this.name = name;
         configure(cl);
     }

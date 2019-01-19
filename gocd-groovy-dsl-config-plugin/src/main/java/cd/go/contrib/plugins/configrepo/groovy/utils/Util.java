@@ -19,6 +19,7 @@ package cd.go.contrib.plugins.configrepo.groovy.utils;
 import org.codehaus.groovy.runtime.IOGroovyMethods;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -26,6 +27,7 @@ import java.util.Properties;
 
 
 public class Util {
+
     public static String readResource(String resourceFile) {
         try (InputStreamReader reader = new InputStreamReader(Util.class.getResourceAsStream(resourceFile), StandardCharsets.UTF_8)) {
             return IOGroovyMethods.getText(reader);
@@ -34,6 +36,13 @@ public class Util {
         }
     }
 
+    public static byte[] readResourceBytes(String resourceFile) {
+        try (InputStream in = Util.class.getResourceAsStream(resourceFile)) {
+            return IOGroovyMethods.getBytes(in);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not find resource " + resourceFile, e);
+        }
+    }
 
     public static String pluginId() {
         String s = readResource("/plugin.properties");

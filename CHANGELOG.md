@@ -1,3 +1,19 @@
+# v0.7.0
+
+## Improved
+
+- Added support for exporting pipeline config repository. Requires GoCD server version 19.1 or later to export pipeline.
+- Added support for performing preflight checks. Requires GoCD server version 19.1 or later to export pipeline.
+- Added support for plugin icon. Requires GoCD server version 19.1 or later to show icon.
+
+## Changed
+
+- The command line syntax has been changed to be consistent with the syntax used by the JSON and YAML config repo plugins.
+
+## Chores
+
+- Upgraded a bunch of libraries
+
 # v0.6.0
 
 ## Fixed

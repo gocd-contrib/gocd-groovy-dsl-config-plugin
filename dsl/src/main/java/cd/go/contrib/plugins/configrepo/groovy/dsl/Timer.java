@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -25,6 +24,7 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -36,6 +36,7 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Timer extends Node<Timer> {
 
     /**
@@ -166,8 +167,7 @@ public class Timer extends Node<Timer> {
      * @see <a href="http://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/crontrigger">Quartz Cron
      * documentation</a>
      */
-    @Expose
-    @SerializedName("spec")
+    @JsonProperty("spec")
     @NotEmpty
     private String spec;
 
@@ -175,9 +175,12 @@ public class Timer extends Node<Timer> {
      * Skips scheduling if the previous run of the pipeline was with the latest material(s). This option is typically
      * useful when automatic pipeline scheduling is turned off.
      */
-    @Expose
-    @SerializedName("only_on_changes")
+    @JsonProperty("only_on_changes")
     private Boolean onlyOnChanges;
+
+    @SuppressWarnings("unused" /*method here for deserialization only*/)
+    public Timer() {
+    }
 
     public Timer(@DelegatesTo(value = Timer.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Timer") Closure cl) {
         configure(cl);

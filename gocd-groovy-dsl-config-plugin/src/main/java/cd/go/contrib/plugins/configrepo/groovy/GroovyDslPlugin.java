@@ -16,6 +16,9 @@
 
 package cd.go.contrib.plugins.configrepo.groovy;
 
+import cd.go.contrib.plugins.configrepo.groovy.executors.*;
+import cd.go.contrib.plugins.configrepo.groovy.requests.ParseContentRequest;
+import cd.go.contrib.plugins.configrepo.groovy.requests.PipelineExportRequest;
 import cd.go.contrib.plugins.configrepo.groovy.requests.ValidatePluginSettingsRequest;
 import com.thoughtworks.go.plugin.api.GoApplicationAccessor;
 import com.thoughtworks.go.plugin.api.GoPlugin;
@@ -26,13 +29,12 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import cd.go.contrib.plugins.configrepo.groovy.executors.GetPluginConfigurationExecutor;
-import cd.go.contrib.plugins.configrepo.groovy.executors.GetViewRequestExecutor;
-import cd.go.contrib.plugins.configrepo.groovy.executors.ParseDirectoryExecutor;
 
 @Extension
 public class GroovyDslPlugin implements GoPlugin {
+
     public static final Logger LOG = Logger.getLoggerFor(GroovyDslPlugin.class);
+
     private PluginRequest pluginRequest;
 
     @Override
@@ -50,8 +52,16 @@ public class GroovyDslPlugin implements GoPlugin {
                     return new GetPluginConfigurationExecutor().execute();
                 case PLUGIN_SETTINGS_VALIDATE_CONFIGURATION:
                     return ValidatePluginSettingsRequest.fromJSON(request.requestBody()).executor().execute();
+                case GET_CAPABILITIES:
+                    return new CapabilitiesExcutor().execute();
+                case PIPELINE_EXPORT:
+                    return PipelineExportRequest.fromJSON(request.requestBody()).executor().execute();
+                case PARSE_CONTENT:
+                    return ParseContentRequest.fromJSON(request.requestBody()).executor().execute();
                 case PLUGIN_SETTINGS_GET_VIEW:
                     return new GetViewRequestExecutor().execute();
+                case GET_ICON:
+                    return new GetPluginSettingsIconExecutor().execute();
                 default:
                     throw new UnhandledRequestTypeException(request.requestName());
             }

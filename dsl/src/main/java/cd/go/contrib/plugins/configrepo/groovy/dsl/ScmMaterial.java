@@ -16,26 +16,28 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import lombok.AccessLevel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import java.util.List;
 
+import static lombok.AccessLevel.NONE;
+
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
 
     /**
      * The directory under the sandbox of Go Agent. GoCD will check out the source code into this directory.
      */
-    @Expose
-    @SerializedName("destination")
+    @JsonProperty("destination")
     private String destination;
 
     /**
@@ -44,9 +46,8 @@ abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
      * pipeline that contains this material. If the same material is specified more than once in the configuration file,
      * all of them must have the same value for {@code autoUpdate}.
      */
-    @Expose
-    @SerializedName("auto_update")
-    private Boolean autoUpdate;
+    @JsonProperty("auto_update")
+    private Boolean autoUpdate = true;
 
 
     /**
@@ -57,21 +58,19 @@ abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
      * <p>
      * {@includeCode scm.filter.groovy }
      */
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("filter")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("filter")
     @Valid
     private Filter filter;
 
-    ScmMaterial(String type) {
-        super(type);
+    ScmMaterial() {
+        super();
     }
 
-    ScmMaterial(String name, String type) {
-        super(name, type);
+    ScmMaterial(String name) {
+        super(name);
     }
-
 
     /**
      * {@includeCode scm.blacklist.groovy }
@@ -85,5 +84,21 @@ abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
      */
     public void setWhitelist(List<String> whitelist) {
         filter = new Filter(true, whitelist);
+    }
+
+    @JsonIgnore
+    public List<String> getBlacklist() {
+        if (this.filter != null && !this.filter.isWhitelist()) {
+            return this.filter.getItems();
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public List<String> getWhitelist() {
+        if (this.filter != null && this.filter.isWhitelist()) {
+            return this.filter.getItems();
+        }
+        return null;
     }
 }

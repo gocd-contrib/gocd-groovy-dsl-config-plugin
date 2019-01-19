@@ -18,29 +18,31 @@ import org.eclipse.jgit.api.Git
 
 buildscript {
   repositories {
-    jcenter()
+    gradlePluginPortal()
+    mavenCentral()
   }
 
   dependencies {
     classpath group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.2.1.201812262042-r'
     classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
+    classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.11.0"
+    classpath "co.riiid:gradle-github-plugin:0.4.2"
   }
 }
 
-plugins {
-  id 'com.github.ben-manes.versions' version '0.20.0'
-  id "com.bmuschko.nexus" version "2.3.1"
-  id "co.riiid.gradle" version "0.4.2"
-  id 'io.codearte.nexus-staging' version "0.11.0"
-}
-
+apply plugin: "co.riiid.gradle"
+apply plugin: 'com.bmuschko.nexus'
 apply plugin: "io.codearte.nexus-staging"
+apply plugin: 'com.github.ben-manes.versions'
 
 allprojects {
   group = 'com.github.ketan'
   project.ext.pluginVersion = '0.6.0'
-  project.ext.gitRevision = Git.open(rootProject.projectDir).log().setMaxCount(1).call().first().name()
-  project.ext.distVersion = Git.open(rootProject.projectDir).log().call().size()
+  def git = Git.open(rootProject.projectDir)
+  project.ext.gitRevision = git.log().setMaxCount(1).call().first().name()
+  project.ext.distVersion = git.log().call().size()
+  git.close()
   project.ext.fullVersion = project.distVersion ? "${project.pluginVersion}-${project.distVersion}" : project.pluginVersion
   version = project.fullVersion
   project.ext.pluginDesc = [
@@ -66,12 +68,6 @@ subprojects {
   repositories {
     jcenter()
   }
-
-  apply plugin: 'java'
-  apply plugin: 'groovy'
-
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
 
   apply from: "${rootProject.projectDir}/plugin-common.gradle"
 }

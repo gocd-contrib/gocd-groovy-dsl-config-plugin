@@ -19,6 +19,7 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -34,12 +35,18 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString(callSuper = true)
 public class Filter {
 
     private final boolean isWhitelist;
 
     @NotEmpty
     private final List<String> items;
+
+    @SuppressWarnings("unused" /*method here for deserialization only*/)
+    protected Filter() {
+        this(null);
+    }
 
     public Filter(List<String> items) {
         this(false, items);

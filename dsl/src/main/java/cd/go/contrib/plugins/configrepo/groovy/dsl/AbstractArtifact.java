@@ -16,24 +16,37 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import lombok.AccessLevel;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+
+import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        visible = true,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = BuildArtifact.class, name = "build"),
+        @JsonSubTypes.Type(value = TestArtifact.class, name = "test"),
+        @JsonSubTypes.Type(value = PluginArtifact.class, name = "external"),
+})
+@ToString(callSuper = true)
 public abstract class AbstractArtifact<T extends AbstractArtifact> extends Node<T> {
 
-    @Expose
-    @SerializedName("type")
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
+    @JsonProperty("type")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
     @NotEmpty
     protected final String type;
 

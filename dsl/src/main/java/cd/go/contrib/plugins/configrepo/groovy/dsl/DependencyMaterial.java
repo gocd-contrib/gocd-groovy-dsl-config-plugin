@@ -16,8 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -25,6 +24,7 @@ import groovy.transform.stc.SimpleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -33,28 +33,27 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class DependencyMaterial extends Material<DependencyMaterial> {
 
-    @Expose
-    @SerializedName("pipeline")
+    @JsonProperty("pipeline")
     @NotEmpty
     private String pipeline;
 
-    @Expose
-    @SerializedName("stage")
+    @JsonProperty("stage")
     @NotEmpty
     private String stage;
 
-    DependencyMaterial() {
+    public DependencyMaterial() {
         this(null);
     }
 
-    DependencyMaterial(@DelegatesTo(value = DependencyMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.DependencyMaterial") Closure cl) {
+    public DependencyMaterial(@DelegatesTo(value = DependencyMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.DependencyMaterial") Closure cl) {
         this(null, cl);
     }
 
-    DependencyMaterial(String name, @DelegatesTo(value = DependencyMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.DependencyMaterial") Closure cl) {
-        super(name, "dependency");
+    public DependencyMaterial(String name, @DelegatesTo(value = DependencyMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.DependencyMaterial") Closure cl) {
+        super(name);
         configure(cl);
     }
 

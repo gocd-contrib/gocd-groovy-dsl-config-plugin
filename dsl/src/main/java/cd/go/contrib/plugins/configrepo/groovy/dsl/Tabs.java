@@ -31,10 +31,10 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 @EqualsAndHashCode(callSuper = true)
 public class Tabs extends CollectionNode<Tab> {
 
-    Tabs() {
+    public Tabs() {
     }
 
-    Tabs(@DelegatesTo(value = Tabs.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Tabs") Closure cl) {
+    public Tabs(@DelegatesTo(value = Tabs.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Tabs") Closure cl) {
         configure(cl);
     }
 

@@ -16,32 +16,33 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import java.util.List;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
+import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
 
     /**
      * The directory under the sandbox of Go Agent. GoCD will check out the source code into this directory.
      */
-    @Expose
-    @SerializedName("destination")
+    @JsonProperty("destination")
     private String destination;
 
 
@@ -53,23 +54,22 @@ public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
      * <p>
      * {@includeCode scm.filter.groovy }
      */
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Expose
-    @SerializedName("filter")
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("filter")
     @Valid
     private Filter filter;
 
-    ConfigRepoMaterial() {
+    public ConfigRepoMaterial() {
         this(null);
     }
 
-    ConfigRepoMaterial(@DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial") Closure cl) {
+    public ConfigRepoMaterial(@DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial") Closure cl) {
         this(null, cl);
     }
 
-    ConfigRepoMaterial(String name, @DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial") Closure cl) {
-        super(name, "configrepo");
+    public ConfigRepoMaterial(String name, @DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial") Closure cl) {
+        super(name);
         configure(cl);
     }
 
@@ -87,4 +87,19 @@ public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
         filter = new Filter(true, whitelist);
     }
 
+    @JsonIgnore
+    public List<String> getBlacklist() {
+        if (this.filter != null && !this.filter.isWhitelist()) {
+            return this.filter.getItems();
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public List<String> getWhitelist() {
+        if (this.filter != null && this.filter.isWhitelist()) {
+            return this.filter.getItems();
+        }
+        return null;
+    }
 }
