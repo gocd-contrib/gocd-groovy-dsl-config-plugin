@@ -30,7 +30,7 @@ dependencies {
 
   compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
 
-  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
+  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.5.5'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.8'
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
   compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
