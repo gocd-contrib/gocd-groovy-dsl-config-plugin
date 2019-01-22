@@ -12,6 +12,10 @@ GoCD.script {
   pipelines {
     pipeline('pipe1') {
       group = 'foo'
+      params = [
+        BROWSER: 'firefox',
+        OS     : 'linux',
+      ]
     }
     pipeline('pipe2') {
       group = 'foo'

@@ -3,7 +3,17 @@
   "pipelines": [
     {
       "name": "pipe1",
-      "group": "foo"
+      "group": "foo",
+      "parameters": [
+        {
+          "name": "BROWSER",
+          "value": "firefox"
+        },
+        {
+          "name": "OS",
+          "value": "linux"
+        }
+      ]
     },
     {
       "name": "pipe2",

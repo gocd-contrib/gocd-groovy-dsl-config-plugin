@@ -242,7 +242,7 @@ public class GroovyExporter {
         for (final Class<?> klass : superclassList) {
             methodArray = ArrayUtils.addAll(methodArray, klass.getDeclaredMethods());
         }
-        return Arrays.stream(methodArray);
+        return Arrays.stream(methodArray).sorted(Comparator.comparing(Method::getName));
     }
 
 }

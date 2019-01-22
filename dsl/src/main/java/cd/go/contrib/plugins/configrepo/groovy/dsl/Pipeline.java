@@ -17,7 +17,10 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -29,7 +32,9 @@ import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -139,6 +144,7 @@ public class Pipeline extends HasEnvironmentVariables<Pipeline> {
      *
      * @see <a href='https://docs.gocd.org/current/configuration/configuration_reference.html#param'>Parameter reference</a>
      */
+    @JsonIgnore
     private Map<String, String> params = new LinkedHashMap<>();
 
     @Getter(value = NONE)
@@ -198,4 +204,32 @@ public class Pipeline extends HasEnvironmentVariables<Pipeline> {
         return stages;
     }
 
+    @JsonGetter("parameters")
+    @SuppressWarnings("unused" /*method here for deserialization only*/)
+    private List<Map<String, String>> getAllParameters() {
+        ArrayList<Map<String, String>> result = new ArrayList<>();
+
+        if (params != null) {
+            params.forEach((k, v) -> {
+                LinkedHashMap<String, String> var = new LinkedHashMap<>();
+                var.put("name", k);
+                var.put("value", v);
+                result.add(var);
+            });
+        }
+
+        return result;
+    }
+
+    @JsonSetter("parameters")
+    @SuppressWarnings("unused" /*method here for serialization only*/)
+    private void setAllParameters(List<Map<String, String>> allParams) {
+        if (allParams == null) {
+            return;
+        }
+
+        allParams.forEach(var -> {
+            params.put(var.get("name"), var.get("value"));
+        });
+    }
 }

@@ -1,3 +1,9 @@
+# v0.7.1
+
+## Fixed
+
+- Fixed issue around serialization/deserialization and export of pipeline parameters
+
 # v0.7.0
 
 ## Improved
