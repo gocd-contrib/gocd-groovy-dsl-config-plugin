@@ -57,6 +57,10 @@ public class FilterDeserializer extends StdDeserializer<Filter> {
             } else {
                 throw new UnrecognizedPropertyException(p, "Filter contains neither a whitelist nor an ignore", p.getCurrentLocation(), getClass(), "filter", null);
             }
+
+            if (itemsAsArray == null || itemsAsArray.size() == 0) {
+                return null;
+            }
             List<String> items = StreamSupport
                     .stream(Spliterators.spliteratorUnknownSize(itemsAsArray.elements(), Spliterator.ORDERED), false)
                     .map(JsonNode::asText)

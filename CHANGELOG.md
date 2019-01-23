@@ -3,6 +3,8 @@
 ## Fixed
 
 - Fixed handling of variables with empty values (`FOO=`) while exporting pipeline configs.
+- Add support for serializing job properties.
+- Improve exporting of SCM blacklist/whitelist filters.
 
 # v0.7.1
 

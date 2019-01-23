@@ -1,6 +1,6 @@
 {
   "name": "test",
-  "timeout" : 5,
+  "timeout": 5,
   "run_instance_count": 7,
   "environment_variables": [
     {
@@ -30,6 +30,13 @@
     {
       "source": "bin",
       "type": "build"
+    }
+  ],
+  "properties": [
+    {
+      "name": "perf",
+      "source": "test.xml",
+      "xpath": "substring-before(//report/data/all/coverage[starts-with(@type,'class')]/@value, '%')"
     }
   ],
   "tasks": [

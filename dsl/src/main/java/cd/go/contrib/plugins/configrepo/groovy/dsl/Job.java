@@ -29,6 +29,7 @@ import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.ArrayList;
 import java.util.List;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
@@ -80,7 +81,7 @@ public class Job extends HasEnvironmentVariables<Job> {
      * <strong>MUST NOT</strong> be specified along with {@link Job#elasticProfileId}
      */
     @JsonProperty("resources")
-    private List<String> resources;
+    private List<String> resources = new ArrayList<>();
 
     @Getter(value = NONE)
     @Setter(value = NONE)
@@ -99,6 +100,12 @@ public class Job extends HasEnvironmentVariables<Job> {
     @JsonProperty("tasks")
     @Valid
     private Tasks tasks = new Tasks();
+
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @JsonProperty("properties")
+    @Valid
+    private Properties properties = new Properties();
 
     public Job() {
         this(null);
@@ -143,4 +150,13 @@ public class Job extends HasEnvironmentVariables<Job> {
         return tabs;
     }
 
+    /**
+     * The list of properties published by this job
+     * <p>
+     * {@includeCode job-with-properties.groovy}
+     */
+    public Properties properties(@DelegatesTo(value = Properties.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Properties") Closure cl) {
+        properties.configure(cl);
+        return properties;
+    }
 }

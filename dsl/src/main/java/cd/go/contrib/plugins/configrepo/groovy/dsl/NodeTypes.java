@@ -55,6 +55,8 @@ public class NodeTypes {
                             cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.PluginArtifact.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.PluginTask.class,
+                            cd.go.contrib.plugins.configrepo.groovy.dsl.Properties.class,
+                            cd.go.contrib.plugins.configrepo.groovy.dsl.Property.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.ScmMaterial.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.ShellTask.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.Stage.class,

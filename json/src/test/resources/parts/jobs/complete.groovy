@@ -19,6 +19,12 @@ return new Jobs().job('test') {
       source = 'bin'
     }
   }
+  properties {
+    property('perf') {
+      source = 'test.xml'
+      xpath = 'substring-before(//report/data/all/coverage[starts-with(@type,\'class\')]/@value, \'%\')'
+    }
+  }
   tabs {
     tab('test') {
       path = 'results.xml'

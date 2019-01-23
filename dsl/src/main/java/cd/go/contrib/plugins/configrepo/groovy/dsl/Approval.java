@@ -24,6 +24,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,12 +57,12 @@ public class Approval extends Node<Approval> {
      * The list of roles that are authorized to trigger
      */
     @JsonProperty("roles")
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>();
 
     /**
      * The list of users that are authorized to trigger
      */
     @JsonProperty("users")
-    private List<String> users;
+    private List<String> users = new ArrayList<>();
 
 }

@@ -21,10 +21,13 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.TestBase;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
+import net.javacrumbs.jsonunit.fluent.JsonFluentAssert;
+import org.codehaus.groovy.runtime.ResourceGroovyMethods;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.validation.ConstraintViolation;
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,7 +39,19 @@ class JsonDeserializeTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("values")
-    void testTransformRoundJson(String path) throws IOException, ResourceException, ScriptException {
+    void testGroovyToJSON(String path) throws IOException, ResourceException, ScriptException {
+        GroovyScriptRunner engine = getRunner();
+        Object result = engine.runScript(path + ".groovy");
+        assertThat(result).isInstanceOf(Node.class);
+
+        String actualJson = GoCDJsonSerializer.toJsonString(result);
+        String expectedJSON = ResourceGroovyMethods.getText(new File(path + ".json"), "utf-8");
+        JsonFluentAssert.assertThatJson(actualJson).isEqualTo(expectedJSON);
+    }
+
+    @ParameterizedTest
+    @MethodSource("values")
+    void shouldValidate(String path) throws IOException, ResourceException, ScriptException {
         GroovyScriptRunner engine = getRunner();
         Object result = engine.runScript(path + ".groovy");
         AtomicReference<Set<ConstraintViolation<Object>>> constraintViolations = new AtomicReference<>();
@@ -44,12 +59,18 @@ class JsonDeserializeTest extends TestBase {
         validate(result, consumer);
 
         assertThat(constraintViolations.get()).isNullOrEmpty();
-        assertThat(result).isInstanceOf(Node.class);
+    }
 
-        String actualJson = GoCDJsonSerializer.toJsonString(result);
-        Object object = GoCDJsonSerializer.fromJson(actualJson, result.getClass());
-        assertThat(object).isExactlyInstanceOf(result.getClass());
-        assertThat(object).isEqualTo(result);
+    @ParameterizedTest
+    @MethodSource("values")
+    void testJSONToGroovy(String path) throws IOException, ResourceException, ScriptException {
+        GroovyScriptRunner engine = getRunner();
+        Object result = engine.runScript(path + ".groovy");
+
+        String actualJson = ResourceGroovyMethods.getText(new File(path + ".json"), "utf-8");
+        Object node = GoCDJsonSerializer.fromJson(actualJson, result.getClass());
+        assertThat(node).isExactlyInstanceOf(result.getClass());
+        assertThat(node).isEqualTo(result);
     }
 
 }

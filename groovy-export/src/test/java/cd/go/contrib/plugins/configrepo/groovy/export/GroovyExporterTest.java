@@ -18,8 +18,10 @@ package cd.go.contrib.plugins.configrepo.groovy.export;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Node;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.TestBase;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
 import com.google.common.io.Files;
+import org.codehaus.groovy.runtime.ResourceGroovyMethods;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -36,7 +38,7 @@ class GroovyExporterTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("values")
-    void name(String path) throws Throwable {
+    void shouldExportNodeAsGroovyCode(String path) throws Throwable {
         GroovyScriptRunner engine = getRunner();
         Node result = (Node) engine.runScript(path + ".groovy");
         assertThat(result).isInstanceOf(Node.class);
@@ -45,11 +47,33 @@ class GroovyExporterTest extends TestBase {
         GroovyExporter exporter = new GroovyExporter(writer);
         exporter.export(result);
 
-        assertThat(sourceFile(path).trim())
+        assertThat(sourceGroovyFile(path).trim())
                 .endsWith(writer.toString().trim());
     }
 
-    private String sourceFile(String path) throws IOException {
+    @ParameterizedTest
+    @MethodSource("values")
+    void shouldExportJsonStringAsGroovyCode(String path) throws Throwable {
+        // load the node, so we know what type it is
+        GroovyScriptRunner engine = getRunner();
+        Node result = (Node) engine.runScript(path + ".groovy");
+        assertThat(result).isInstanceOf(Node.class);
+
+        // load the node from actual json
+        String actualJSON = ResourceGroovyMethods.getText(new File(path + ".json"), "utf-8");
+        Node node = GoCDJsonSerializer.fromJson(actualJSON, result.getClass());
+
+        // serialize to groovy
+        StringWriter writer = new StringWriter();
+        GroovyExporter exporter = new GroovyExporter(writer);
+        exporter.export(node);
+
+        // should be same as groovy code
+        assertThat(sourceGroovyFile(path).trim())
+                .endsWith(writer.toString().trim());
+    }
+
+    private String sourceGroovyFile(String path) throws IOException {
         StringWriter writer = new StringWriter();
         List<String> strings = Files.readLines(new File(path + ".groovy"), UTF_8);
         String collect = strings.stream()

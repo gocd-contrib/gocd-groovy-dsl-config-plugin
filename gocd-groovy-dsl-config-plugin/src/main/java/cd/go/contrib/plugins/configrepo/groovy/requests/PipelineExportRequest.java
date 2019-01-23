@@ -34,7 +34,8 @@ public class PipelineExportRequest {
     public static PipelineExportRequest fromJSON(String requestBody) throws IOException {
         Map map = GoCDJsonSerializer.fromJson(requestBody, Map.class);
         Object pipelineMap = map.get("pipeline");
-        Pipeline pipeline = GoCDJsonSerializer.fromJson(GoCDJsonSerializer.toJsonString(pipelineMap), Pipeline.class);
+        String json = GoCDJsonSerializer.toJsonString(pipelineMap);
+        Pipeline pipeline = GoCDJsonSerializer.fromJson(json, Pipeline.class);
         return new PipelineExportRequest(pipeline);
     }
 
