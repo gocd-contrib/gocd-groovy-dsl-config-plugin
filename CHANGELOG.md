@@ -1,3 +1,9 @@
+# v0.7.2
+
+## Fixed
+
+- Fixed handling of variables with empty values (`FOO=`) while exporting pipeline configs.
+
 # v0.7.1
 
 ## Fixed

@@ -18,6 +18,7 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -65,6 +66,8 @@ public abstract class HasEnvironmentVariables<T extends HasEnvironmentVariables>
     private Map<String, String> secureEnvironmentVariables = new LinkedHashMap<>();
 
     @JsonGetter("environment_variables")
+    // by default we ignore "empty" values. However, it skips rendering of empty environment vars. So we override
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY, content = JsonInclude.Include.ALWAYS)
     @SuppressWarnings("unused" /*method here for deserialization only*/)
     private List<Map<String, String>> getAllVariables() {
         ArrayList<Map<String, String>> allVariables = new ArrayList<>();

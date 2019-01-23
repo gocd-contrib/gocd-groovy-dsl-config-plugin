@@ -1,0 +1,9 @@
+{
+  "name": "test",
+  "environment_variables": [
+    {
+      "name": "THIS_IS_A_BLANK_VAR",
+      "value": ""
+    }
+  ]
+}

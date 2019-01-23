@@ -17,10 +17,7 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.*;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -205,6 +202,8 @@ public class Pipeline extends HasEnvironmentVariables<Pipeline> {
     }
 
     @JsonGetter("parameters")
+    // by default we ignore "empty" values. However, it skips rendering of empty environment vars. So we override
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY, content = JsonInclude.Include.ALWAYS)
     @SuppressWarnings("unused" /*method here for deserialization only*/)
     private List<Map<String, String>> getAllParameters() {
         ArrayList<Map<String, String>> result = new ArrayList<>();
