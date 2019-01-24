@@ -38,7 +38,7 @@ apply plugin: 'com.github.ben-manes.versions'
 
 allprojects {
   group = 'com.github.ketan'
-  project.ext.pluginVersion = '0.7.2'
+  project.ext.pluginVersion = '0.7.3'
   def git = Git.open(rootProject.projectDir)
   project.ext.gitRevision = git.log().setMaxCount(1).call().first().name()
   project.ext.distVersion = git.log().call().size()

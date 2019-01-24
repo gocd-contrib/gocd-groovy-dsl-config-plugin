@@ -1,3 +1,9 @@
+# v0.7.3
+
+## Fixed
+
+- Fixed a NPE when plugin settings are not defined.
+
 # v0.7.2
 
 ## Fixed

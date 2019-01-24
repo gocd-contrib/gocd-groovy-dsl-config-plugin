@@ -36,6 +36,9 @@ public class PluginSettings {
 
 
     public static PluginSettings fromJSON(String json) {
+        if (json == null) {
+            return null;
+        }
         try {
             return READER.readValue(json);
         } catch (IOException e) {

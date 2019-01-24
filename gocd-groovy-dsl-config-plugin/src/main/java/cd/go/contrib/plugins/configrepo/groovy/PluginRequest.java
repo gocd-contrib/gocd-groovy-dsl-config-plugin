@@ -31,7 +31,7 @@ public class PluginRequest {
     }
 
     public PluginSettings getPluginSettings() throws ServerRequestFailedException {
-        DefaultGoApiRequest request = new DefaultGoApiRequest(Constants.REQUEST_SERVER_GET_PLUGIN_SETTINGS, Constants.API_VERSION, Constants.PLUGIN_IDENTIFIER);
+        DefaultGoApiRequest request = new DefaultGoApiRequest(Constants.REQUEST_SERVER_GET_PLUGIN_SETTINGS, "1.0", Constants.PLUGIN_IDENTIFIER);
         GoApiResponse response = accessor.submit(request);
 
         if (response.responseCode() != 200) {
