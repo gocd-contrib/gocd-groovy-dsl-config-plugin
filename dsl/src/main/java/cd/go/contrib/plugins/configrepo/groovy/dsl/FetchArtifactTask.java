@@ -72,15 +72,4 @@ public class FetchArtifactTask extends Task<FetchArtifactTask> {
         configure(cl);
     }
 
-//    @SuppressWarnings("unused - because used for de/serialization")
-//    @JsonGetter("is_source_a_file")
-//    private boolean getIsSourceAFile() {
-//        return isFile;
-//    }
-//
-//    @JsonSetter("is_source_a_file")
-//    @SuppressWarnings("unused - because used for de/serialization")
-//    private void setIsSourceAFile(boolean isFile) {
-//        this.isFile = isFile;
-//    }
 }
