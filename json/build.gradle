@@ -23,7 +23,7 @@ dependencies {
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
 
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.0'
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.3.2'
   testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
 

@@ -35,7 +35,7 @@ dependencies {
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
   compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.0'
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.3.2'
   testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
 
