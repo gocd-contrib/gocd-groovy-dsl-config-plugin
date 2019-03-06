@@ -35,7 +35,7 @@ dependencies {
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
   runtime group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '6.0.14.Final'
 
-  compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: '18.11.0'
+  compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: '19.2.0'
 
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.1'
   testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.1'
