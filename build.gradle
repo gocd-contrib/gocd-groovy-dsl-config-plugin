@@ -23,7 +23,7 @@ buildscript {
   }
 
   dependencies {
-    classpath group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.2.1.201812262042-r'
+    classpath group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.3.0.201903130848-r'
     classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
     classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.20.0"
