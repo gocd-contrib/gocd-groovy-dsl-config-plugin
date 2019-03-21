@@ -43,7 +43,7 @@ dependencies {
 
   testCompile group: 'org.mockito', name: 'mockito-core', version: '2.25.1'
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
-  testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: '2.5.0'
+  testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: '2.5.1'
 }
 
 sourceSets {
