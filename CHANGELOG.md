@@ -1,3 +1,13 @@
+# 0.7.4
+
+## Fixed
+
+- Fixed an incorrect validation with fetch artifact tasks. Blank value for `destination` should be considered valid.
+
+## Improved
+
+- Upgraded a bunch of dependent libraries.
+
 # v0.7.3
 
 ## Fixed

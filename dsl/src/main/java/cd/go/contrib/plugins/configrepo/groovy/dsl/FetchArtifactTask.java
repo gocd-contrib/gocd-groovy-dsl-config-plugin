@@ -59,7 +59,6 @@ public class FetchArtifactTask extends Task<FetchArtifactTask> {
     private String source;
 
     @JsonProperty("destination")
-    @NotEmpty
     private String destination;
 
     public FetchArtifactTask() {
