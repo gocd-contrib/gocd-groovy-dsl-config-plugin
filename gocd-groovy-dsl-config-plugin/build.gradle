@@ -71,11 +71,3 @@ jar {
     into("/")
   }
 }
-
-task deploy(type: Copy) {
-  inputs.files(jar.outputs.files)
-  dependsOn assemble
-  from(jar)
-  include('*.jar')
-  into '../../gocd/server/plugins/external'
-}

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import org.eclipse.jgit.api.Git
 
 buildscript {
   repositories {
@@ -23,83 +22,43 @@ buildscript {
   }
 
   dependencies {
-    classpath group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.3.0.201903130848-r'
     classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-    classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
     classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.20.0"
-    classpath "co.riiid:gradle-github-plugin:0.4.2"
   }
 }
 
-apply plugin: "co.riiid.gradle"
 apply plugin: 'com.bmuschko.nexus'
 apply plugin: "io.codearte.nexus-staging"
-apply plugin: 'com.github.ben-manes.versions'
+apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/master/helper.gradle?_=${(int) (new Date().toInstant().epochSecond / 60)}"
+
+gocdPlugin {
+  id = 'cd.go.contrib.plugins.configrepo.groovy'
+  pluginVersion = '0.7.4'
+  goCdVersion = '18.3.0'
+  name = 'GoCD Groovy Configuration plugin'
+  description = 'GoCD pipelines and environments configuration in Groovy'
+  vendorName = 'ThoughtWorks, Inc.'
+  vendorUrl = 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
+
+  githubRepo {
+    owner = System.getenv('GITHUB_USER') ?: 'bob'
+    repo = 'gocd-groovy-dsl-config-plugin'
+    token = System.getenv('GITHUB_TOKEN') ?: 'bad-token'
+  }
+
+  pluginProject = project(':gocd-groovy-dsl-config-plugin')
+
+  prerelease = !"No".equalsIgnoreCase(System.getenv('PRERELEASE'))
+  assetsToRelease = [project(':gocd-groovy-dsl-config-plugin').tasks.jar, project(':dsl').tasks.jar]
+}
 
 allprojects {
   group = 'com.github.ketan'
-  project.ext.pluginVersion = '0.7.4'
-  def git = Git.open(rootProject.projectDir)
-  project.ext.gitRevision = git.log().setMaxCount(1).call().first().name()
-  project.ext.distVersion = git.log().call().size()
-  git.close()
-  project.ext.fullVersion = project.distVersion ? "${project.pluginVersion}-${project.distVersion}" : project.pluginVersion
-  version = project.fullVersion
-  project.ext.pluginDesc = [
-    id         : 'cd.go.contrib.plugins.configrepo.groovy',
-    version    : project.fullVersion,
-    goCdVersion: '18.3.0',
-    name       : 'GoCD Groovy Configuration plugin',
-    description: 'GoCD pipelines and environments configuration in Groovy',
-    vendorName : 'GoCD Contributors',
-    vendorUrl  : 'https://github.com/ketan/gocd-groovy-dsl-config-plugin',
-  ]
-
-  tasks.withType(AbstractArchiveTask) {
-    includeEmptyDirs false
-    duplicatesStrategy DuplicatesStrategy.EXCLUDE
-
-    preserveFileTimestamps = false
-    reproducibleFileOrder = true
-  }
+  version = gocdPlugin.fullVersion(project)
 }
 
 subprojects {
   repositories {
     jcenter()
   }
-
-  apply from: "${rootProject.projectDir}/plugin-common.gradle"
 }
-
-task allDependencies {
-  dependsOn allprojects.collect { "$it.path:dependencies" }
-
-  description = "Print dependency tree of all projects"
-}
-
-github {
-  owner = System.getenv('GITHUB_USER') ?: 'bob'
-  repo = 'gocd-groovy-dsl-config-plugin'
-  token = System.getenv('GITHUB_TOKEN') ?: 'bad-token'
-  tagName = "v${rootProject.pluginVersion}"
-  name = "Version ${rootProject.pluginVersion}"
-  targetCommitish = project.gitRevision
-
-  def releaseNotesUrl = "https://github.com/${github.owner}/${github.repo}/blob/master/CHANGELOG.md#${github.tagName.replaceAll(/[^A-Za-z0-9]/, '')}"
-
-  body = """
-      # Version ${rootProject.fullVersion}
-      
-      See release notes at ${releaseNotesUrl}
-      
-      * The `gocd-groovy-dsl-config-plugin.jar` file contains the plugin.
-      * The `dsl.jar` is the api jar containing the DSL interface. You
-        can add this jar to your IDE to assist with autocompletion. See the
-        README.md file for instructions on using this jar.
-    """.stripIndent().trim()
-
-  assets = project(':dsl').jar.outputs.files.files + project(':gocd-groovy-dsl-config-plugin').jar.outputs.files.files
-}
-
-githubRelease.dependsOn subprojects*.tasks*.findByName('assemble')
