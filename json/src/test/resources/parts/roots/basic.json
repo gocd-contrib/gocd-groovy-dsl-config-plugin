@@ -1,8 +1,9 @@
 {
-  "target_version": 3,
+  "target_version": 4,
   "pipelines": [
     {
       "name": "pipe1",
+      "display_order_weight": -1,
       "group": "foo",
       "parameters": [
         {
@@ -17,7 +18,8 @@
     },
     {
       "name": "pipe2",
-      "group": "foo"
+      "group": "foo",
+      "display_order_weight": -1
     }
   ],
   "environments": [

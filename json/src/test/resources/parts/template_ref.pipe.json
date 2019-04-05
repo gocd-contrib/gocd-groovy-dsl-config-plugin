@@ -2,6 +2,7 @@
   "group": "group1",
   "name": "pipe2",
   "label_template": "foo-1.0-${COUNT}",
+  "display_order_weight": -1,
   "lock_behavior": "lockOnFailure",
   "tracking_tool": {
     "link": "http://your-trackingtool/yourproject/${ID}",
