@@ -17,6 +17,7 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl.json;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Filter;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.ShellTask;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -61,6 +62,7 @@ public abstract class GoCDJsonSerializer {
     public static SimpleModule module() {
         return new SimpleModule()
                 .addSerializer(ShellTask.class, new ShellTaskSerializer())
+                .addSerializer(GitHubPRMaterial.class, new GithubPRMaterialSerializer())
                 .addSerializer(Filter.class, new FilterSerializer())
                 .addDeserializer(Filter.class, new FilterDeserializer())
                 ;

@@ -39,6 +39,7 @@ public class NodeTypes {
                             cd.go.contrib.plugins.configrepo.groovy.dsl.Environments.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.ExecTask.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.FetchArtifactTask.class,
+                            cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.HasEnvironmentVariables.class,

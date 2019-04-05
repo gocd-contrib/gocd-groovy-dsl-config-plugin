@@ -144,4 +144,13 @@ public class Materials extends CollectionNode<Material> {
     public PackageMaterial pkg(String name, @DelegatesTo(value = PackageMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PackageMaterial") Closure cl) {
         return (PackageMaterial) create(() -> new PackageMaterial(name, cl));
     }
+
+    public GitHubPRMaterial githubPR(@DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial") Closure cl) {
+        return (GitHubPRMaterial) create(() -> new GitHubPRMaterial(cl));
+
+    }
+
+    public GitHubPRMaterial githubPR(String name, @DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial") Closure cl) {
+        return (GitHubPRMaterial) create(() -> new GitHubPRMaterial(name, cl));
+    }
 }
