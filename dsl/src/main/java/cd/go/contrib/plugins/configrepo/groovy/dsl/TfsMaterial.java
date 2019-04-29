@@ -56,18 +56,6 @@ public class TfsMaterial extends ScmMaterial<TfsMaterial> {
     private String domain;
 
     /**
-     * Username of the account to access the TFS collection.
-     */
-    private String username;
-
-    /**
-     * The encrypted password of the account to access the TFS collection.
-     *
-     * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
-     */
-    private String encryptedPassword;
-
-    /**
      * The project path within the TFS collection.
      */
     private String projectPath;

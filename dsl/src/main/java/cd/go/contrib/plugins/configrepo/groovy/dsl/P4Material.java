@@ -48,17 +48,6 @@ public class P4Material extends ScmMaterial<P4Material> {
     @JsonProperty("port")
     private String port;
 
-    @JsonProperty("username")
-    private String username;
-
-    /**
-     * The encrypted password
-     *
-     * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
-     */
-    @JsonProperty("encrypted_password")
-    private String encryptedPassword;
-
     @JsonProperty("use_tickets")
     private Boolean useTickets;
 

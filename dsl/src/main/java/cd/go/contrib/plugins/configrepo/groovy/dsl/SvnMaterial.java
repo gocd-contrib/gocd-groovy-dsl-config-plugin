@@ -49,12 +49,6 @@ public class SvnMaterial extends ScmMaterial<SvnMaterial> {
     @Valid
     private String url;
 
-    @JsonProperty("username")
-    private String username;
-
-    @JsonProperty("encrypted_password")
-    private String encryptedPassword;
-
     @JsonProperty("check_externals")
     private Boolean checkExternals;
 

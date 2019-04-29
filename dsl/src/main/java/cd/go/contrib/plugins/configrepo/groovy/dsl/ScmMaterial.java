@@ -34,6 +34,17 @@ import static lombok.AccessLevel.NONE;
 @ToString(callSuper = true)
 abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
 
+    @JsonProperty("username")
+    protected String username;
+
+    /**
+     * The encrypted password
+     *
+     * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
+     */
+    @JsonProperty("encrypted_password")
+    protected String encryptedPassword;
+
     /**
      * The directory under the sandbox of Go Agent. GoCD will check out the source code into this directory.
      */

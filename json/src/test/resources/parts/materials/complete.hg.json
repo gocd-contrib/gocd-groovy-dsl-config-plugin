@@ -9,5 +9,7 @@
   "destination": "dir1",
   "auto_update": false,
   "name": "hgMaterial1",
-  "type": "hg"
+  "type": "hg",
+  "encrypted_password": "some encrypted password",
+  "username": "username"
 }

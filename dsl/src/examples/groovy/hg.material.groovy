@@ -6,6 +6,9 @@ new Pipelines().with {
       hg {
         url = 'https://hg.example.com/myproject##myBranch'
         blacklist = ['README.md', 'docs/**']
+        username = 'bob'
+        // see https://api.gocd.org/current/#encrypt-a-plain-text-value
+        encryptedPassword = 'aSdiFgRRZ6A='
       }
     }
   }

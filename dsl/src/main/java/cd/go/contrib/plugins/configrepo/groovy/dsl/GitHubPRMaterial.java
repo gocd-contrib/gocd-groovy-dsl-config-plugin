@@ -38,10 +38,6 @@ public class GitHubPRMaterial extends ScmMaterial<GitHubPRMaterial> {
 
     private String url;
 
-    private String username;
-
-    private String encryptedPassword;
-
     private String branch;
 
 
