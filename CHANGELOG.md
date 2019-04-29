@@ -4,6 +4,12 @@
 
  - Added support for `allowOnlyOnSuccess` attribute at approval in stage
 
+# 0.7.5
+
+## Improved
+
+- Added support for `display_order_weight` for pipelines. Requires GoCD server version 19.3 or later.
+
 # 0.7.4
 
 ## Fixed
