@@ -61,7 +61,7 @@ public class Approval extends Node<Approval> {
      */
     @Getter(value = NONE)
     @Setter(value = NONE)
-    @JsonProperty("allowOnlyOnSuccess")
+    @JsonProperty("allow_only_on_success")
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private boolean allowOnlyOnSuccess = false;
 
