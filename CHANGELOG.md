@@ -1,3 +1,9 @@
+# 0.7.6
+
+## Improved
+
+ - Added support for `allowOnlyOnSuccess` attribute at approval in stage
+
 # 0.7.4
 
 ## Fixed
