@@ -59,8 +59,6 @@ public class Approval extends Node<Approval> {
     /**
      * Configuration to only allow stage to be scheduled if the previous stage run is successful.
      */
-    @Getter(value = NONE)
-    @Setter(value = NONE)
     @JsonProperty("allow_only_on_success")
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private boolean allowOnlyOnSuccess = false;
