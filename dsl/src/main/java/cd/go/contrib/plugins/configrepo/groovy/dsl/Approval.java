@@ -17,6 +17,7 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,6 +28,8 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static lombok.AccessLevel.NONE;
 
 /**
  * Specifies how a stage should be triggered. Approval of type 'manual' or 'success' can be used to stop a pipeline
@@ -52,6 +55,13 @@ public class Approval extends Node<Approval> {
     @NotEmpty
     @OneOfStrings(value = {"success", "manual"})
     private String type = "success";
+
+    /**
+     * Configuration to only allow stage to be scheduled if the previous stage run is successful.
+     */
+    @JsonProperty("allow_only_on_success")
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    private boolean allowOnlyOnSuccess = false;
 
     /**
      * The list of roles that are authorized to trigger

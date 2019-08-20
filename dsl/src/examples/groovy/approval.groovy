@@ -4,6 +4,7 @@ new Stages().with {
   stage('deploy') {
     approval {
       type = 'manual'
+      allowOnlyOnSuccess = false
       users = ['bob', 'alice']
       roles = ['admins', 'deployers']
     }
