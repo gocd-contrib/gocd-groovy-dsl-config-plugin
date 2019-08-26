@@ -29,7 +29,7 @@ dependencies {
 
   extractedAtTopLevel project(':jar-class-loader')
 
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.8'
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.0.pr1'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
   compile group: 'org.apache.ant', name: 'ant', version: '1.10.5'
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
