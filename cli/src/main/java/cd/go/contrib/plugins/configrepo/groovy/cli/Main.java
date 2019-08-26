@@ -133,9 +133,9 @@ public class Main {
     private static void printUsageAndExit(int exitCode, JCommander cmd, String command) {
         StringBuilder out = new StringBuilder();
         if (null == command) {
-            cmd.usage(out);
+            cmd.getUsageFormatter().usage(out);
         } else {
-            cmd.usage(command, out);
+            cmd.getUsageFormatter().usage(command, out);
         }
         String message = out.toString();
         System.err.println(message);
