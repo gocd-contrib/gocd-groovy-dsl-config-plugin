@@ -32,7 +32,7 @@ dependencies {
 
   compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.8'
-  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
   compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.1'
