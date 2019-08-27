@@ -59,6 +59,6 @@ allprojects {
 
 subprojects {
   repositories {
-    jcenter()
+    mavenCentral()
   }
 }
