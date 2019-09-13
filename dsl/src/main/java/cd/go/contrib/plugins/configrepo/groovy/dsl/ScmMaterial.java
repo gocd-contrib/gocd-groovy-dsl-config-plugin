@@ -17,6 +17,7 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -43,7 +44,17 @@ abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
      * @see <a href='https://api.gocd.org/current/#encrypt-a-plain-text-value'>Encryption API</a>
      */
     @JsonProperty("encrypted_password")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     protected String encryptedPassword;
+
+    /**
+    * The plain text password in the form of secret param*
+    *  Use encrypted password instead
+    * @see <a href="https://docs.gocd.org/current/configuration/secrets_management.html">secrets</a>
+    */
+    @JsonProperty("password")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    protected String password;
 
     /**
      * The directory under the sandbox of Go Agent. GoCD will check out the source code into this directory.
