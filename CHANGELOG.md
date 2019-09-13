@@ -2,7 +2,8 @@
 
 ## Improved
 
-- Added support for `username` and `encrypted_password` (Refer to [Encryption API](https://api.gocd.org/current/#encrypt-a-plain-text-value)) fields for git and mercurial material. Requires GoCD server version 19.4 or later.
+- Added support for `username` and `encrypted_password` (Refer to [Encryption API](https://api.gocd.org/current/#encrypt-a-plain-text-value)) fields for git and mercurial material. Requires GoCD server version 19.4.0 or later.
+- Added support for `password` to support [secret params](https://docs.gocd.org/current/configuration/secrets_management.html). Requires GoCD server version 19.6.0 or later.
 
 # 0.7.6
 
