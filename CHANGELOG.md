@@ -1,8 +1,21 @@
+# 0.7.7
+
+## Improved
+
+- Added support for `username` and `encrypted_password` (Refer to [Encryption API](https://api.gocd.org/current/#encrypt-a-plain-text-value)) fields for git and mercurial material. Requires GoCD server version 19.4.0 or later.
+- Added support for `password` to support [secret params](https://docs.gocd.org/current/configuration/secrets_management.html). Requires GoCD server version 19.6.0 or later.
+
 # 0.7.6
 
 ## Improved
 
  - Added support for `allowOnlyOnSuccess` attribute at approval in stage
+
+# 0.7.5
+
+## Improved
+
+- Added support for `display_order_weight` for pipelines. Requires GoCD server version 19.3 or later.
 
 # 0.7.4
 

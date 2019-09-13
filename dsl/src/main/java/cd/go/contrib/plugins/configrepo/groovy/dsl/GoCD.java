@@ -47,8 +47,8 @@ import static lombok.AccessLevel.NONE;
 public class GoCD extends Node<GoCD> {
 
     @JsonProperty("target_version")
-    @Min(4)
-    private Integer targetVersion = 4;
+    @Min(5)
+    private Integer targetVersion = 6;
 
     /**
      * Container to define one or more pipelines in GoCD

@@ -7,6 +7,8 @@ return new Materials().git('gitMaterial1') {
   blacklist = ['externals', 'tools']
   branch = 'feature12'
   destination = 'dir1'
+  encryptedPassword = 'some encrypted password'
   shallowClone = true
   url = 'http://my.git.repository.com'
+  username = 'username'
 }
