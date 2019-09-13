@@ -48,7 +48,7 @@ public class GoCD extends Node<GoCD> {
 
     @JsonProperty("target_version")
     @Min(5)
-    private Integer targetVersion = 5;
+    private Integer targetVersion = 6;
 
     /**
      * Container to define one or more pipelines in GoCD
