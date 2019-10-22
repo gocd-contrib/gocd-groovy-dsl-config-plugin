@@ -20,12 +20,13 @@ import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ScanResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.reflections.ReflectionUtils;
-import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -48,7 +49,12 @@ class TestAllSignatures {
         assertThat(actualNodeTypes).isEqualTo(ALL_KNOWN_NODE_TYPES);
     }
 
-    private static Reflections reflections = new Reflections();
+    private static ScanResult scanResult = new ClassGraph()
+            .verbose()
+            .enableClassInfo()
+            .enableMethodInfo()
+            .ignoreClassVisibility()
+            .scan();
 
     @ParameterizedTest
     @MethodSource("allNonAbstractNodeTypes")
@@ -115,11 +121,11 @@ class TestAllSignatures {
         assertParameterAnnotations(method.getReturnType(), parameterAnnotations[closureParamIndex]);
     }
 
-    private static Stream<Class<? extends Node>> allNodeTypes() {
-        return reflections.getSubTypesOf(Node.class).stream();
+    private static Stream<Class<Node>> allNodeTypes() {
+        return scanResult.getSubclasses(Node.class.getName()).loadClasses(Node.class).stream();
     }
 
-    private static Stream<Class<? extends Node>> allNonAbstractNodeTypes() {
+    private static Stream<Class<Node>> allNonAbstractNodeTypes() {
         return allNodeTypes().filter(aClass -> !Modifier.isAbstract(aClass.getModifiers()));
     }
 
