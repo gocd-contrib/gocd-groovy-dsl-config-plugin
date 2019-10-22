@@ -16,51 +16,29 @@
 
 package cd.go.contrib.plugins.configrepo.doclet;
 
-import com.sun.javadoc.Tag;
-import com.sun.tools.doclets.Taglet;
+import com.sun.source.doctree.DocTree;
+import com.sun.source.doctree.TextTree;
+import com.sun.source.doctree.UnknownInlineTagTree;
 import com.uwyn.jhighlight.renderer.GroovyXhtmlRenderer;
 import com.uwyn.jhighlight.renderer.XhtmlRenderer;
+import jdk.javadoc.doclet.Taglet;
 import org.codehaus.groovy.runtime.ResourceGroovyMethods;
 import org.codehaus.groovy.runtime.StringGroovyMethods;
 
+import javax.lang.model.element.Element;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class IncludeCodeTaglet implements Taglet {
 
     @Override
-    public boolean inField() {
-        return true;
-    }
-
-    @Override
-    public boolean inConstructor() {
-        return true;
-    }
-
-    @Override
-    public boolean inMethod() {
-        return true;
-    }
-
-    @Override
-    public boolean inOverview() {
-        return true;
-    }
-
-    @Override
-    public boolean inPackage() {
-        return true;
-    }
-
-    @Override
-    public boolean inType() {
-        return true;
+    public Set<Location> getAllowedLocations() {
+        return Set.of(Location.values());
     }
 
     @Override
@@ -74,9 +52,25 @@ public class IncludeCodeTaglet implements Taglet {
     }
 
     @Override
-    public String toString(Tag tag) {
-        return "<code>" + readLines("/" + tag.text().trim().replaceAll("^\"|\"$", "").replaceAll("^'|'$", "")) + "</code>";
+    public String toString(List<? extends DocTree> tags, Element element) {
+        StringBuilder buf = new StringBuilder();
+        for (DocTree tag : tags) {
+            if (tag instanceof UnknownInlineTagTree) {
+                List<? extends DocTree> content = ((UnknownInlineTagTree) tag).getContent();
+
+                TextTree docTree = (TextTree) content.get(0);
+                String codeBlock = readLines("/" + docTree.getBody().trim().replaceAll("^\"|\"$", "").replaceAll("^'|'$", ""));
+                buf.append("<code>").append(codeBlock).append("</code>");
+            }
+
+        }
+        return buf.toString();
     }
+
+//    @Override
+//    public String toString(Tag tag) {
+//        return "<code>" + readLines("/" + tag.text().trim().replaceAll("^\"|\"$", "").replaceAll("^'|'$", "")) + "</code>";
+//    }
 
     private String readLines(String resourceFile) {
         URL resource = IncludeCodeTaglet.class.getResource(resourceFile);
@@ -117,17 +111,13 @@ public class IncludeCodeTaglet implements Taglet {
         }
     }
 
-    @Override
-    public String toString(Tag[] tags) {
-        return null;
-    }
 
-    public static void register(Map<String, Taglet> tagletMap) {
-        IncludeCodeTaglet tag = new IncludeCodeTaglet();
-        Taglet t = tagletMap.get(tag.getName());
-        if (t != null) {
-            tagletMap.remove(tag.getName());
-        }
-        tagletMap.put(tag.getName(), tag);
-    }
+//    public static void register(Map<String, Taglet> tagletMap) {
+//        IncludeCodeTaglet tag = new IncludeCodeTaglet();
+//        Taglet t = tagletMap.get(tag.getName());
+//        if (t != null) {
+//            tagletMap.remove(tag.getName());
+//        }
+//        tagletMap.put(tag.getName(), tag);
+//    }
 }

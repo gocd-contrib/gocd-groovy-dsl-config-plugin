@@ -85,14 +85,14 @@ task delombok(type: JavaExec) {
 
 task sourcesJar(type: Jar) {
   dependsOn delombok
-  classifier = 'sources'
+  archiveClassifier = 'sources'
   from delombok.outputDir
 }
 
 task javadocJar(type: Jar) {
   dependsOn javadoc
   from javadoc
-  classifier = 'javadoc'
+  archiveClassifier = 'javadoc'
 }
 
 javadoc {
@@ -103,16 +103,18 @@ javadoc {
   options.tagletPath = (configurations.doclet.files + sourceSets.examples.allSource.srcDirs) as List
   options.taglets = ['cd.go.contrib.plugins.configrepo.doclet.IncludeCodeTaglet']
 
+  // workaround for https://bugs.openjdk.java.net/browse/JDK-8212233
+  options.source = '8'
   options.encoding = 'utf-8'
-  options.docEncoding = 'utf-8'
-  options.charSet = 'utf-8'
-  options.addStringOption 'Xdoclint:-syntax,-html,-reference'
+  options.addStringOption '-Xdoclint:-syntax,-html,-reference,-accessibility'
+  options.addBooleanOption('html5', true)
+
   options.overview('overview.html')
   options.showFromPublic()
 
-  options.links('https://docs.oracle.com/javase/8/docs/api', "http://docs.groovy-lang.org/docs/groovy-2.4.15/html/gapi")
+  options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-2.4.15/html/gapi")
   title = "GoCD Groovy DSL API ${version}"
-  options.footer = 'Copyright (c) 2018 ThoughtWorks, Inc.'
+  options.footer = 'Copyright (c) 2019 ThoughtWorks, Inc.'
 }
 
 publishing {
@@ -131,7 +133,7 @@ modifyPom {
     packaging 'jar'
     description project.description
     url 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
-    inceptionYear 2018
+    inceptionYear 2019
 
     scm {
       url 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'

@@ -47,7 +47,8 @@ public class Timer extends Node<Timer> {
      * characters for that field.
      * </p>
      * Examples:
-     * <table summary="Example">
+     * <table>
+     * <caption>Cron expression examples</caption>
      * <thead>
      * <tr><th>Example</th><th>Description</th></tr>
      * </thead>
@@ -64,7 +65,8 @@ public class Timer extends Node<Timer> {
      * <p>
      * <code>seconds minutes hours day_of_month month day_of_week [year(optional)]</code>
      * </p>
-     * <table summary="Cron fields">
+     * <table>
+     * <caption>Cron expression fields</caption>
      * <thead>
      * <tr>
      * <th>Field</th>

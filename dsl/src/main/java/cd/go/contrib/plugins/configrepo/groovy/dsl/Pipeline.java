@@ -65,11 +65,12 @@ public class Pipeline extends HasEnvironmentVariables<Pipeline> {
     private Integer displayOrder = -1;
 
     /**
-     * Pipeline label templates provide a means to label a pipeline or artefacts using a counter, or material
+     * Pipeline label templates provide a means to label a pipeline or artifacts using a counter, or material
      * revision (or both).
      * <p>
      * Valid substitutions are:
-     * <table summary="substitutions">
+     * <table>
+     * <caption>Valid substitutions</caption>
      * <tr>
      * <td>${COUNT}</td><td>The pipeline counter (starts at 1).</td>
      * </tr>

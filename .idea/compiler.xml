@@ -6,37 +6,27 @@
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="cli_main" target="1.8" />
-      <module name="cli_test" target="1.8" />
-      <module name="com.github.ketan-json_main" target="1.8" />
-      <module name="com.github.ketan-json_test" target="1.8" />
-      <module name="doclet_main" target="1.8" />
-      <module name="doclet_test" target="1.8" />
-      <module name="dsl-to-json_main" target="1.8" />
-      <module name="dsl-to-json_test" target="1.8" />
-      <module name="dsl-validation_main" target="1.8" />
-      <module name="dsl-validation_test" target="1.8" />
-      <module name="dsl_examples" target="1.8" />
-      <module name="dsl_main" target="1.8" />
-      <module name="dsl_test" target="1.8" />
-      <module name="example_main" target="1.8" />
-      <module name="example_test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin-gocd-groovy-dsl-config-plugin_main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin-gocd-groovy-dsl-config-plugin_test" target="1.8" />
-      <module name="groovy-expor_main" target="1.8" />
-      <module name="groovy-expor_test" target="1.8" />
-      <module name="groovy-export_main" target="1.8" />
-      <module name="groovy-export_test" target="1.8" />
-      <module name="jar-class-loader_main" target="1.8" />
-      <module name="jar-class-loader_test" target="1.8" />
-      <module name="json-schema_main" target="1.8" />
-      <module name="json-schema_test" target="1.8" />
-      <module name="json_main" target="1.8" />
-      <module name="json_test" target="1.8" />
-      <module name="sandbox_main" target="1.8" />
-      <module name="sandbox_test" target="1.8" />
-      <module name="yaml_main" target="1.8" />
-      <module name="yaml_test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.cli.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.cli.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.doclet.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.doclet.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.dsl-validation.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.dsl-validation.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.dsl.examples" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.dsl.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.dsl.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.example.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.example.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.gocd-groovy-dsl-config-plugin.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.gocd-groovy-dsl-config-plugin.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.groovy-export.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.groovy-export.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.jar-class-loader.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.jar-class-loader.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.json.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.json.test" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.sandbox.main" target="1.8" />
+      <module name="gocd-groovy-dsl-config-plugin.sandbox.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
