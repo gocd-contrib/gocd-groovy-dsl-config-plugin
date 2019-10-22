@@ -53,7 +53,7 @@ gocdPlugin {
 }
 
 allprojects {
-  group = 'com.github.ketan'
+  group = 'cd.go.groovydsl'
   version = gocdPlugin.fullVersion(project)
 }
 

@@ -68,17 +68,17 @@ If you're using an IDE like IntelliJ or Eclipse, you can import the `dsl.jar` fi
 ```xml
 <!-- maven -->
 <dependency>
-  <groupId>com.github.ketan</groupId>
+  <groupId>cd.go.groovydsl</groupId>
   <artifactId>dsl</artifactId>
-  <!-- get version from https://mvnrepository.com/artifact/com.github.ketan/dsl -->
+  <!-- get version from https://mvnrepository.com/artifact/cd.go.groovydsl/dsl -->
   <version>XXX</version>
 </dependency>
 ```
 
 ```groovy
 // gradle
-// get version from https://mvnrepository.com/artifact/com.github.ketan/dsl
-compileOnly group: 'com.github.ketan', name: 'dsl', version: 'XXX'
+// get version from https://mvnrepository.com/artifact/cd.go.groovydsl/dsl
+compileOnly group: 'cd.go.groovydsl', name: 'dsl', version: 'XXX'
 ```
 
 ## Example

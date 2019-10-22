@@ -170,7 +170,7 @@ modifyPom {
 }
 
 nexusStaging {
-  packageGroup = 'com.github.ketan'
+  packageGroup = 'cd.go.groovydsl'
 
   /* To get the staging id, you can either:
     - Use the 'getStagingProfile' task added by the 'io.codearte.nexus-staging' plugin
