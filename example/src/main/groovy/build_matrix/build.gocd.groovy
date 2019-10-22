@@ -30,13 +30,13 @@ GoCD.script { script ->
       group = "example-group"
 
       trackingTool {
-        link = 'https://github.com/ketan/gocd-golang-bootstrapper/issues/${ID}'
+        link = 'https://github.com/gocd-contrib/gocd-golang-bootstrapper/issues/${ID}'
         regex = ~/##(\\d+)/
       }
 
       materials {
         git {
-          url = 'https://github.com/ketan/gocd-golang-bootstrapper'
+          url = 'https://github.com/gocd-contrib/gocd-golang-bootstrapper'
         }
       }
       stages {

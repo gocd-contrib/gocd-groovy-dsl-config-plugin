@@ -67,7 +67,7 @@
 
 ## Fixed
 
-- [#3](https://github.com/ketan/gocd-groovy-dsl-config-plugin/issues/3) - Error while parsing Config repository
+- [#3](https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin/issues/3) - Error while parsing Config repository
 
 ## Chores
 

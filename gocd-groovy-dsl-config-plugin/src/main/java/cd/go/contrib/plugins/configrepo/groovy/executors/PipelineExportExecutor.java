@@ -54,7 +54,7 @@ public class PipelineExportExecutor implements RequestExecutor {
 
         if (!pipeline.equals(maybePipeline)) {
             writer.println("// WARNING: It appears that there are be some discrepancies with the pipeline export.");
-            writer.println("// WARNING: Please report a bug at https://github.com/ketan/gocd-groovy-dsl-config-plugin/issues.");
+            writer.println("// WARNING: Please report a bug at https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin/issues.");
             writer.println();
         }
 

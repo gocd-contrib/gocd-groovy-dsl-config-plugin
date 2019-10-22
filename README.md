@@ -27,7 +27,7 @@ This plugin evaluates untrusted code, on the GoCD server. A malicious script can
     ```xml
     <config-repos>
       <config-repo pluginId="cd.go.contrib.plugins.configrepo.groovy" id="my-project">
-        <git url="https://github.com/ketan/gocd-groovy-dsl-config-plugin.git" />
+        <git url="https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin.git" />
       </config-repo>
     </config-repos>
     ```
@@ -94,7 +94,7 @@ GoCD.script {
       group = 'go-cd'
       lockBehavior = 'lockOnFailure'
       trackingTool {
-        link = 'https://github.com/ketan/gocd-groovy-dsl-config-plugin/issues/${ID}'
+        link = 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin/issues/${ID}'
         regex = ~/##(\d+)/
       }
 
@@ -104,7 +104,7 @@ GoCD.script {
 
       materials {
         git('my-repo') {
-          url = 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
+          url = 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
           branch = 'master'
           blacklist = ['README.md', "examples/**/*"]
         }

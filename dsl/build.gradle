@@ -132,17 +132,17 @@ modifyPom {
     name project.name
     packaging 'jar'
     description project.description
-    url 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
+    url 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
     inceptionYear 2019
 
     scm {
-      url 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
-      connection 'scm:https://github.com/ketan/gocd-groovy-dsl-config-plugin'
-      developerConnection 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
+      url 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
+      connection 'scm:https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
+      developerConnection 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
     }
 
     issueManagement {
-      url 'https://github.com/ketan/gocd-groovy-dsl-config-plugin/issues'
+      url 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin/issues'
       system 'GitHub'
     }
 

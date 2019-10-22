@@ -28,7 +28,7 @@ GoCD.script {
 
       materials {
         git {
-          url = 'https://github.com/ketan/gocd-groovy-dsl-config-plugin'
+          url = 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
         }
       }
       stages {
