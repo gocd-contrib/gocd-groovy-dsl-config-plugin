@@ -1,3 +1,9 @@
+# 0.7.9
+
+## Improved
+
+- Added support for `ignoreForScheduling` flag on a pipeline dependency material. Using this flag requires GoCD version 19.10 or later.
+
 # 0.7.8
 
 - This is primarily a maintenance release that upgrades all dependencies.
