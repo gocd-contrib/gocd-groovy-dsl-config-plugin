@@ -44,6 +44,10 @@ public class DependencyMaterial extends Material<DependencyMaterial> {
     @NotEmpty
     private String stage;
 
+    /**
+     * When set to true, the pipeline will not be automatically scheduled for changes to this material
+     * <a href="https://docs.gocd.org/current/configuration/configuration_reference.html#pipeline-1">More info</a>.
+     */
     @JsonProperty("ignore_for_scheduling")
     private Boolean ignoreForScheduling;
 
