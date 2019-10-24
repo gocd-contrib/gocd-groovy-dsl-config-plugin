@@ -44,6 +44,9 @@ public class DependencyMaterial extends Material<DependencyMaterial> {
     @NotEmpty
     private String stage;
 
+    @JsonProperty("ignore_for_scheduling")
+    private Boolean ignoreForScheduling;
+
     public DependencyMaterial() {
         this(null);
     }
