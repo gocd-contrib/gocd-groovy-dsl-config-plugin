@@ -1,3 +1,7 @@
+# 0.7.8
+
+- This is primarily a maintenance release that upgrades all dependencies.
+
 # 0.7.7
 
 ## Improved
