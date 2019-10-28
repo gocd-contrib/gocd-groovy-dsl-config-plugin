@@ -28,7 +28,7 @@ dependencies {
   testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
 
   testCompile project(':sandbox')
-  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
   testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: '2.10.0'
 
   testCompile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.17.Final'
