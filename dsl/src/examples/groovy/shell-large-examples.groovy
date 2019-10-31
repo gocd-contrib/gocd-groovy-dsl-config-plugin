@@ -19,5 +19,11 @@ new Job().with {
       // you can also invoke the following method:
       loadProfile()
     }
+
+    // if you want to use a custom shell
+    shell {
+      shell = '/bin/fish'
+      file = './deploy.sh'
+    }
   }
 }

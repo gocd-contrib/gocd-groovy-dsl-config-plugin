@@ -26,23 +26,44 @@ import lombok.Setter;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
+/**
+ * Represents a collection of tasks.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 public class Tasks extends CollectionNode<Task> {
 
+    /**
+     * Creates an `exec` task.
+     */
     public ExecTask exec(@DelegatesTo(value = ExecTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ExecTask") Closure cl) {
         return (ExecTask) create(() -> new ExecTask(cl));
     }
 
+    /**
+     * Convenience for {@link #exec(Closure)} task that wraps a command in a shell.
+     * <p>
+     * {@includeCode shell-large-examples.groovy}
+     */
     public ShellTask shell(@DelegatesTo(value = ShellTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ShellTask") Closure cl) {
         return (ShellTask) create(() -> new ShellTask(null, cl));
     }
 
+    /**
+     * Convenience for {@link #exec(Closure)} task that wraps a command in a {@code bash} shell.
+     * <p>
+     * {@includeCode shell-large-examples.groovy}
+     */
     public ShellTask bash(@DelegatesTo(value = ShellTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ShellTask") Closure cl) {
         return (ShellTask) create(() -> new ShellTask("bash", cl));
     }
 
+    /**
+     * Convenience for {@link #exec(Closure)} task that wraps a command in a {@code zsh} shell.
+     * <p>
+     * {@includeCode shell-large-examples.groovy}
+     */
     public ShellTask zsh(@DelegatesTo(value = ShellTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ShellTask") Closure cl) {
         return new ShellTask("zsh", cl);
     }
