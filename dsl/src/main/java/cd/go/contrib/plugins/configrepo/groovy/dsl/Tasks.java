@@ -81,6 +81,6 @@ public class Tasks extends CollectionNode<Task> {
     }
 
     public PluginTask plugin(@DelegatesTo(value = PluginTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluginTask") Closure cl) {
-        return new PluginTask(cl);
+        return (PluginTask) create(() -> new PluginTask(cl));
     }
 }

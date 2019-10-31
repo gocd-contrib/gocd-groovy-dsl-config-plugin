@@ -1,3 +1,13 @@
+# 0.8.0
+
+## Improved
+
+- Improved javadoc on `tasks`.
+
+## Fixed
+
+- [#114](https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin/issues/114) - Custom task plugin configuration were not exported. 
+
 # 0.7.9
 
 ## Improved

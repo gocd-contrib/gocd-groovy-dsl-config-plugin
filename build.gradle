@@ -33,7 +33,7 @@ apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-help
 
 gocdPlugin {
   id = 'cd.go.contrib.plugins.configrepo.groovy'
-  pluginVersion = '0.7.9'
+  pluginVersion = '0.8.0'
   goCdVersion = '18.3.0'
   name = 'GoCD Groovy Configuration plugin'
   description = 'GoCD pipelines and environments configuration in Groovy'
