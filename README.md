@@ -1,6 +1,6 @@
-[![Join the chat at https://gitter.im/gocd/configrepo-plugins](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gocd/configrepo-plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/gocd/configrepo-plugins](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gocd/configrepo-plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![javadoc.io](https://javadoc.io/badge2/cd.go.groovydsl/dsl/javadoc.io.svg)](https://javadoc.io/doc/cd.go.groovydsl/dsl) [![Maven Central](https://img.shields.io/maven-central/v/cd.go.groovydsl/dsl.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22cd.go.groovydsl%22%20AND%20a:%22dsl%22)
 
-## GoCD Groovy DSL Configuration Plugin 
+## GoCD Groovy DSL Configuration Plugin
 
 A GoCD plugin that allows maintaining pipelines and environments in source control using a DSL written in the groovy language.
 
@@ -138,7 +138,7 @@ GoCD.script {
 ## License
 
 ```plain
-Copyright 2018, ThoughtWorks, Inc.
+Copyright 2019, ThoughtWorks, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
