@@ -76,6 +76,7 @@ task delombok(type: JavaExec) {
   main 'lombok.launch.Main'
 
   args("delombok")
+  args('--encoding=utf-8')
 //  args("-v")
 
   sourceSets.main.java.srcDirs.each {
