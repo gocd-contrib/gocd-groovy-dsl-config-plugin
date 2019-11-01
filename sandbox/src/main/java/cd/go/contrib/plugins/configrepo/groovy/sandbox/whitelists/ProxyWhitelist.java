@@ -24,6 +24,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
+import javax.annotation.concurrent.GuardedBy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -34,23 +35,29 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Aggregates several whitelists.
  */
 public class ProxyWhitelist extends Whitelist {
-
+    @GuardedBy("lock")
     private Collection<? extends Whitelist> originalDelegates;
 
+    @GuardedBy("lock")
     final List<Whitelist> delegates = new ArrayList<Whitelist>();
 
+    @GuardedBy("lock")
     private final List<EnumeratingWhitelist.MethodSignature> methodSignatures = new ArrayList<EnumeratingWhitelist.MethodSignature>();
 
+    @GuardedBy("lock")
     private final List<EnumeratingWhitelist.NewSignature> newSignatures = new ArrayList<EnumeratingWhitelist.NewSignature>();
 
+    @GuardedBy("lock")
     private final List<EnumeratingWhitelist.MethodSignature> staticMethodSignatures = new ArrayList<EnumeratingWhitelist.MethodSignature>();
 
+    @GuardedBy("lock")
     private final List<EnumeratingWhitelist.FieldSignature> fieldSignatures = new ArrayList<EnumeratingWhitelist.FieldSignature>();
 
+    @GuardedBy("lock")
     private final List<EnumeratingWhitelist.FieldSignature> staticFieldSignatures = new ArrayList<EnumeratingWhitelist.FieldSignature>();
 
     /** anything wrapping us, so that we can propagate {@link #reset} calls up the chain */
-    private final Map<ProxyWhitelist, Void> wrappers = new WeakHashMap<ProxyWhitelist, Void>();
+    private final Map<ProxyWhitelist,Void> wrappers = new WeakHashMap<ProxyWhitelist,Void>();
 
     // TODO Consider StampedLock when we switch to Java8 for better performance - https://dzone.com/articles/a-look-at-stampedlock
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
@@ -76,28 +83,19 @@ public class ProxyWhitelist extends Whitelist {
             fieldSignatures.clear();
 
             this.delegates.add(new EnumeratingWhitelist() {
-                @Override
-                protected List<EnumeratingWhitelist.MethodSignature> methodSignatures() {
+                @Override protected List<EnumeratingWhitelist.MethodSignature> methodSignatures() {
                     return methodSignatures;
                 }
-
-                @Override
-                protected List<EnumeratingWhitelist.NewSignature> newSignatures() {
+                @Override protected List<EnumeratingWhitelist.NewSignature> newSignatures() {
                     return newSignatures;
                 }
-
-                @Override
-                protected List<EnumeratingWhitelist.MethodSignature> staticMethodSignatures() {
+                @Override protected List<EnumeratingWhitelist.MethodSignature> staticMethodSignatures() {
                     return staticMethodSignatures;
                 }
-
-                @Override
-                protected List<EnumeratingWhitelist.FieldSignature> fieldSignatures() {
+                @Override protected List<EnumeratingWhitelist.FieldSignature> fieldSignatures() {
                     return fieldSignatures;
                 }
-
-                @Override
-                protected List<EnumeratingWhitelist.FieldSignature> staticFieldSignatures() {
+                @Override protected List<EnumeratingWhitelist.FieldSignature> staticFieldSignatures() {
                     return staticFieldSignatures;
                 }
             });
@@ -126,6 +124,7 @@ public class ProxyWhitelist extends Whitelist {
                     fieldSignatures.addAll(pw.fieldSignatures);
                     staticFieldSignatures.addAll(pw.staticFieldSignatures);
                 } else {
+                    Objects.requireNonNull(delegate);
                     this.delegates.add(delegate);
                 }
             }
@@ -134,7 +133,7 @@ public class ProxyWhitelist extends Whitelist {
             }
             if (this.wrappers.isEmpty()) {  // Top-level ProxyWhitelist should be the only cache
                 // Top-level ProxyWhitelist should precache the statically permitted signatures
-                ((EnumeratingWhitelist) (this.delegates.get(0))).precache();
+                ((EnumeratingWhitelist)(this.delegates.get(0))).precache();
             }
         } finally {
             writer.unlock();
@@ -145,8 +144,7 @@ public class ProxyWhitelist extends Whitelist {
         this(Arrays.asList(delegates));
     }
 
-    @Override
-    public final boolean permitsMethod(Method method, Object receiver, Object[] args) {
+    @Override public final boolean permitsMethod(Method method, Object receiver, Object[] args) {
         lock.readLock().lock();
         try {
             for (Whitelist delegate : delegates) {
@@ -160,8 +158,7 @@ public class ProxyWhitelist extends Whitelist {
         return false;
     }
 
-    @Override
-    public final boolean permitsConstructor(Constructor<?> constructor, Object[] args) {
+    @Override public final boolean permitsConstructor(Constructor<?> constructor, Object[] args) {
         lock.readLock().lock();
         try {
             for (Whitelist delegate : delegates) {
@@ -175,8 +172,7 @@ public class ProxyWhitelist extends Whitelist {
         return false;
     }
 
-    @Override
-    public final boolean permitsStaticMethod(Method method, Object[] args) {
+    @Override public final boolean permitsStaticMethod(Method method, Object[] args) {
         lock.readLock().lock();
         try {
             for (Whitelist delegate : delegates) {
@@ -190,8 +186,7 @@ public class ProxyWhitelist extends Whitelist {
         return false;
     }
 
-    @Override
-    public final boolean permitsFieldGet(Field field, Object receiver) {
+    @Override public final boolean permitsFieldGet(Field field, Object receiver) {
         lock.readLock().lock();
         try {
             for (Whitelist delegate : delegates) {
@@ -205,8 +200,7 @@ public class ProxyWhitelist extends Whitelist {
         return false;
     }
 
-    @Override
-    public final boolean permitsFieldSet(Field field, Object receiver, Object value) {
+    @Override public final boolean permitsFieldSet(Field field, Object receiver, Object value) {
         lock.readLock().lock();
         try {
             for (Whitelist delegate : delegates) {
@@ -221,8 +215,7 @@ public class ProxyWhitelist extends Whitelist {
         return false;
     }
 
-    @Override
-    public final boolean permitsStaticFieldGet(Field field) {
+    @Override public final boolean permitsStaticFieldGet(Field field) {
         lock.readLock().lock();
         try {
             for (Whitelist delegate : delegates) {
@@ -236,8 +229,7 @@ public class ProxyWhitelist extends Whitelist {
         return false;
     }
 
-    @Override
-    public final boolean permitsStaticFieldSet(Field field, Object value) {
+    @Override public final boolean permitsStaticFieldSet(Field field, Object value) {
         lock.readLock().lock();
         try {
             for (Whitelist delegate : delegates) {

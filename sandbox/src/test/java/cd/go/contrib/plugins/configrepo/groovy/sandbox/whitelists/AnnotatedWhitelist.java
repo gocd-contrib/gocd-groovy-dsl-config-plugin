@@ -24,6 +24,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -46,7 +47,7 @@ public final class AnnotatedWhitelist extends AclAwareWhitelist {
             this.restricted = restricted;
         }
 
-        private boolean allowed(AccessibleObject o) {
+        private boolean allowed(@Nonnull AccessibleObject o) {
             Whitelisted ann = o.getAnnotation(Whitelisted.class);
             if (ann == null) {
                 return false;

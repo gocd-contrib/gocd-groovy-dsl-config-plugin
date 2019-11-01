@@ -9,7 +9,17 @@ method groovy.lang.GroovyObject invokeMethod java.lang.String java.lang.Object
 method groovy.lang.GroovyObject setMetaClass groovy.lang.MetaClass
 method groovy.lang.GroovyObject setProperty java.lang.String java.lang.Object
 
-# Raw file operations could be used to compromise the server.
+# Variant of Jenkins.getInstance, see below.
+# staticMethod hudson.model.Hudson getInstance
+
+# Up to no good…
+# staticMethod hudson.model.User current
+# staticMethod hudson.model.User get java.lang.String
+# staticMethod hudson.model.User get java.lang.String boolean
+# staticMethod hudson.model.User get java.lang.String boolean java.util.Map
+# staticMethod hudson.model.User getAll
+
+# Raw file operations could be used to compromise the Jenkins master.
 staticMethod java.io.File createTempFile java.lang.String java.lang.String
 staticMethod java.io.File createTempFile java.lang.String java.lang.String java.io.File
 new java.io.File java.lang.String
@@ -74,6 +84,9 @@ method java.net.URL openStream
 staticMethod java.nio.file.Paths get java.lang.String java.lang.String[]
 staticMethod java.nio.file.Paths get java.net.URI
 
+# Do not even get started…
+#staticMethod jenkins.model.Jenkins getInstance
+
 # More process execution, Groovy-style:
 staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods execute java.lang.String
 staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods execute java.lang.String java.lang.String[] java.io.File
@@ -90,3 +103,10 @@ staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods getAt java.lang.Ob
 staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods getMetaPropertyValues java.lang.Object
 staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods getProperties java.lang.Object
 staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods putAt java.lang.Object java.lang.String java.lang.Object
+
+# SECURITY-1353
+staticMethod org.codehaus.groovy.runtime.ScriptBytecodeAdapter asType java.lang.Object java.lang.Class
+staticMethod org.codehaus.groovy.runtime.ScriptBytecodeAdapter castToType java.lang.Object java.lang.Class
+
+# TODO do we need a @Blacklisted annotation?
+# method org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper getRawBuild

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 ThoughtWorks, Inc.
+ * Copyright 2019 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-dependencies {
-  compile project(':dsl')
-  compile project(':sandbox')
-  compile project(':json')
-  compile project(':dsl-validation')
-  compile group: 'com.beust', name: 'jcommander', version: '1.78'
-  compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.8'
-  compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.1.0.Final'
-  compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
+package cd.go.contrib.plugins.configrepo.groovy.sandbox;
+
+public class StaticTestExample {
+
+    public static Object getInstance() {
+        return new Object();
+    }
 }

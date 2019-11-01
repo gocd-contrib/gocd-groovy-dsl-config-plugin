@@ -27,17 +27,22 @@ package cd.go.contrib.plugins.configrepo.groovy.sandbox;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists.ClassLoaderWhitelist;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists.ProxyWhitelist;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists.Whitelist;
+import groovy.grape.GrabAnnotationTransformation;
 import groovy.lang.Script;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.kohsuke.groovy.sandbox.GroovyInterceptor;
 import org.kohsuke.groovy.sandbox.SandboxTransformer;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.concurrent.Callable;
 
 public class GroovySandbox {
 
     public static CompilerConfiguration createSecureCompilerConfiguration() {
         CompilerConfiguration cc = new CompilerConfiguration();
+        cc.addCompilationCustomizers(new RejectASTTransformsCustomizer());
+        cc.setDisabledGlobalASTTransformations(new HashSet<>(Collections.singletonList(GrabAnnotationTransformation.class.getName())));
         cc.addCompilationCustomizers(new SandboxTransformer());
         return cc;
     }

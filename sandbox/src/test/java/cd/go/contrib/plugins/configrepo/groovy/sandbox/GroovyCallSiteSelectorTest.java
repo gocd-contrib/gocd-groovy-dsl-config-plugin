@@ -29,7 +29,6 @@ import cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists.EnumeratingWhi
 import groovy.lang.GString;
 import groovy.lang.Script;
 import org.codehaus.groovy.runtime.GStringImpl;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -43,89 +42,54 @@ import static org.junit.Assert.*;
 
 public class GroovyCallSiteSelectorTest {
 
-    @Test
-    public void arrays() throws Exception {
+    @Test public void arrays() throws Exception {
         Method m = EnumeratingWhitelistTest.C.class.getDeclaredMethod("m", Object[].class);
-        Assert.assertEquals("literal call", m, GroovyCallSiteSelector.method(new EnumeratingWhitelistTest.C(), "m", new Object[]{new Object[]{"a", "b"}}));
-        assertEquals("we assume the interceptor has dealt with varargs", null, GroovyCallSiteSelector.method(new EnumeratingWhitelistTest.C(), "m", new Object[]{"a", "b"}));
-        assertEquals("array cast", m, GroovyCallSiteSelector.method(new EnumeratingWhitelistTest.C(), "m", new Object[]{new String[]{"a", "b"}}));
+        assertEquals("literal call", m, GroovyCallSiteSelector.method(new EnumeratingWhitelistTest.C(), "m", new Object[] {new Object[] {"a", "b"}}));
+        assertEquals("we assume the interceptor has dealt with varargs", null, GroovyCallSiteSelector.method(new EnumeratingWhitelistTest.C(), "m", new Object[] {"a", "b"}));
+        assertEquals("array cast", m, GroovyCallSiteSelector.method(new EnumeratingWhitelistTest.C(), "m", new Object[] {new String[] {"a", "b"}}));
     }
 
-    @Test
-    public void overloads() throws Exception {
+    @Test public void overloads() throws Exception {
         PrintWriter receiver = new PrintWriter(new ByteArrayOutputStream());
-        assertEquals(PrintWriter.class.getMethod("print", Object.class), GroovyCallSiteSelector.method(receiver, "print", new Object[]{new Object()}));
-        assertEquals(PrintWriter.class.getMethod("print", String.class), GroovyCallSiteSelector.method(receiver, "print", new Object[]{"message"}));
-        assertEquals(PrintWriter.class.getMethod("print", int.class), GroovyCallSiteSelector.method(receiver, "print", new Object[]{42}));
+        assertEquals(PrintWriter.class.getMethod("print", Object.class), GroovyCallSiteSelector.method(receiver, "print", new Object[] {new Object()}));
+        assertEquals(PrintWriter.class.getMethod("print", String.class), GroovyCallSiteSelector.method(receiver, "print", new Object[] {"message"}));
+        assertEquals(PrintWriter.class.getMethod("print", int.class), GroovyCallSiteSelector.method(receiver, "print", new Object[] {42}));
     }
 
-    @Test
-    public void methodsOnGString() throws Exception {
-        GStringImpl gString = new GStringImpl(new Object[0], new String[]{"x"});
-        assertEquals(String.class.getMethod("substring", int.class), GroovyCallSiteSelector.method(gString, "substring", new Object[]{99}));
+//    @Issue("JENKINS-29541")
+    @Test public void methodsOnGString() throws Exception {
+        GStringImpl gString = new GStringImpl(new Object[0], new String[] {"x"});
+        assertEquals(String.class.getMethod("substring", int.class), GroovyCallSiteSelector.method(gString, "substring", new Object[] {99}));
         assertEquals(GString.class.getMethod("getValues"), GroovyCallSiteSelector.method(gString, "getValues", new Object[0]));
         assertEquals(GString.class.getMethod("getStrings"), GroovyCallSiteSelector.method(gString, "getStrings", new Object[0]));
     }
 
-    @Test
-    public void primitives() throws Exception {
-        assertEquals(Primitives.class.getMethod("m1", long.class), GroovyCallSiteSelector.staticMethod(Primitives.class, "m1", new Object[]{Long.MAX_VALUE}));
-        assertEquals(Primitives.class.getMethod("m1", long.class), GroovyCallSiteSelector.staticMethod(Primitives.class, "m1", new Object[]{99}));
-        assertEquals(Primitives.class.getMethod("m2", long.class), GroovyCallSiteSelector.staticMethod(Primitives.class, "m2", new Object[]{Long.MAX_VALUE}));
-        assertEquals(Primitives.class.getMethod("m2", int.class), GroovyCallSiteSelector.staticMethod(Primitives.class, "m2", new Object[]{99}));
+//    @Issue("JENKINS-31701")
+    @Test public void primitives() throws Exception {
+        assertEquals(Primitives.class.getMethod("m1", long.class), GroovyCallSiteSelector.staticMethod(Primitives.class, "m1", new Object[] {Long.MAX_VALUE}));
+        assertEquals(Primitives.class.getMethod("m1", long.class), GroovyCallSiteSelector.staticMethod(Primitives.class, "m1", new Object[] {99}));
+        assertEquals(Primitives.class.getMethod("m2", long.class), GroovyCallSiteSelector.staticMethod(Primitives.class, "m2", new Object[] {Long.MAX_VALUE}));
+        assertEquals(Primitives.class.getMethod("m2", int.class), GroovyCallSiteSelector.staticMethod(Primitives.class, "m2", new Object[] {99}));
     }
-
     public static class Primitives {
-
-        public static void m1(long x) {
-        }
-
-        public static void m2(int x) {
-        }
-
-        public static void m2(long x) {
-        }
+        public static void m1(long x) {}
+        public static void m2(int x) {}
+        public static void m2(long x) {}
     }
 
-    @Test
-    public void staticMethodsCannotBeOverridden() throws Exception {
-        assertEquals(SandboxInterceptorTest.StaticTestExample.class.getMethod("getInstance"), GroovyCallSiteSelector.staticMethod(SandboxInterceptorTest.StaticTestExample.class, "getInstance", new Object[0]));
+    @Test public void staticMethodsCannotBeOverridden() throws Exception {
+        assertEquals(StaticTestExample.class.getMethod("getInstance"), GroovyCallSiteSelector.staticMethod(StaticTestExample.class, "getInstance", new Object[0]));
     }
 
-    @Test
-    public void main() throws Exception {
+//    @Issue("JENKINS-38908")
+    @Test public void main() throws Exception {
         Script receiver = (Script) new cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner(null).runScriptWithText("def main() {}; this");
         assertEquals(receiver.getClass().getMethod("main"), GroovyCallSiteSelector.method(receiver, "main", new Object[0]));
-        assertEquals(receiver.getClass().getMethod("main", String[].class), GroovyCallSiteSelector.method(receiver, "main", new Object[]{"somearg"}));
+        assertEquals(receiver.getClass().getMethod("main", String[].class), GroovyCallSiteSelector.method(receiver, "main", new Object[] {"somearg"}));
     }
 
-    static class EnvVars {
-
-        public EnvVars() {
-
-        }
-
-        public EnvVars(String... objects) {
-        }
-
-        public EnvVars(List<String> objects) {
-
-        }
-    }
-
-    class VarargsConstructor {
-
-        public VarargsConstructor(String... objects) {
-
-        }
-
-        public VarargsConstructor(List<String> objects) {
-
-        }
-    }
-
-    @Test
-    public void constructorVarargs() throws Exception {
+//    @Issue("JENKINS-45117")
+    @Test public void constructorVarargs() throws Exception {
         assertEquals(EnvVars.class.getConstructor(), GroovyCallSiteSelector.constructor(EnvVars.class, new Object[0]));
         assertEquals(EnvVars.class.getConstructor(String[].class), GroovyCallSiteSelector.constructor(EnvVars.class, new Object[]{"x"}));
         List<String> params = new ArrayList<>();
@@ -143,6 +107,7 @@ public class GroovyCallSiteSelectorTest {
                         new Object[]{String.class, "foo", Integer.class, Float.class}));
     }
 
+//    @Issue("JENKINS-47159")
     @Test
     public void varargsFailureCases() throws Exception {
         // If there's a partial match, we should get a ClassCastException
@@ -158,10 +123,43 @@ public class GroovyCallSiteSelectorTest {
         assertNull(GroovyCallSiteSelector.constructor(VarargsConstructor.class, new Object[]{"a", "b"}));
     }
 
+////    @Issue("JENKINS-37257")
     @Test
     public void varargsArrayElementTypeMismatch() throws Exception {
         List<String> l = Arrays.asList("a", "b", "c");
         assertEquals(String.class.getMethod("join", CharSequence.class, Iterable.class),
                 GroovyCallSiteSelector.staticMethod(String.class, "join", new Object[]{",", l}));
     }
+
+    static class EnvVars {
+
+        public EnvVars() {
+
+        }
+
+        public EnvVars(String... objects) {
+        }
+
+        public EnvVars(List<String> objects) {
+
+        }
+    }
+
+    static class StaticSubclassTestExample {
+        public static Object getInstance() {
+            return new Object();
+        }
+    }
+
+    class VarargsConstructor {
+
+        public VarargsConstructor(String... objects) {
+
+        }
+
+        public VarargsConstructor(List<String> objects) {
+
+        }
+    }
 }
+

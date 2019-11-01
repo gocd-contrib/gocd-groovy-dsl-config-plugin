@@ -28,7 +28,7 @@ import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static groovy.json.StringEscapeUtils.escapeJava;
+import static org.apache.commons.lang3.StringEscapeUtils.escapeJava;
 import static org.apache.commons.lang3.StringUtils.*;
 
 public class IndentedStringWriter {

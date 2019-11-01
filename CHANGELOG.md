@@ -1,3 +1,10 @@
+# 1.0.0
+
+## Improved
+
+- Added support for groovy 2.5.8
+- Relaxed the sandbox rules to allow more of the Java API to be used in the DSL. This includes some date, calendar, regex and collection APIs. 
+
 # 0.8.0
 
 ## Improved

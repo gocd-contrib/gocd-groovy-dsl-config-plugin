@@ -37,6 +37,7 @@ public class GenericWhitelistTest {
         StaticWhitelistTest.sanity(GenericWhitelist.class.getResource("generic-whitelist"));
     }
 
+//    @Issue("SECURITY-538")
     @Test public void dynamicSubscript() throws Exception {
         String dangerous = Dangerous.class.getName();
         Whitelist wl = new ProxyWhitelist(new GenericWhitelist(), new AnnotatedWhitelist());

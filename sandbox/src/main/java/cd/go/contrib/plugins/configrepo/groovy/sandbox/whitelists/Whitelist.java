@@ -25,6 +25,8 @@
 package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
 
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -34,18 +36,28 @@ import java.lang.reflect.Method;
  */
 public abstract class Whitelist {
 
-    public abstract boolean permitsMethod(Method method, Object receiver, Object[] args);
+    /**
+     * Checks whether a given virtual method may be invoked.
+     * <p>Note that {@code method} should not be implementing or overriding a method in a supertype;
+     * in such a case the caller must pass that supertype method instead.
+     * In other words, call site selection is the responsibility of the caller (such as {@link cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovySandbox}), not the whitelist.
+     * @param method a method defined in the JVM
+     * @param receiver {@code this}, the receiver of the method call
+     * @param args zero or more arguments
+     * @return true to allow the method to be called, false to reject it
+     */
+    public abstract boolean permitsMethod(@Nonnull Method method, @Nonnull Object receiver, @Nonnull Object[] args);
 
-    public abstract boolean permitsConstructor(Constructor<?> constructor, Object[] args);
+    public abstract boolean permitsConstructor(@Nonnull Constructor<?> constructor, @Nonnull Object[] args);
 
-    public abstract boolean permitsStaticMethod(Method method, Object[] args);
+    public abstract boolean permitsStaticMethod(@Nonnull Method method, @Nonnull Object[] args);
 
-    public abstract boolean permitsFieldGet(Field field, Object receiver);
+    public abstract boolean permitsFieldGet(@Nonnull Field field, @Nonnull Object receiver);
 
-    public abstract boolean permitsFieldSet(Field field, Object receiver, Object value);
+    public abstract boolean permitsFieldSet(@Nonnull Field field, @Nonnull Object receiver, @CheckForNull Object value);
 
-    public abstract boolean permitsStaticFieldGet(Field field);
+    public abstract boolean permitsStaticFieldGet(@Nonnull Field field);
 
-    public abstract boolean permitsStaticFieldSet(Field field, Object value);
+    public abstract boolean permitsStaticFieldSet(@Nonnull Field field, @CheckForNull Object value);
 
 }

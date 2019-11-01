@@ -27,22 +27,44 @@ package cd.go.contrib.plugins.configrepo.groovy.sandbox;
 
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists.StaticWhitelist;
 
+import javax.annotation.CheckForNull;
+
+/**
+ * Thrown when access to a language element was not permitted.
+ * @see GroovySandbox#runInSandbox(Runnable, Whitelist)
+ */
 public final class RejectedAccessException extends SecurityException {
 
     private final String signature;
-
     private boolean dangerous;
 
+    /**
+     * Rejects access to a well-described script element.
+     * Normally called from {@link StaticWhitelist#rejectMethod} or similar.
+     * @param type e.g. {@code field}
+     * @param details e.g. {@code some.Class fieldName}
+     */
     public RejectedAccessException(String type, String details) {
         super("Scripts not permitted to use " + type + " " + details);
         signature = type + " " + details;
     }
 
+    /**
+     * Rejects access to a well-described script element.
+     * Normally called from {@link StaticWhitelist#rejectMethod} or similar.
+     * @param type e.g. {@code field}
+     * @param details e.g. {@code some.Class fieldName}
+     * @param info some additional information if appropriate
+     */
     public RejectedAccessException(String type, String details, String info) {
         super("Scripts not permitted to use " + type + " " + details + " (" + info + ")");
         signature = type + " " + details;
     }
 
+    /**
+     * Rejects access to something which the current {@link StaticWhitelist} format could not describe.
+     * @param message a descriptive message in no particular format
+     */
     public RejectedAccessException(String message) {
         super(message);
         signature = null;
@@ -50,17 +72,15 @@ public final class RejectedAccessException extends SecurityException {
 
     /**
      * Gets the signature of the member to which access was rejected.
-     *
-     * @return a line in the format understood by {@link StaticWhitelist}, or null in case something was rejected for
-     * which a known exemption is not available
+     * @return a line in the format understood by {@link StaticWhitelist}, or null in case something was rejected for which a known exemption is not available
      */
-    public String getSignature() {
+    public @CheckForNull
+    String getSignature() {
         return signature;
     }
 
     /**
      * True if {@link #getSignature} is non-null but it would be a bad idea for an administrator to approve it.
-     *
      * @since 1.16
      */
     public boolean isDangerous() {
@@ -69,10 +89,7 @@ public final class RejectedAccessException extends SecurityException {
 
     /**
      * You may set this flag if you think it would be a security risk for this signature to be approved.
-     *
-     * @throws IllegalArgumentException
-     *         in case you tried to set this to true when using the nonspecific {@link #RejectedAccessException(String)}
-     *         constructor
+     * @throws IllegalArgumentException in case you tried to set this to true when using the nonspecific {@link #RejectedAccessException(String)} constructor
      * @since 1.16
      */
     public void setDangerous(boolean dangerous) {

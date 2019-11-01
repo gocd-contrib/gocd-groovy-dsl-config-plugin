@@ -64,3 +64,4 @@ public final class ClassLoaderWhitelist extends Whitelist {
         return permits(field.getDeclaringClass());
     }
 }
+

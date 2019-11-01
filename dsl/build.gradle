@@ -30,7 +30,7 @@ dependencies {
 
   compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
 
-  compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.15'
+  compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.8'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.0'
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
   compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
@@ -113,7 +113,7 @@ javadoc {
   options.overview('overview.html')
   options.showFromPublic()
 
-  options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-2.4.15/html/gapi")
+  options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-2.5.8/html/gapi")
   title = "GoCD Groovy DSL API ${version}"
   options.footer = 'Copyright (c) 2019 ThoughtWorks, Inc.'
 }

@@ -26,6 +26,8 @@ package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
 import org.apache.commons.lang3.ClassUtils;
 
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -72,8 +74,8 @@ public abstract class EnumeratingWhitelist extends Whitelist {
             this.permittedCache.clear();  // No sense calling clearCache
         }
         cacheSignatureList((List)methodSignatures(), (List)(newSignatures()),
-                           (List)(staticMethodSignatures()), (List)(fieldSignatures()),
-                           (List)(staticFieldSignatures()));
+                (List)(staticMethodSignatures()), (List)(fieldSignatures()),
+                (List)(staticFieldSignatures()));
     }
 
     /** Frees up nearly all memory used for the cache.  MUST BE CALLED if you change the result of the xxSignatures() methods. */
@@ -180,7 +182,8 @@ public abstract class EnumeratingWhitelist extends Whitelist {
         return permitsStaticFieldGet(field);
     }
 
-    public static String getName(Class<?> c) {
+    public static @Nonnull
+    String getName(@Nonnull Class<?> c) {
         Class<?> e = c.getComponentType();
         if (e == null) {
             return c.getName();
@@ -189,7 +192,7 @@ public abstract class EnumeratingWhitelist extends Whitelist {
         }
     }
 
-    public static String getName(Object o) {
+    public static @Nonnull String getName(@CheckForNull Object o) {
         return o == null ? "null" : getName(o.getClass());
     }
 
@@ -246,37 +249,37 @@ public abstract class EnumeratingWhitelist extends Whitelist {
     }
 
     /** Canonical name for a field access. */
-    static String canonicalFieldString(Field field) {
+    static String canonicalFieldString(@Nonnull Field field) {
         return getName(field.getDeclaringClass()) + ' ' + field.getName();
     }
 
     /** Canonical name for a method call. */
-    static String canonicalMethodString(Method method) {
+    static String canonicalMethodString(@Nonnull Method method) {
         return joinWithSpaces(new StringBuilder(getName(method.getDeclaringClass())).append(' ').append(method.getName()), argumentTypes(method.getParameterTypes())).toString();
     }
 
     /** Canonical name for a constructor call. */
-    static String canonicalConstructorString(Constructor cons) {
+    static String canonicalConstructorString(@Nonnull Constructor cons) {
         return joinWithSpaces(new StringBuilder(getName(cons.getDeclaringClass())), argumentTypes(cons.getParameterTypes())).toString();
     }
 
-    static String canonicalMethodSig(Method method) {
+    static String canonicalMethodSig(@Nonnull Method method) {
         return "method "+canonicalMethodString(method);
     }
 
-    static String canonicalStaticMethodSig(Method method) {
+    static String canonicalStaticMethodSig(@Nonnull Method method) {
         return "staticMethod "+canonicalMethodString(method);
     }
 
-    static String canonicalConstructorSig(Constructor cons) {
+    static String canonicalConstructorSig(@Nonnull Constructor cons) {
         return "new "+canonicalConstructorString(cons);
     }
 
-    static String canonicalFieldSig(Field field) {
+    static String canonicalFieldSig(@Nonnull Field field) {
         return "field "+canonicalFieldString(field);
     }
 
-    static String canonicalStaticFieldSig(Field field) {
+    static String canonicalStaticFieldSig(@Nonnull Field field) {
         return "staticField "+canonicalFieldString(field);
     }
 

@@ -50,7 +50,7 @@ class TestAllSignatures {
     }
 
     private static ScanResult scanResult = new ClassGraph()
-            .verbose()
+//            .verbose()
             .enableClassInfo()
             .enableMethodInfo()
             .ignoreClassVisibility()

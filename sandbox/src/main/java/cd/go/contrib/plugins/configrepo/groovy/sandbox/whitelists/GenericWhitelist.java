@@ -26,6 +26,7 @@ package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
 import java.io.IOException;
 
+
 /**
  * Includes entries useful for general kinds of scripts.
  */
