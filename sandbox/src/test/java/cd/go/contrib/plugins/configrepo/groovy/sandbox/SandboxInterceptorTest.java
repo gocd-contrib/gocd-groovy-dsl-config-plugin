@@ -326,7 +326,7 @@ public class SandboxInterceptorTest {
 
 //    @Issue({"JENKINS-25119", "JENKINS-27725", "JENKINS-57299"})
     @Test public void defaultGroovyMethods() throws Exception {
-        assertRejected(new ProxyWhitelist(), "staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods toInteger java.lang.String", "'123'.toInteger();");
+        assertRejected(new ProxyWhitelist(), "staticMethod org.codehaus.groovy.runtime.(String|Default)GroovyMethods toInteger java.lang.String", "'123'.toInteger();");
         assertEvaluate(new GenericWhitelist(), 123, "'123'.toInteger();");
         assertEvaluate(new GenericWhitelist(), Arrays.asList(1, 4, 9), "([1, 2, 3] as int[]).collect({x -> x * x})");
         assertEvaluate(new GenericWhitelist(), Arrays.asList(1, 4, 9), "([1, 2, 3] as int[]).collect({it * it})");
@@ -882,7 +882,14 @@ public class SandboxInterceptorTest {
             Object actual = evaluate(whitelist, script);
             errors.checkThat(actual, is((Object) "should be rejected"));
         } catch (RejectedAccessException x) {
-            errors.checkThat(x.getMessage(), x.getSignature(), is(expectedSignature));
+            org.hamcrest.Matcher<String> matcher = is(expectedSignature);
+            try {
+                Pattern.compile(expectedSignature);
+                matcher = anyOf(matcher, matchesRegex(expectedSignature));
+            } catch (Exception ignore) {
+                // looks like a bad pattern
+            }
+            errors.checkThat(x.getMessage(), x.getSignature(), matcher);
         } catch (Throwable t) {
             errors.addError(t);
         }

@@ -1,4 +1,10 @@
-# 1.0.0
+# 1.0.1
+
+## Fixed
+
+- Fixed a bug with the sandbox whitelist that prevented groovy code to not be parsed.
+
+# 1.0.0 [broken release]
 
 ## Improved
 
