@@ -1,4 +1,10 @@
-# 1.0.1
+# 1.0.2
+
+## Fixed
+
+- Fixed a bug with `SandboxResolvingClassLoader` not being loaded because of a missing class.
+
+# 1.0.1 [broken release]
 
 ## Fixed
 

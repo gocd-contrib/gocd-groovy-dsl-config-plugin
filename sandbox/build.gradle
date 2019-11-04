@@ -21,7 +21,6 @@ dependencies {
   compile group: 'org.codehaus.groovy', name: 'groovy-dateutil', version: '2.5.8'
   compile group: 'org.codehaus.groovy', name: 'groovy-xml', version: '2.5.8'
 
-  compile group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.8.0'
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
   compile(group: 'org.kohsuke', name: 'groovy-sandbox', version: '1.24') {
