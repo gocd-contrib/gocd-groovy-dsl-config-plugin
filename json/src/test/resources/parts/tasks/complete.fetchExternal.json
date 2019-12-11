@@ -1,0 +1,19 @@
+{
+  "type": "fetch",
+  "run_if": "passed",
+  "pipeline": "upstream",
+  "stage": "upstream_stage",
+  "job": "upstream_job",
+  "artifact_origin": "external",
+  "artifact_id": "artifact_id",
+  "configuration": [
+    {
+      "key": "abc",
+      "value": "def"
+    },
+    {
+      "key": "xyz",
+      "value": "rst"
+    }
+  ]
+}

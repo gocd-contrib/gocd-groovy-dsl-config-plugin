@@ -112,4 +112,12 @@ public class PluginTask extends Task<PluginTask> {
             }
         });
     }
+
+    public void configurations(List<Map<String, String>> allConfigs) {
+        setAllConfiguration(allConfigs);
+    }
+
+    public void configurationValue(Configuration config) {
+        this.configuration = config;
+    }
 }
