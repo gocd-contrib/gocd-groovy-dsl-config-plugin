@@ -41,7 +41,7 @@ dependencies {
 
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
   testCompile group: 'org.reflections', name: 'reflections', version: '0.9.11'
-  testCompile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.52'
+  testCompile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.59'
   testCompile group: 'dom4j', name: 'dom4j', version: '1.6.1'
 }
 
