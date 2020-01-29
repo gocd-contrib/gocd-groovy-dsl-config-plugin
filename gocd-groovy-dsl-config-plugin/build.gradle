@@ -30,7 +30,7 @@ dependencies {
   extractedAtTopLevel project(':jar-class-loader')
 
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.2'
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.2'
   compile group: 'org.apache.ant', name: 'ant', version: '1.10.7'
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
   runtime group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '6.1.0.Final'
