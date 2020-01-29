@@ -19,7 +19,7 @@ dependencies {
   compile group: 'org.codehaus.groovy', name: 'groovy-sql', version: '2.5.8'
   compile group: 'org.codehaus.groovy', name: 'groovy-swing', version: '2.5.8'
   compile group: 'org.codehaus.groovy', name: 'groovy-dateutil', version: '2.5.8'
-  compile group: 'org.codehaus.groovy', name: 'groovy-xml', version: '2.5.8'
+  compile group: 'org.codehaus.groovy', name: 'groovy-xml', version: '2.5.9'
 
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
