@@ -118,6 +118,9 @@ public class IndentedStringWriter {
     }
 
     private String quoteValue(String value) {
+        if (value == null) {
+            return "''";
+        }
         return "'" + escapeJava(value).replace("'", "\\'") + "'";
     }
 

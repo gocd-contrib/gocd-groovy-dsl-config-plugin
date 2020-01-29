@@ -67,7 +67,7 @@ public class FetchExternalArtifactTask extends AbstractFetchArtifactTask {
         if (configuration != null) {
             configuration.forEach((k, v) -> {
                 LinkedHashMap<String, String> var = new LinkedHashMap<>();
-                var.put("name", k);
+                var.put("key", k);
                 var.put("value", v);
                 allConfigs.add(var);
             });

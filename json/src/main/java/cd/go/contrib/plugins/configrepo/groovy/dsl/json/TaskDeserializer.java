@@ -54,16 +54,20 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                     case "exec":
                         ExecTask execTask = new ExecTask();
                         execTask.setRunIf(runIf);
-                        execTask.setWorkingDir(objectNode.get("working_directory").asText());
+                        if (objectNode.has("working_directory")) {
+                            execTask.setWorkingDir(objectNode.get("working_directory").asText(""));
+                        }
                         String command = objectNode.findValue("command").asText();
                         execTask.getCommandLine().add(0, command);
 
                         ArrayNode arguments = (ArrayNode) objectNode.get("arguments");
-                        List<String> args = StreamSupport
-                                .stream(spliteratorUnknownSize(arguments.elements(), Spliterator.ORDERED), false)
-                                .map(JsonNode::asText)
-                                .collect(toList());
-                        execTask.getCommandLine().addAll(args);
+                        if(arguments!=null) {
+                            List<String> args = StreamSupport
+                                    .stream(spliteratorUnknownSize(arguments.elements(), Spliterator.ORDERED), false)
+                                    .map(JsonNode::asText)
+                                    .collect(toList());
+                            execTask.getCommandLine().addAll(args);
+                        }
                         return execTask;
                     case "fetch":
                         String artifactOrigin = objectNode.get("artifact_origin").asText();
