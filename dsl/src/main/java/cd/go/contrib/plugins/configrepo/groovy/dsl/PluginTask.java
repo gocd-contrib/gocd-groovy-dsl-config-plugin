@@ -60,7 +60,7 @@ public class PluginTask extends Task<PluginTask> {
     }
 
     public PluginTask(@DelegatesTo(value = PluginTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluginTask") Closure cl) {
-        super();
+        super("plugin");
         configure(cl);
     }
 

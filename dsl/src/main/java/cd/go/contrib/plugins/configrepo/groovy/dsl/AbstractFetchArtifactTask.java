@@ -28,7 +28,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class AbstractFetchArtifactTask extends Task<AbstractFetchArtifactTask> {
+public abstract class AbstractFetchArtifactTask extends Task<AbstractFetchArtifactTask> {
 
     @JsonProperty("artifact_origin")
     protected String artifactOrigin = "gocd";
@@ -44,4 +44,8 @@ public class AbstractFetchArtifactTask extends Task<AbstractFetchArtifactTask> {
     @JsonProperty("job")
     @NotEmpty
     protected String job;
+
+    protected AbstractFetchArtifactTask() {
+        super("fetch");
+    }
 }

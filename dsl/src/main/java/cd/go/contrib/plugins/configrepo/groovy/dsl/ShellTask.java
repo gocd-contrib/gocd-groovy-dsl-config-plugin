@@ -90,7 +90,7 @@ public class ShellTask extends Task<ShellTask> {
     }
 
     public ShellTask(String shell, @DelegatesTo(value = ShellTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ShellTask") Closure cl) {
-        super();
+        super(null);
         this.shell = shell;
         configure(cl);
     }

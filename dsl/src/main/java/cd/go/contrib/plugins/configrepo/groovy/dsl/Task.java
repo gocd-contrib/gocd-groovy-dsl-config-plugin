@@ -29,15 +29,6 @@ import static lombok.AccessLevel.NONE;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-//@JsonTypeInfo(
-//        use = JsonTypeInfo.Id.NAME,
-//        include = JsonTypeInfo.As.PROPERTY,
-//        property = "type")
-//@JsonSubTypes({
-//        @JsonSubTypes.Type(value = ExecTask.class, name = "exec"),
-//        @JsonSubTypes.Type(value = FetchArtifactTask.class, name = "fetch"),
-//        @JsonSubTypes.Type(value = PluginTask.class, name = "plugin"),
-//})
 public abstract class Task<T extends Node> extends Node<T> {
 
     /**
@@ -53,12 +44,15 @@ public abstract class Task<T extends Node> extends Node<T> {
     @OneOfStrings(value = {"passed", "failed", "any"})
     private String runIf;
 
+    // this is only used for serialization, so no getters/setters and is marked transient
     @Getter(NONE)
+    @Setter(NONE)
     @JsonProperty("type")
-    protected String type;
+    private transient String type;
 
     @SuppressWarnings("unused" /*method here for serialization only*/)
-    protected Task() {
+    protected Task(String type) {
+        this.type = type;
     }
 
 }

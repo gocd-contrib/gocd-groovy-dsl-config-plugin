@@ -54,7 +54,6 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                     case "exec":
                         ExecTask execTask = new ExecTask();
                         execTask.setRunIf(runIf);
-                        execTask.setType(type);
                         execTask.setWorkingDir(objectNode.get("working_directory").asText());
                         String command = objectNode.findValue("command").asText();
                         execTask.getCommandLine().add(0, command);
@@ -78,7 +77,6 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                                 fetchArtifactTask.setStage(stage);
                                 fetchArtifactTask.setJob(job);
                                 fetchArtifactTask.setRunIf(runIf);
-                                fetchArtifactTask.setType(type);
 
                                 JsonNode isSourceAFile = objectNode.get("is_source_a_file");
                                 fetchArtifactTask.setFile(isSourceAFile != null && isSourceAFile.asBoolean());
@@ -91,7 +89,6 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                                 fetchExternalArtifactTask.setStage(stage);
                                 fetchExternalArtifactTask.setJob(job);
                                 fetchExternalArtifactTask.setRunIf(runIf);
-                                fetchExternalArtifactTask.setType(type);
 
                                 fetchExternalArtifactTask.setArtifactId(objectNode.get("artifact_id").asText());
                                 fetchExternalArtifactTask.configurationValues(getConfiguration((ArrayNode) objectNode.get("configuration")));
@@ -102,7 +99,6 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                     case "plugin":
                         PluginTask pluginTask = new PluginTask();
                         pluginTask.setRunIf(runIf);
-                        pluginTask.setType(type);
                         pluginTask.configurations(getConfiguration((ArrayNode) objectNode.get("configuration")));
                         JsonNode pluginConfig = objectNode.get("plugin_configuration");
                         Configuration configuration = new Configuration();
