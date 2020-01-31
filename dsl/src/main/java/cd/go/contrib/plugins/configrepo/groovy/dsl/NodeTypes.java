@@ -28,6 +28,7 @@ public class NodeTypes {
                     Arrays.asList(
                             cd.go.contrib.plugins.configrepo.groovy.dsl.AbstractArtifact.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.AbstractBuiltInArtifact.class,
+                            cd.go.contrib.plugins.configrepo.groovy.dsl.AbstractFetchArtifactTask.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.Approval.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.Artifacts.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.BuildArtifact.class,
@@ -39,6 +40,7 @@ public class NodeTypes {
                             cd.go.contrib.plugins.configrepo.groovy.dsl.Environments.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.ExecTask.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.FetchArtifactTask.class,
+                            cd.go.contrib.plugins.configrepo.groovy.dsl.FetchExternalArtifactTask.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial.class,
                             cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD.class,

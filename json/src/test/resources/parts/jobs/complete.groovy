@@ -36,5 +36,37 @@ return new Jobs().job('test') {
       runIf = 'any'
       workingDir = 'some-dir'
     }
+    fetchArtifact {
+      destination = 'test'
+      file = true
+      job = 'upstream_job'
+      pipeline = 'upstream'
+      runIf = 'any'
+      source = 'result'
+      stage = 'upstream_stage'
+    }
+    fetchExternalArtifact {
+      artifactId = 'artifact_id'
+      configuration = [
+        abc: 'def',
+        xyz: 'rst',
+      ]
+      job = 'upstream_job'
+      pipeline = 'upstream'
+      runIf = 'passed'
+      stage = 'upstream_stage'
+    }
+    plugin {
+      options = [
+        ConverterType: 'jsunit',
+      ]
+      runIf = 'failed'
+      secureOptions = [
+        password: 'ssd#%fFS*!Esx',
+      ]
+      configuration {
+        id = 'xunit.converter.task.plugin'
+      }
+    }
   }
 }

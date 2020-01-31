@@ -72,6 +72,10 @@ public class Tasks extends CollectionNode<Task> {
         return fetchDirectory(cl);
     }
 
+    public FetchExternalArtifactTask fetchExternalArtifact(@DelegatesTo(value = FetchExternalArtifactTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.FetchExternalArtifactTask") Closure cl) {
+        return (FetchExternalArtifactTask) create(() -> new FetchExternalArtifactTask(cl));
+    }
+
     public FetchArtifactTask fetchFile(@DelegatesTo(value = FetchArtifactTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.FetchArtifactTask") Closure cl) {
         return (FetchArtifactTask) create(() -> new FetchArtifactTask(true, cl));
     }

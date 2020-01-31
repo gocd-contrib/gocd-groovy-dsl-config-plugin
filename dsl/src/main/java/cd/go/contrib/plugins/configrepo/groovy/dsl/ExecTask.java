@@ -64,7 +64,7 @@ public class ExecTask extends Task<ExecTask> {
     }
 
     public ExecTask(@DelegatesTo(value = ExecTask.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ExecTask") Closure cl) {
-        super();
+        super("exec");
         configure(cl);
     }
 

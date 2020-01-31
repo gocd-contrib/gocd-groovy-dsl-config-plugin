@@ -18,26 +18,17 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.OneOfStrings;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import static lombok.AccessLevel.NONE;
+
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = ExecTask.class, name = "exec"),
-        @JsonSubTypes.Type(value = FetchArtifactTask.class, name = "fetch"),
-        @JsonSubTypes.Type(value = PluginTask.class, name = "plugin"),
-})
 public abstract class Task<T extends Node> extends Node<T> {
 
     /**
@@ -53,8 +44,15 @@ public abstract class Task<T extends Node> extends Node<T> {
     @OneOfStrings(value = {"passed", "failed", "any"})
     private String runIf;
 
+    // this is only used for serialization, so no getters/setters and is marked transient
+    @Getter(NONE)
+    @Setter(NONE)
+    @JsonProperty("type")
+    private transient String type;
+
     @SuppressWarnings("unused" /*method here for serialization only*/)
-    protected Task() {
+    protected Task(String type) {
+        this.type = type;
     }
 
 }

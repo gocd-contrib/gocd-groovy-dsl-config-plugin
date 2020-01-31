@@ -50,6 +50,54 @@
         "install"
       ],
       "working_directory": "some-dir"
+    },
+    {
+      "type": "fetch",
+      "run_if": "any",
+      "pipeline": "upstream",
+      "stage": "upstream_stage",
+      "job": "upstream_job",
+      "is_source_a_file": true,
+      "artifact_origin": "gocd",
+      "source": "result",
+      "destination": "test"
+    },
+    {
+      "type": "fetch",
+      "run_if": "passed",
+      "pipeline": "upstream",
+      "stage": "upstream_stage",
+      "job": "upstream_job",
+      "artifact_origin": "external",
+      "artifact_id": "artifact_id",
+      "configuration": [
+        {
+          "key": "abc",
+          "value": "def"
+        },
+        {
+          "key": "xyz",
+          "value": "rst"
+        }
+      ]
+    },
+    {
+      "type": "plugin",
+      "configuration": [
+        {
+          "key": "ConverterType",
+          "value": "jsunit"
+        },
+        {
+          "key": "password",
+          "encrypted_value": "ssd#%fFS*!Esx"
+        }
+      ],
+      "run_if": "failed",
+      "plugin_configuration": {
+        "id": "xunit.converter.task.plugin",
+        "version": "1"
+      }
     }
   ]
 }
