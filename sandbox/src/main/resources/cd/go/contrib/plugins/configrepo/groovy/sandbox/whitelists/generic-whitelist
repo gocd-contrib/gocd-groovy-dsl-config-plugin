@@ -1004,6 +1004,7 @@ staticMethod org.codehaus.groovy.runtime.StringGroovyMethods findAll java.lang.C
 staticMethod org.codehaus.groovy.runtime.StringGroovyMethods findAll java.lang.String java.lang.String groovy.lang.Closure
 staticMethod org.codehaus.groovy.runtime.StringGroovyMethods findAll java.lang.String java.util.regex.Pattern groovy.lang.Closure
 staticMethod org.codehaus.groovy.runtime.StringGroovyMethods getAt java.lang.String groovy.lang.IntRange
+staticMethod org.codehaus.groovy.runtime.StringGroovyMethods getAt java.lang.String groovy.lang.Range
 staticMethod org.codehaus.groovy.runtime.StringGroovyMethods getAt java.lang.String java.util.Collection
 staticMethod org.codehaus.groovy.runtime.StringGroovyMethods getAt java.util.regex.Matcher int
 staticMethod org.codehaus.groovy.runtime.StringGroovyMethods isAllWhitespace java.lang.CharSequence
