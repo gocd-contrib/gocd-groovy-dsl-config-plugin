@@ -61,7 +61,7 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                         execTask.getCommandLine().add(0, command);
 
                         ArrayNode arguments = (ArrayNode) objectNode.get("arguments");
-                        if(arguments!=null) {
+                        if (arguments != null) {
                             List<String> args = StreamSupport
                                     .stream(spliteratorUnknownSize(arguments.elements(), Spliterator.ORDERED), false)
                                     .map(JsonNode::asText)
@@ -71,7 +71,10 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                         return execTask;
                     case "fetch":
                         String artifactOrigin = objectNode.get("artifact_origin").asText();
-                        String pipeline = objectNode.get("pipeline").asText();
+                        String pipeline = "";
+                        if (objectNode.has("pipeline")) {
+                            pipeline = objectNode.get("pipeline").asText();
+                        }
                         String stage = objectNode.get("stage").asText();
                         String job = objectNode.get("job").asText();
                         switch (artifactOrigin) {
@@ -85,7 +88,9 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                                 JsonNode isSourceAFile = objectNode.get("is_source_a_file");
                                 fetchArtifactTask.setFile(isSourceAFile != null && isSourceAFile.asBoolean());
                                 fetchArtifactTask.setSource(objectNode.get("source").asText());
-                                fetchArtifactTask.setDestination(objectNode.get("destination").asText());
+                                if (objectNode.has("destination")) {
+                                    fetchArtifactTask.setDestination(objectNode.get("destination").asText());
+                                }
                                 return fetchArtifactTask;
                             case "external":
                                 FetchExternalArtifactTask fetchExternalArtifactTask = new FetchExternalArtifactTask();
