@@ -187,7 +187,7 @@ nexus {
 }
 
 nexusStaging {
-  packageGroup = 'cd.go.groovydsl'
+  packageGroup = 'cd.go'
 
   /* To get the staging id, you can either:
     - Use the 'getStagingProfile' task added by the 'io.codearte.nexus-staging' plugin
