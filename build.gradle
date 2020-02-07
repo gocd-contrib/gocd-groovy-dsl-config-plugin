@@ -70,11 +70,8 @@ subprojects {
 
 }
 
-nexus {
-  nexusUsername = System.getenv('GOCD_NEXUS_USERNAME')
-  nexusPassword = System.getenv('GOCD_NEXUS_PASSWORD')
-}
-
 nexusStaging {
   packageGroup = 'cd.go.groovydsl'
+  username = System.getenv('GOCD_NEXUS_USERNAME')
+  password = System.getenv('GOCD_NEXUS_PASSWORD')
 }
