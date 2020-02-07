@@ -171,13 +171,26 @@ modifyPom {
   }
 }
 
+signing {
+  project.ext.'signing.keyId' = System.getenv('GOCD_GPG_KEY_ID')
+  project.ext.'signing.password' = System.getenv('GOCD_GPG_PASSPHRASE')
+  project.ext.'signing.secretKeyRingFile' = System.getenv('GOCD_GPG_KEYRING_FILE')
+  project.ext.nexusUsername = System.getenv('GOCD_NEXUS_USERNAME')
+  project.ext.nexusPassword = System.getenv('GOCD_NEXUS_PASSWORD')
+}
+
+nexus {
+  nexusUsername = project.nexusUsername
+  nexusPassword = project.nexusPassword
+}
+
 nexusStaging {
   packageGroup = 'cd.go.groovydsl'
 
   /* To get the staging id, you can either:
     - Use the 'getStagingProfile' task added by the 'io.codearte.nexus-staging' plugin
     - Log-in on sonatype.org, go to staging profile, select `cd.go`, id = last part of URL */
-  stagingProfileId = '8f73aacb1d399b'
+//  stagingProfileId = '8f73aacb1d399b'
 }
 
 artifacts {
