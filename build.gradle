@@ -71,7 +71,7 @@ subprojects {
 }
 
 nexusStaging {
-  packageGroup = 'cd.go.groovydsl'
+  packageGroup = 'cd.go'
   username = System.getenv('GOCD_NEXUS_USERNAME')
   password = System.getenv('GOCD_NEXUS_PASSWORD')
 }

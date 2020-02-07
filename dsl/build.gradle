@@ -132,6 +132,8 @@ publishing {
 modifyPom {
   project {
     name project.name
+    groupId = project.group
+    artifactId = project.name
     packaging 'jar'
     description project.description
     url 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
