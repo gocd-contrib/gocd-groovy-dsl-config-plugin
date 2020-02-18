@@ -40,7 +40,7 @@ dependencies {
   testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
 
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
-  testCompile group: 'org.reflections', name: 'reflections', version: '0.9.11'
+  testCompile group: 'org.reflections', name: 'reflections', version: '0.9.12'
   testCompile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.64'
   testCompile group: 'dom4j', name: 'dom4j', version: '1.6.1'
 }
