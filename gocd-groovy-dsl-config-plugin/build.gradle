@@ -39,7 +39,7 @@ dependencies {
 
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.2'
   testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.5.2'
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.2'
 
   testCompile group: 'org.mockito', name: 'mockito-core', version: '3.2.4'
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
