@@ -4,29 +4,22 @@
     <addNotNullAssertions enabled="false" />
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.10/625fc0055674dff70dbc76efa36d0f2c89b04a24/lombok-1.18.10.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/6.1.0.Final/f3c20f81a0e81aa100574719aaa17b884be80044/hibernate-validator-annotation-processor-6.1.0.Final.jar" />
+        </processorPath>
+        <module name="gocd-groovy-dsl-config-plugin.dsl.main" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/6.1.0.Final/f3c20f81a0e81aa100574719aaa17b884be80044/hibernate-validator-annotation-processor-6.1.0.Final.jar" />
+        </processorPath>
+        <module name="gocd-groovy-dsl-config-plugin.dsl-validation.main" />
+      </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="gocd-groovy-dsl-config-plugin.cli.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.cli.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.doclet.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.doclet.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.dsl-validation.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.dsl-validation.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.dsl.examples" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.dsl.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.dsl.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.example.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.example.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.gocd-groovy-dsl-config-plugin.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.gocd-groovy-dsl-config-plugin.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.groovy-export.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.groovy-export.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.jar-class-loader.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.jar-class-loader.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.json.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.json.test" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.sandbox.main" target="1.8" />
-      <module name="gocd-groovy-dsl-config-plugin.sandbox.test" target="1.8" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8" />
   </component>
 </project>
