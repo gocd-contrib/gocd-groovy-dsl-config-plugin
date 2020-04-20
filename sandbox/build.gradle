@@ -15,26 +15,27 @@
  */
 
 dependencies {
-  compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.8'
-  compile group: 'org.codehaus.groovy', name: 'groovy-sql', version: '2.5.8'
-  compile group: 'org.codehaus.groovy', name: 'groovy-swing', version: '2.5.8'
-  compile group: 'org.codehaus.groovy', name: 'groovy-dateutil', version: '2.5.8'
-  compile group: 'org.codehaus.groovy', name: 'groovy-xml', version: '2.5.8'
+  compile group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
+  compile group: 'org.codehaus.groovy', name: 'groovy-sql', version: groovyVersion
+  compile group: 'org.codehaus.groovy', name: 'groovy-swing', version: groovyVersion
+  compile group: 'org.codehaus.groovy', name: 'groovy-dateutil', version: groovyVersion
+  compile group: 'org.codehaus.groovy', name: 'groovy-xml', version: groovyVersion
 
-  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+  compile group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
 
-  compile(group: 'org.kohsuke', name: 'groovy-sandbox', version: '1.24') {
+  compile(group: 'org.kohsuke', name: 'groovy-sandbox', version: groovySandboxVersion) {
     exclude(group: 'org.codehaus.groovy')
   }
-  compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
 
-  testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.5.8'
-  testCompile group: 'junit', name: 'junit', version: '4.13'
+  compile group: 'com.google.guava', name: 'guava', version: guavaVersion
+
+  testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+  testCompile group: 'junit', name: 'junit', version: junit4Version
   // for @Grab annotation
-  testCompile group: 'org.apache.ivy', name: 'ivy', version: '2.5.0'
-  testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '2.2'
-  testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '2.2'
-  testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.5.2'
+  testCompile group: 'org.apache.ivy', name: 'ivy', version: ivyVersion
+  testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: hamcrestVersion
+  testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: hamcrestVersion
+  testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: jupiterVersion
 }
 
 tasks.withType(JavaCompile) {
