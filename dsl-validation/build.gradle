@@ -16,7 +16,7 @@
 
 
 dependencies {
-  annotationProcessor group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '6.1.0.Final'
-  compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-  compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
+  annotationProcessor group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: hiberVersion
+  compile group: 'javax.validation', name: 'validation-api', version: validateApiVersion
+  compile group: 'org.glassfish', name: 'javax.el', version: glassfishVersion
 }

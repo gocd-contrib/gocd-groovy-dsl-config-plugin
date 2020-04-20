@@ -20,6 +20,6 @@
         <module name="gocd-groovy-dsl-config-plugin.dsl-validation.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="11" />
   </component>
 </project>

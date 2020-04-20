@@ -15,7 +15,7 @@
  */
 
 dependencies {
-  compile group: 'org.codelibs', name: 'jhighlight', version: '1.0.3'
+  compile group: 'org.codelibs', name: 'jhighlight', version: jhighlightVersion
   compile localGroovy()
   compileOnly files("${System.getProperty('java.home')}/../lib/tools.jar")
 }

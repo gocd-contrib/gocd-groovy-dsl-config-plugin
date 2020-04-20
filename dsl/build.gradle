@@ -25,24 +25,24 @@ configurations {
 
 dependencies {
   doclet project(':doclet')
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
-  annotationProcessor group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '6.1.0.Final'
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+  annotationProcessor group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: hiberVersion
 
-  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 
-  compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.8'
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.2'
-  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-  compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+  compile group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion
+  compile group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
+  compile group: 'javax.validation', name: 'validation-api', version: validateApiVersion
 
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.2'
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.5.2'
-  testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiterVersion
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: jupiterVersion
+  testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiterVersion
 
-  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
-  testCompile group: 'org.reflections', name: 'reflections', version: '0.9.11'
-  testCompile group: 'io.github.classgraph', name: 'classgraph', version: '4.8.64'
-  testCompile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+  testCompile group: 'org.assertj', name: 'assertj-core', version: assertJVersion
+  testCompile group: 'org.reflections', name: 'reflections', version: reflectionsVersion
+  testCompile group: 'io.github.classgraph', name: 'classgraph', version: classgraphVersion
+  testCompile group: 'dom4j', name: 'dom4j', version: dom4jVersion
 }
 
 test {
@@ -114,7 +114,7 @@ javadoc {
   options.overview('overview.html')
   options.showFromPublic()
 
-  options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-2.5.8/html/gapi")
+  options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/gapi")
   title = "GoCD Groovy DSL API ${version}"
   options.footer = 'Copyright (c) 2019 ThoughtWorks, Inc.'
 }

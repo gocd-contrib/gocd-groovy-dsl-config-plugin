@@ -16,6 +16,33 @@
 
 
 buildscript {
+  ext {
+    antVersion = '1.10.7'
+    assertJVersion = '3.14.0'
+    classgraphVersion = '4.8.64'
+    commonsLangVersion = '3.9'
+    dom4jVersion = '1.6.1'
+    glassfishVersion = '3.0.0'
+    groovySandboxVersion = '1.24'
+    groovyVersion = '2.5.9'
+    guavaVersion = '28.2-jre'
+    hamcrestVersion = '2.2'
+    hiberVersion = '6.1.1.Final'
+    ivyVersion = '2.5.0'
+    jacksonVersion = '2.10.2'
+    jcommanderVersion = '1.78'
+    jhighlightVersion = '1.0.3'
+    jsonFluentVersion = '2.12.0'
+    junit4Version = '4.13'
+    jupiterVersion = '5.6.0'
+    lombokVersion = '1.18.10'
+    mockitoVersion = '3.2.4'
+    pluginApiVersion = '19.7.0'
+    reflectionsVersion = '0.9.11'
+    retrofitVersion = '2.7.2'
+    validateApiVersion = '2.0.1.Final'
+  }
+
   repositories {
     gradlePluginPortal()
     mavenCentral()
@@ -55,6 +82,11 @@ gocdPlugin {
 allprojects {
   group = 'cd.go.groovydsl'
   version = gocdPlugin.fullVersion(project)
+
+  tasks.withType(JavaCompile) {
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+  }
 }
 
 subprojects {
