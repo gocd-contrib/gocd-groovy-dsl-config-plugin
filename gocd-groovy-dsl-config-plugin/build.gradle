@@ -75,3 +75,7 @@ jar {
     into("/")
   }
 }
+
+test {
+  useJUnitPlatform()
+}

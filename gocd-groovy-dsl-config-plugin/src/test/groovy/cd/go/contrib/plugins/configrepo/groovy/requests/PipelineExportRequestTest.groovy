@@ -16,31 +16,60 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.requests
 
-
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipelines
 import org.junit.jupiter.api.Test
 
-import static org.assertj.core.api.Assertions.assertThat
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer.toJsonString
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class PipelineExportRequestTest {
 
   @Test
   void "should deserialize"() {
-    def json = '{"pipeline":{"group":"first","name":"up42","label_template":"${COUNT}","lock_behavior":"none","environment_variables":[],"parameters":[],"materials":[{"url":"test-repo","branch":"master","shallow_clone":false,"filter":{"ignore":[],"whitelist":[]},"auto_update":true,"type":"git"}],"stages":[{"name":"up42_stage","fetch_materials":true,"never_cleanup_artifacts":false,"clean_working_directory":false,"approval":{"type":"success","users":[],"roles":[]},"environment_variables":[],"jobs":[{"name":"up42_job","environment_variables":[],"tabs":[],"resources":[],"artifacts":[],"properties":[],"run_instance_count":"0","timeout":0,"tasks":[{"command":"ls","timeout":-1,"arguments":[],"run_if":"passed","type":"exec"}]}]}]}}'
-    assertThat(PipelineExportRequest.fromJSON(json).pipeline).isEqualTo(new Pipelines().pipeline("up42", {
+    String json = '{"pipeline":{"group":"first","name":"up42","label_template":"${COUNT}","lock_behavior":"none","environment_variables":[],"parameters":[],"materials":[{"url":"test-repo","branch":"master","shallow_clone":false,"filter":{"ignore":[],"whitelist":[]},"auto_update":true,"type":"git"}],"stages":[{"name":"up42_stage","fetch_materials":true,"never_cleanup_artifacts":false,"clean_working_directory":false,"approval":{"type":"success","users":[],"roles":[]},"environment_variables":[],"jobs":[{"name":"up42_job","environment_variables":[],"tabs":[],"resources":[],"artifacts":[],"properties":[],"run_instance_count":"0","timeout":0,"tasks":[{"command":"ls","timeout":-1,"arguments":[],"run_if":"passed","type":"exec"}]}]}]}}'
+
+    def actual = PipelineExportRequest.fromJSON(json).pipeline
+    def expected = new Pipelines().pipeline("up42", {
       labelTemplate = '${COUNT}'
       lockBehavior = 'none'
       group = 'first'
       materials {
         git {
           url = 'test-repo'
+          branch = 'master'
+          shallowClone = false
         }
       }
       stages {
         stage('up42_stage') {
+          fetchMaterials = true
+          cleanWorkingDir = false
+          artifactCleanupProhibited = false
 
+          approval {
+            allowOnlyOnSuccess = false
+          }
+
+          jobs {
+            job('up42_job') {
+              tasks {
+                exec {
+                  commandLine = ['ls']
+                  runIf = "passed"
+                }
+              }
+              runInstanceCount = "0"
+              timeout = 0
+            }
+          }
         }
       }
-    }))
+    })
+
+    assertEquals(
+      expected,
+      actual,
+      "**DIFF** JSON dump:\n\nExpected:\n\n${toJsonString(expected)}\n\nActual:\n\n${toJsonString(actual)}"
+    )
   }
 }
