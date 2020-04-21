@@ -15,30 +15,35 @@
  */
 
 dependencies {
-  compile group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
-  compile group: 'org.codehaus.groovy', name: 'groovy-sql', version: groovyVersion
-  compile group: 'org.codehaus.groovy', name: 'groovy-swing', version: groovyVersion
-  compile group: 'org.codehaus.groovy', name: 'groovy-dateutil', version: groovyVersion
-  compile group: 'org.codehaus.groovy', name: 'groovy-xml', version: groovyVersion
+  implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
+  implementation group: 'org.codehaus.groovy', name: 'groovy-sql', version: groovyVersion
+  implementation group: 'org.codehaus.groovy', name: 'groovy-swing', version: groovyVersion
+  implementation group: 'org.codehaus.groovy', name: 'groovy-dateutil', version: groovyVersion
+  implementation group: 'org.codehaus.groovy', name: 'groovy-xml', version: groovyVersion
 
-  compile group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
 
-  compile(group: 'org.kohsuke', name: 'groovy-sandbox', version: groovySandboxVersion) {
+  implementation(group: 'org.kohsuke', name: 'groovy-sandbox', version: groovySandboxVersion) {
     exclude(group: 'org.codehaus.groovy')
   }
 
-  compile group: 'com.google.guava', name: 'guava', version: guavaVersion
+  implementation group: 'com.google.guava', name: 'guava', version: guavaVersion
 
-  testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
-  testCompile group: 'junit', name: 'junit', version: junit4Version
+  testImplementation group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiterVersion
+  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiterVersion
+
   // for @Grab annotation
-  testCompile group: 'org.apache.ivy', name: 'ivy', version: ivyVersion
-  testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: hamcrestVersion
-  testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: hamcrestVersion
-  testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: jupiterVersion
+  testImplementation group: 'org.apache.ivy', name: 'ivy', version: ivyVersion
+  testImplementation group: 'org.hamcrest', name: 'hamcrest-core', version: hamcrestVersion
+  testImplementation group: 'org.hamcrest', name: 'hamcrest-library', version: hamcrestVersion
 }
 
 tasks.withType(JavaCompile) {
   // since this code that we copied from elsewhere, we disable all lint
   options.compilerArgs << "-Xlint:-unchecked"
+}
+
+test {
+  useJUnitPlatform()
 }

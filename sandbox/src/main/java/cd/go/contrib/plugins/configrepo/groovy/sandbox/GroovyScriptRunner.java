@@ -22,8 +22,6 @@ import cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists.ProxyWhitelist
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
-import groovy.util.ResourceException;
-import groovy.util.ScriptException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.codehaus.groovy.runtime.ResourceGroovyMethods;
@@ -33,15 +31,13 @@ import java.io.IOException;
 
 public class GroovyScriptRunner {
 
-    private final CompilerConfiguration compilerConfiguration;
-
     private final GroovyShell groovyShell;
 
     private final String url;
 
     public GroovyScriptRunner(String url, String... imports) {
         this.url = url;
-        compilerConfiguration = GroovySandbox.createSecureCompilerConfiguration();
+        CompilerConfiguration compilerConfiguration = GroovySandbox.createSecureCompilerConfiguration();
         ImportCustomizer importCustomizer = new ImportCustomizer();
         importCustomizer.addStarImports(imports);
         compilerConfiguration.addCompilationCustomizers(importCustomizer);
@@ -50,7 +46,7 @@ public class GroovyScriptRunner {
         this.groovyShell = new GroovyShell(secureClassLoader, new Binding(), compilerConfiguration);
     }
 
-    public Object runScript(String fileName) throws IOException, ResourceException, ScriptException {
+    public Object runScript(String fileName) throws IOException {
         return runScriptWithText(ResourceGroovyMethods.getText(new File(url + "/" + fileName), "utf-8"));
     }
 

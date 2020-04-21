@@ -8,14 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.10/625fc0055674dff70dbc76efa36d0f2c89b04a24/lombok-1.18.10.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/6.1.0.Final/f3c20f81a0e81aa100574719aaa17b884be80044/hibernate-validator-annotation-processor-6.1.0.Final.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/6.1.1.Final/39494a0a1e141e2c56e30046f1d5b8e296e9846f/hibernate-validator-annotation-processor-6.1.1.Final.jar" />
         </processorPath>
         <module name="gocd-groovy-dsl-config-plugin.dsl.main" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/6.1.0.Final/f3c20f81a0e81aa100574719aaa17b884be80044/hibernate-validator-annotation-processor-6.1.0.Final.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/6.1.1.Final/39494a0a1e141e2c56e30046f1d5b8e296e9846f/hibernate-validator-annotation-processor-6.1.1.Final.jar" />
         </processorPath>
         <module name="gocd-groovy-dsl-config-plugin.dsl-validation.main" />
       </profile>

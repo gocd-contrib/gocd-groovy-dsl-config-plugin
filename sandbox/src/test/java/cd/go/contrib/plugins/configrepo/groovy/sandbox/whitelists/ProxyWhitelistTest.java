@@ -24,16 +24,17 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ProxyWhitelistTest {
 
-    @Test public void reset() throws Exception {
+    @Test
+    public void reset() throws Exception {
         ProxyWhitelist pw1 = new ProxyWhitelist(new StaticWhitelist(new StringReader("method java.lang.String length")));
         ProxyWhitelist pw2 = new ProxyWhitelist(pw1);
         assertTrue(pw2.permitsMethod(String.class.getMethod("length"), "x", new Object[0]));
@@ -50,11 +51,11 @@ public class ProxyWhitelistTest {
     @Test
     public void caching() throws Exception {
         ProxyWhitelist pw1 = new ProxyWhitelist(new StaticWhitelist(new StringReader("method java.lang.String length")));
-        assertEquals(1, ((EnumeratingWhitelist)pw1.delegates.get(0)).permittedCache.size());
+        assertEquals(1, ((EnumeratingWhitelist) pw1.delegates.get(0)).permittedCache.size());
 
         ProxyWhitelist pw2 = new ProxyWhitelist(pw1, new StaticWhitelist(new StringReader("method java.lang.String trim")));
-        assertEquals(0, ((EnumeratingWhitelist)pw1.delegates.get(0)).permittedCache.size());
-        assertEquals(2, ((EnumeratingWhitelist)pw2.delegates.get(0)).permittedCache.size());
+        assertEquals(0, ((EnumeratingWhitelist) pw1.delegates.get(0)).permittedCache.size());
+        assertEquals(2, ((EnumeratingWhitelist) pw2.delegates.get(0)).permittedCache.size());
     }
 
 }

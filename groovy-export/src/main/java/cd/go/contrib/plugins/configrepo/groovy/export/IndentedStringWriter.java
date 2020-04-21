@@ -28,8 +28,8 @@ import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static org.apache.commons.lang3.StringEscapeUtils.escapeJava;
 import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.text.StringEscapeUtils.escapeJava;
 
 public class IndentedStringWriter {
 

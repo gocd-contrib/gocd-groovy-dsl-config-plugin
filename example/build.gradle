@@ -15,5 +15,5 @@
  */
 
 dependencies {
-  compile project(':dsl')
+  implementation project(':dsl')
 }
