@@ -21,37 +21,38 @@ configurations {
 }
 
 dependencies {
-  compile project(':dsl')
-  compile project(':cli')
-  compile project(':groovy-export')
-
-  compile group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
+  implementation project(':cli')
+  implementation project(':dsl')
+  implementation project(':dsl-validation')
+  implementation project(':groovy-export')
+  implementation project(':json')
+  implementation project(':sandbox')
+  implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
 
   extractedAtTopLevel project(':jar-class-loader')
 
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
-  compile group: 'org.apache.ant', name: 'ant', version: antVersion
-  compile group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
-  runtime group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: hiberVersion
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
+  implementation group: 'org.apache.ant', name: 'ant', version: antVersion
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
+  implementation group: 'com.google.guava', name: 'guava', version: guavaVersion
+  implementation group: 'javax.validation', name: 'validation-api', version: validateApiVersion
+
+  runtimeOnly group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: hiberVersion
 
   compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: pluginApiVersion
 
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiterVersion
-  testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiterVersion
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: jupiterVersion
-
-  testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
-  testCompile group: 'org.assertj', name: 'assertj-core', version: assertJVersion
-  testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: jsonFluentVersion
+  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiterVersion
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiterVersion
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: jupiterVersion
+  testImplementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
+  testImplementation group: 'org.assertj', name: 'assertj-core', version: assertJVersion
+  testImplementation group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version: jsonFluentVersion
 }
 
 sourceSets {
-  main.compileClasspath += project.configurations.compileOnly
-  main {
-    java { srcDirs = [] }
-    groovy { srcDirs += ['src/main/java'] }
-  }
+  main.compileClasspath += project.configurations.compileClasspath
 }
 
 jar {

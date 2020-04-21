@@ -97,7 +97,7 @@ public class GroovyExporter {
             if (propertyValue == null) {
                 continue;
             }
-            Object defaultValueOfField = getterMethod.invoke(node.getClass().newInstance());
+            Object defaultValueOfField = getterMethod.invoke(node.getClass().getDeclaredConstructor().newInstance());
             if (propertyValue.equals(defaultValueOfField)) {
                 continue;
             }

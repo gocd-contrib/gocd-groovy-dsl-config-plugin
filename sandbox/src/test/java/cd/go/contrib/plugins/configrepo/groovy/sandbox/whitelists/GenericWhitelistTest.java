@@ -26,14 +26,15 @@ package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.SandboxInterceptorTest;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ErrorCollector;
 
 public class GenericWhitelistTest {
 
     @Rule public ErrorCollector errors = new ErrorCollector();
 
-    @Test public void sanity() throws Exception {
+    @Test
+    public void sanity() throws Exception {
         StaticWhitelistTest.sanity(GenericWhitelist.class.getResource("generic-whitelist"));
     }
 

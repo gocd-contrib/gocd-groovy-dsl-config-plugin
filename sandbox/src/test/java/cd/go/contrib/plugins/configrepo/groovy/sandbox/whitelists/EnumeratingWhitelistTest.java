@@ -24,8 +24,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -34,17 +33,20 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EnumeratingWhitelistTest {
 
     public static class C {
+
         public int myField = 5;
 
-        public void m(Object[] args) {}
+        public void m(Object[] args) {
+        }
     }
 
-    @Test public void matches() throws Exception {
+    @Test
+    public void matches() throws Exception {
         Method m = C.class.getMethod("m", Object[].class);
         assertTrue(new EnumeratingWhitelist.MethodSignature(C.class, "m", Object[].class).matches(m));
         assertTrue(new EnumeratingWhitelist.MethodSignature(C.class, "*", Object[].class).matches(m));
@@ -57,14 +59,16 @@ public class EnumeratingWhitelistTest {
         assertFalse(new EnumeratingWhitelist.FieldSignature(C.class, "other").matches(f));
     }
 
-    @Test public void getName() {
+    @Test
+    public void getName() {
         assertEquals("java.lang.Object", EnumeratingWhitelist.getName(Object.class));
         assertEquals("java.lang.Object[]", EnumeratingWhitelist.getName(Object[].class));
         assertEquals("java.lang.Object[][]", EnumeratingWhitelist.getName(Object[][].class));
         assertEquals(EnumeratingWhitelistTest.class.getName() + "$C", EnumeratingWhitelist.getName(C.class));
     }
 
-    @Test public void methodExists() throws Exception {
+    @Test
+    public void methodExists() throws Exception {
         assertTrue(new EnumeratingWhitelist.MethodSignature(Object.class, "equals", Object.class).exists());
         assertFalse(new EnumeratingWhitelist.MethodSignature(String.class, "equals", Object.class).exists());
         assertFalse(new EnumeratingWhitelist.MethodSignature(String.class, "compareTo", Object.class).exists());
@@ -87,15 +91,22 @@ public class EnumeratingWhitelistTest {
     }
 
     public static class Fancy {
+
         public static int myStaticF = 8;
+
         public int myF = 5;
 
-        public void m(Object[] args) {}
+        public void m(Object[] args) {
+        }
 
-        public static void staticM(Object arg){}
+        public static void staticM(Object arg) {
+        }
 
-        public Fancy(){}
-        public Fancy(int ob){}
+        public Fancy() {
+        }
+
+        public Fancy(int ob) {
+        }
     }
 
     /** Verifies for caching that canonical names match method signature toString, for cache keying. */
@@ -114,11 +125,11 @@ public class EnumeratingWhitelistTest {
         EnumeratingWhitelist.FieldSignature fSig = new EnumeratingWhitelist.FieldSignature(Fancy.class, "myF");
         EnumeratingWhitelist.FieldSignature staticFSig = new EnumeratingWhitelist.StaticFieldSignature(Fancy.class.getName(), "myStaticF");
 
-        Assert.assertEquals(mSig.toString(), EnumeratingWhitelist.canonicalMethodSig(m));
-        Assert.assertEquals(staticMSig.toString(), EnumeratingWhitelist.canonicalStaticMethodSig(staticM));
-        Assert.assertEquals(conSig.toString(), EnumeratingWhitelist.canonicalConstructorSig(con));
-        Assert.assertEquals(fSig.toString(), EnumeratingWhitelist.canonicalFieldSig(f));
-        Assert.assertEquals(staticFSig.toString(), EnumeratingWhitelist.canonicalStaticFieldSig(staticF));
+        assertEquals(EnumeratingWhitelist.canonicalMethodSig(m), mSig.toString());
+        assertEquals(EnumeratingWhitelist.canonicalStaticMethodSig(staticM), staticMSig.toString());
+        assertEquals(EnumeratingWhitelist.canonicalConstructorSig(con), conSig.toString());
+        assertEquals(EnumeratingWhitelist.canonicalFieldSig(f), fSig.toString());
+        assertEquals(EnumeratingWhitelist.canonicalStaticFieldSig(staticF), staticFSig.toString());
     }
 
     @Test

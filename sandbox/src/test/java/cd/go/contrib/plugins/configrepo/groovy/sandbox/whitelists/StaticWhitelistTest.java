@@ -26,7 +26,7 @@ package cd.go.contrib.plugins.configrepo.groovy.sandbox.whitelists;
 
 import groovy.lang.GroovyObject;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,12 +36,13 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.*;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StaticWhitelistTest {
 
-    @Test public void dangerous() throws Exception {
+    @Test
+    public void dangerous() throws Exception {
         assertFalse(StaticWhitelist.rejectMethod(Collection.class.getMethod("clear")).isDangerous());
         assertTrue(StaticWhitelist.rejectNew(File.class.getConstructor(String.class)).isDangerous());
         assertTrue(StaticWhitelist.rejectMethod(GroovyObject.class.getMethod("invokeMethod", String.class, Object.class)).isDangerous());
@@ -69,7 +70,7 @@ public class StaticWhitelistTest {
         boolean hasDupes = false;
         for (EnumeratingWhitelist.Signature sig : sigs) {
             if (!existingSigs.add(sig)) {
-                System.out.println("Duplicate whitelist signature: "+sig);
+                System.out.println("Duplicate whitelist signature: " + sig);
                 hasDupes = true;
             }
         }
@@ -79,7 +80,7 @@ public class StaticWhitelistTest {
         Collections.sort(sorted);
 
         boolean isUnsorted = false;
-        for (int i=0; i<sigs.size(); i++) {
+        for (int i = 0; i < sigs.size(); i++) {
             EnumeratingWhitelist.Signature expectedSig = sorted.get(i);
             EnumeratingWhitelist.Signature actualSig = sigs.get(i);
             if (!expectedSig.equals(actualSig)) {
@@ -92,14 +93,15 @@ public class StaticWhitelistTest {
 
         for (EnumeratingWhitelist.Signature sig : sigs) {
             try {
-                assertTrue(sig + " does not exist (or is an override)", sig.exists());
+                assertTrue(sig.exists(), sig + " does not exist (or is an override)");
             } catch (ClassNotFoundException x) {
                 System.err.println("Cannot check validity of `" + sig + "` due to " + x);
             }
         }
     }
 
-    @Test public void sanity() throws Exception {
+    @Test
+    public void sanity() throws Exception {
         sanity(StaticWhitelist.class.getResource("blacklist"));
     }
 

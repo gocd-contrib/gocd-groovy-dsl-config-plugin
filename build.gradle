@@ -20,7 +20,8 @@ buildscript {
     antVersion = '1.10.7'
     assertJVersion = '3.14.0'
     classgraphVersion = '4.8.64'
-    commonsLangVersion = '3.9'
+    commonsLangVersion = '3.10'
+    commonsTextVersion = '1.8'
     dom4jVersion = '1.6.1'
     glassfishVersion = '3.0.0'
     groovySandboxVersion = '1.24'
@@ -33,7 +34,6 @@ buildscript {
     jcommanderVersion = '1.78'
     jhighlightVersion = '1.0.3'
     jsonFluentVersion = '2.12.0'
-    junit4Version = '4.13'
     jupiterVersion = '5.6.2'
     lombokVersion = '1.18.10'
     mockitoVersion = '3.2.4'
@@ -54,9 +54,15 @@ buildscript {
   }
 }
 
+apply plugin: 'java'
 apply plugin: 'com.bmuschko.nexus'
 apply plugin: "io.codearte.nexus-staging"
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/master/helper.gradle?_=${(int) (new Date().toInstant().epochSecond / 60)}"
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
 
 gocdPlugin {
   id = 'cd.go.contrib.plugins.configrepo.groovy'
@@ -84,8 +90,8 @@ allprojects {
   version = gocdPlugin.fullVersion(project)
 
   tasks.withType(JavaCompile) {
-    sourceCompatibility = '11'
-    targetCompatibility = '11'
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 }
 

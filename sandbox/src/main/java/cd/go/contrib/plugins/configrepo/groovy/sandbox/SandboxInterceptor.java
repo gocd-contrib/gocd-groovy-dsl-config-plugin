@@ -68,6 +68,7 @@ final class SandboxInterceptor extends GroovyInterceptor {
     }
 
     /** should be synchronized with {@link DgmConverter} */
+    @SuppressWarnings("deprecation")
     private static final Set<Class> DGM_CLASSES = Sets.newHashSet(
             DefaultGroovyMethods.class,
             StringGroovyMethods.class,
