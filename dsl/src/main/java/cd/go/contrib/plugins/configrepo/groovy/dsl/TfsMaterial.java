@@ -32,7 +32,7 @@ import static groovy.lang.Closure.DELEGATE_ONLY;
 /**
  * Represents a
  * <a href="https://docs.gocd.org/current/configuration/configuration_reference.html#tfs">tfs material config</a>.
- *
+ * <p>
  * {@includeCode tfs.material.groovy}
  *
  * @see <a href="https://docs.gocd.org/current/configuration/configuration_reference.html#tfs">tfs material config</a>.

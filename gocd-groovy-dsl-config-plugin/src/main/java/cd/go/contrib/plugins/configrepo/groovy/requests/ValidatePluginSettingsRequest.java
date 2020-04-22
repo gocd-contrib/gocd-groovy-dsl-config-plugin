@@ -26,8 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ValidatePluginSettingsRequest extends HashMap<String, String> {
+
     private static final ObjectMapper MAPPER = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 
+    @SuppressWarnings("unchecked")
     public static ValidatePluginSettingsRequest fromJSON(String json) throws IOException {
         ValidatePluginSettingsRequest result = new ValidatePluginSettingsRequest();
 

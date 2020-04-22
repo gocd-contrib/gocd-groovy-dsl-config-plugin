@@ -16,10 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.executors;
 
-import cd.go.contrib.plugins.configrepo.groovy.GroovyDslPlugin;
-import cd.go.contrib.plugins.configrepo.groovy.JsonConfigCollection;
-import cd.go.contrib.plugins.configrepo.groovy.PluginRequest;
-import cd.go.contrib.plugins.configrepo.groovy.ServerRequestFailedException;
+import cd.go.contrib.plugins.configrepo.groovy.*;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
@@ -37,20 +34,22 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-public class ParseDirectoryExecutor {
+public class ParseDirectoryExecutor implements RequestExecutor {
 
     private final PluginRequest pluginRequest;
 
     private final String directory;
 
-    private GroovyScriptRunner engine;
+    private final GroovyScriptRunner engine;
 
+    @SuppressWarnings("unchecked")
     public ParseDirectoryExecutor(PluginRequest pluginRequest, GoPluginApiRequest request) throws IOException {
         this.pluginRequest = pluginRequest;
 
-        Map<String, java.lang.Object> map = GoCDJsonSerializer.fromJson(request.requestBody(), Map.class);
+        final Map<String, Object> map = GoCDJsonSerializer.fromJson(request.requestBody(), Map.class);
 
         this.directory = (String) map.get("directory");
+        this.engine = new GroovyScriptRunner(directory, Pipeline.class.getPackage().getName());
     }
 
     public GoPluginApiResponse execute() throws JsonProcessingException {
@@ -65,11 +64,10 @@ public class ParseDirectoryExecutor {
     }
 
     private GoPluginApiResponse doParseFiles() throws ServerRequestFailedException, IOException {
-        String[] files = getFilesMatchingPattern();
+        final String[] files = getFilesMatchingPattern();
+        final JsonConfigCollection result = new JsonConfigCollection();
 
-        GroovyScriptRunner engine = getEngine();
-        JsonConfigCollection result = new JsonConfigCollection();
-        for (String file : files) {
+        for (final String file : files) {
             try {
                 Object maybeConfig = engine.runScript(file);
 
@@ -85,24 +83,17 @@ public class ParseDirectoryExecutor {
                     result.addError("The object returned by the script is of unexpected type " + type, file);
                     GroovyDslPlugin.LOG.warn("Skipping file " + new File(directory, file) + ", the object returned by the script is of type " + type);
                 }
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 result.addError("Unable to parse file " + file + ". " + e.getMessage(), file);
                 GroovyDslPlugin.LOG.warn("Skipping file " + file + " in directory " + directory, e);
             }
         }
+
         result.updateTargetVersionFromFiles();
         return DefaultGoPluginApiResponse.success(GoCDJsonSerializer.toJsonString(result.getJsonObject()));
     }
 
-    private GroovyScriptRunner getEngine() throws IOException {
-        if (engine == null) {
-            engine = new GroovyScriptRunner(directory, Pipeline.class.getPackage().getName());
-        }
-        return engine;
-    }
-
-    private String[] getFilesMatchingPattern() throws ServerRequestFailedException, IOException {
-
+    private String[] getFilesMatchingPattern() throws ServerRequestFailedException {
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(directory);
 

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package cd.go.contrib.plugins.configrepo.groovy.export;
+package cd.go.contrib.plugins.configrepo.groovy.dsl.mixins;
 
 @FunctionalInterface
-interface ThrowingRunnable {
+public interface ThrowingRunnable {
 
     void run() throws Throwable;
 }

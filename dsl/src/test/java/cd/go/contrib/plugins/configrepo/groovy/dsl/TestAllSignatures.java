@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.NodeTypes.ALL_KNOWN_NODE_TYPES;
 import static groovy.lang.Closure.DELEGATE_ONLY;
+import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TestAllSignatures {
@@ -80,8 +81,7 @@ class TestAllSignatures {
     }
 
     private void assertParameterAnnotations(Class<?> type, Annotation[] parameterAnnotation) {
-        Annotation[] closureParameterAnnotations = parameterAnnotation;
-        assertThat(closureParameterAnnotations)
+        assertThat(parameterAnnotation)
                 .hasSize(2)
                 .anySatisfy(annotation -> {
                     assertThat(annotation.annotationType()).isSameAs(DelegatesTo.class);
@@ -115,7 +115,7 @@ class TestAllSignatures {
 
     @ParameterizedTest
     @MethodSource("methodsReturningNodeType")
-    void verifyFactoryMethodSignatures(Class<? extends Node> type, Method method) {
+    void verifyFactoryMethodSignatures(Method method) {
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         int closureParamIndex = Arrays.asList(method.getParameterTypes()).indexOf(Closure.class);
         assertParameterAnnotations(method.getReturnType(), parameterAnnotations[closureParamIndex]);
@@ -129,14 +129,15 @@ class TestAllSignatures {
         return allNodeTypes().filter(aClass -> !Modifier.isAbstract(aClass.getModifiers()));
     }
 
+    @SuppressWarnings("unchecked")
     private static Stream<Arguments> methodsReturningNodeType() {
         return allNodeTypes()
-                .flatMap(aClass -> ReflectionUtils.getAllMethods(aClass, input -> Node.class.isAssignableFrom(input.getReturnType())).stream())
+                .flatMap(aClass -> ReflectionUtils.getAllMethods(aClass, input -> Node.class.isAssignableFrom(requireNonNull(input).getReturnType())).stream())
                 .filter(method -> method.getDeclaringClass() != CollectionNode.class)
                 .filter(method -> !method.isSynthetic())
                 .filter(method -> !method.getDeclaringClass().isAnonymousClass())
                 .filter(method -> method.getParameterCount() > 0)
                 .filter(method -> Arrays.asList(method.getParameterTypes()).contains(Closure.class))
-                .map(method -> Arguments.of(method.getDeclaringClass(), method));
+                .map(Arguments::of);
     }
 }

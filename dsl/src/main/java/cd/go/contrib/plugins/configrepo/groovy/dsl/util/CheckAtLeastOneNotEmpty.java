@@ -42,7 +42,7 @@ public @interface CheckAtLeastOneNotEmpty {
 
     String[] fieldNames();
 
-    public static class CheckAtLeastOneNotNullValidator implements ConstraintValidator<CheckAtLeastOneNotEmpty, Object> {
+    class CheckAtLeastOneNotNullValidator implements ConstraintValidator<CheckAtLeastOneNotEmpty, Object> {
 
         private String[] fieldNames;
 
@@ -58,7 +58,7 @@ public @interface CheckAtLeastOneNotEmpty {
             try {
                 for (String fieldName : fieldNames) {
                     Field field = object.getClass().getDeclaredField(fieldName);
-                    boolean accessible = field.isAccessible();
+                    boolean accessible = field.canAccess(object);
                     try {
                         field.setAccessible(true);
                         String property = (String) field.get(object);

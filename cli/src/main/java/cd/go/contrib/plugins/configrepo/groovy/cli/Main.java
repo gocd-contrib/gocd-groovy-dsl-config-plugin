@@ -25,11 +25,16 @@ import com.beust.jcommander.ParameterException;
 import org.codehaus.groovy.runtime.IOGroovyMethods;
 
 import javax.validation.ConstraintViolation;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.validate.Validator.validate;
 
 public class Main {
+
+    private static final int FAILED_EXIT = 1;
 
     private final Syntax args;
 
@@ -48,8 +53,8 @@ public class Main {
     private void run() {
         try {
             System.out.print("Parsing file " + getLocation(args.file) + ".");
-            String contents = IOGroovyMethods.getText(getFileAsStream(args.file), "utf-8");
-            java.lang.Object maybeConfig = getRunner().runScriptWithText(contents);
+            final String contents = IOGroovyMethods.getText(getFileAsStream(args.file), "utf-8");
+            Object maybeConfig = getRunner().runScriptWithText(contents);
             if (maybeConfig instanceof GoCD) {
                 System.out.print(" Ok!");
                 GoCD configFromFile = (GoCD) maybeConfig;
@@ -59,27 +64,27 @@ public class Main {
                     for (ConstraintViolation<Object> violation : violations) {
                         System.out.println("  - " + violation.getPropertyPath() + " " + violation.getMessage());
                     }
-                    System.exit(1);
+                    System.exit(FAILED_EXIT);
                 });
 
                 System.out.println(" Found environments: " + configFromFile.environments(null).getNames() + ".");
                 System.out.println(" Found pipelines: " + configFromFile.pipelines(null).getNames() + ".");
                 System.out.println();
-                String jsonString = GoCDJsonSerializer.toJsonString(configFromFile);
                 if (args.showJson) {
-                    System.out.println();
                     System.out.println("Showing JSON from file " + getLocation(args.file) + ":");
-                    System.out.println(jsonString);
+                    System.out.println();
+                    System.out.println(GoCDJsonSerializer.toJsonString(configFromFile));
                 }
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
+            System.out.println();
             System.out.println(" Bad!");
             e.printStackTrace();
-            System.exit(1);
+            System.exit(FAILED_EXIT);
         }
     }
 
-    private GroovyScriptRunner getRunner() throws IOException {
+    private GroovyScriptRunner getRunner() {
         if (engine == null) {
             engine = new GroovyScriptRunner(".", Pipeline.class.getPackage().getName());
         }
@@ -92,7 +97,7 @@ public class Main {
             s = "-".equals(file) ? System.in : new FileInputStream(new File(file));
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
-            System.exit(1);
+            System.exit(FAILED_EXIT);
         }
         return s;
     }
@@ -112,16 +117,16 @@ public class Main {
             cmd.parse(argv);
 
             if (syntax.help) {
-                printUsageAndExit(1, cmd, parsedCommand);
+                printUsageAndExit(cmd, parsedCommand);
             }
 
             if (null == syntax.file) {
-                printUsageAndExit(1, cmd, parsedCommand);
+                printUsageAndExit(cmd, parsedCommand);
             }
 
         } catch (ParameterException e) {
             System.err.println(e.getMessage());
-            printUsageAndExit(1, cmd, parsedCommand);
+            printUsageAndExit(cmd, parsedCommand);
         }
         return syntax;
     }
@@ -130,7 +135,7 @@ public class Main {
         return "-".equals(file) ? "<STDIN>" : file;
     }
 
-    private static void printUsageAndExit(int exitCode, JCommander cmd, String command) {
+    private static void printUsageAndExit(JCommander cmd, String command) {
         StringBuilder out = new StringBuilder();
         if (null == command) {
             cmd.getUsageFormatter().usage(out);
@@ -139,6 +144,6 @@ public class Main {
         }
         String message = out.toString();
         System.err.println(message);
-        System.exit(exitCode);
+        System.exit(FAILED_EXIT);
     }
 }

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Field {
+
     protected final String key;
 
     @JsonProperty("display-name")

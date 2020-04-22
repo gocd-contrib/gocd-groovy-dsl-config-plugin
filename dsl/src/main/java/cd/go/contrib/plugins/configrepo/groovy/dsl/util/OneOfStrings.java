@@ -41,7 +41,7 @@ public @interface OneOfStrings {
 
     Class<? extends Payload>[] payload() default {};
 
-    public static class OneOfStringsValidator implements ConstraintValidator<OneOfStrings, String> {
+    class OneOfStringsValidator implements ConstraintValidator<OneOfStrings, String> {
 
         private String[] allowedValues;
 

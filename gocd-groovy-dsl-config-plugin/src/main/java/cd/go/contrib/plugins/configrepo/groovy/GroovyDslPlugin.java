@@ -43,7 +43,7 @@ public class GroovyDslPlugin implements GoPlugin {
     }
 
     @Override
-    public GoPluginApiResponse handle(GoPluginApiRequest request) throws UnhandledRequestTypeException {
+    public GoPluginApiResponse handle(GoPluginApiRequest request) {
         try {
             switch (Request.fromString(request.requestName())) {
                 case PARSE_DIRECTORY:
@@ -65,7 +65,7 @@ public class GroovyDslPlugin implements GoPlugin {
                 default:
                     throw new UnhandledRequestTypeException(request.requestName());
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOG.error("Failed to handle request " + request.requestName() + " due to:", e);
             return DefaultGoPluginApiResponse.error("Failed to handle request " + request.requestName() + " due to:" + e.getMessage());
         }

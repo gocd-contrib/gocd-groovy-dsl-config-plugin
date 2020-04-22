@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.export;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.ThrowingRunnable;
 import org.codehaus.groovy.tools.Utilities;
 
 import java.io.IOException;

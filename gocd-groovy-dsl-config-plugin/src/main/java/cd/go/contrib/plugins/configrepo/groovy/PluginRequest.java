@@ -20,10 +20,14 @@ import com.thoughtworks.go.plugin.api.GoApplicationAccessor;
 import com.thoughtworks.go.plugin.api.request.DefaultGoApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoApiResponse;
 
+import static cd.go.contrib.plugins.configrepo.groovy.Constants.PLUGIN_IDENTIFIER;
+import static cd.go.contrib.plugins.configrepo.groovy.Constants.REQUEST_SERVER_GET_PLUGIN_SETTINGS;
+
 /**
  * Instances of this class know how to send messages to the GoCD Server.
  */
 public class PluginRequest {
+
     private final GoApplicationAccessor accessor;
 
     public PluginRequest(GoApplicationAccessor accessor) {
@@ -31,7 +35,7 @@ public class PluginRequest {
     }
 
     public PluginSettings getPluginSettings() throws ServerRequestFailedException {
-        DefaultGoApiRequest request = new DefaultGoApiRequest(Constants.REQUEST_SERVER_GET_PLUGIN_SETTINGS, "1.0", Constants.PLUGIN_IDENTIFIER);
+        DefaultGoApiRequest request = new DefaultGoApiRequest(REQUEST_SERVER_GET_PLUGIN_SETTINGS, "1.0", PLUGIN_IDENTIFIER);
         GoApiResponse response = accessor.submit(request);
 
         if (response.responseCode() != 200) {

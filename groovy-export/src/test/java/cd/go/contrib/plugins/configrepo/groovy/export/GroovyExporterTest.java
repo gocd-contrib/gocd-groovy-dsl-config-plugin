@@ -75,7 +75,7 @@ class GroovyExporterTest extends TestBase {
 
     private String sourceGroovyFile(String path) throws IOException {
         StringWriter writer = new StringWriter();
-        List<String> strings = Files.readLines(new File(path + ".groovy"), UTF_8);
+        @SuppressWarnings("UnstableApiUsage") List<String> strings = Files.readLines(new File(path + ".groovy"), UTF_8);
         String collect = strings.stream()
                 .filter(line -> !(line.startsWith("package ") || line.startsWith("import ")))
                 .collect(Collectors.joining("\n"));

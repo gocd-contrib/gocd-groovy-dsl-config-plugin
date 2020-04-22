@@ -19,8 +19,6 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl.json;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Node;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.TestBase;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
-import groovy.util.ResourceException;
-import groovy.util.ScriptException;
 import net.javacrumbs.jsonunit.fluent.JsonFluentAssert;
 import org.codehaus.groovy.runtime.ResourceGroovyMethods;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,7 +37,7 @@ class JsonDeserializeTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("values")
-    void testGroovyToJSON(String path) throws IOException, ResourceException, ScriptException {
+    void testGroovyToJSON(String path) throws IOException {
         GroovyScriptRunner engine = getRunner();
         Object result = engine.runScript(path + ".groovy");
         assertThat(result).isInstanceOf(Node.class);
@@ -51,7 +49,7 @@ class JsonDeserializeTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("values")
-    void shouldValidate(String path) throws IOException, ResourceException, ScriptException {
+    void shouldValidate(String path) throws IOException {
         GroovyScriptRunner engine = getRunner();
         Object result = engine.runScript(path + ".groovy");
         AtomicReference<Set<ConstraintViolation<Object>>> constraintViolations = new AtomicReference<>();
@@ -63,7 +61,7 @@ class JsonDeserializeTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("values")
-    void testJSONToGroovy(String path) throws IOException, ResourceException, ScriptException {
+    void testJSONToGroovy(String path) throws IOException {
         GroovyScriptRunner engine = getRunner();
         Object result = engine.runScript(path + ".groovy");
 

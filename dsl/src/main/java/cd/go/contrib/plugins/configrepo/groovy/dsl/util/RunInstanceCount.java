@@ -39,7 +39,7 @@ public @interface RunInstanceCount {
 
     Class<? extends Payload>[] payload() default {};
 
-    public class CheckRunInstanceCount implements ConstraintValidator<RunInstanceCount, Object> {
+    class CheckRunInstanceCount implements ConstraintValidator<RunInstanceCount, Object> {
 
         public void initialize(RunInstanceCount constraint) {
         }

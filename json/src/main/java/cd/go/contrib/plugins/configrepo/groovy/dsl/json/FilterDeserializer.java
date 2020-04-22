@@ -18,7 +18,6 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl.json;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Filter;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,7 +40,7 @@ public class FilterDeserializer extends StdDeserializer<Filter> {
     }
 
     @Override
-    public Filter deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Filter deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         TreeNode node = p.getCodec().readTree(p);
         if (node instanceof ObjectNode) {
             boolean isWhitelist;
@@ -70,18 +69,4 @@ public class FilterDeserializer extends StdDeserializer<Filter> {
         }
         return null;
     }
-
-//        if (json instanceof JsonObject) {
-//            if (((JsonObject) json).has("ignore")) {
-//                JsonArray ignoresArray = ((JsonObject) json).getAsJsonArray("ignore");
-//                return new Filter(false, JsonUtils.deserializeToListOfStrings(context, ignoresArray));
-//            } else if (((JsonObject) json).has("whitelist")) {
-//                JsonArray whitelistArray = ((JsonObject) json).getAsJsonArray("whitelist");
-//                return new Filter(false, JsonUtils.deserializeToListOfStrings(context, whitelistArray));
-//            } else {
-//                throw new JsonParseException("Filter object neither has `whitelist` or `ignore` attributes");
-//            }
-//        }
-//        throw new JsonParseException("Expected JsonObject, got " + json.getClass().getName() + " instead");
-
 }

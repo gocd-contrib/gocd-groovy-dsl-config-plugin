@@ -57,7 +57,7 @@ public class GoCD extends Node<GoCD> {
     @Valid
     @Getter(value = NONE)
     @Setter(value = NONE)
-    private Pipelines pipelines = new Pipelines();
+    private final Pipelines pipelines = new Pipelines();
 
     /**
      * Container to define one or more environments in GoCD
@@ -66,7 +66,7 @@ public class GoCD extends Node<GoCD> {
     @Valid
     @Getter(value = NONE)
     @Setter(value = NONE)
-    private Environments environments = new Environments();
+    private final Environments environments = new Environments();
 
     public static GoCD script(@DelegatesTo(value = GoCD.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD") Closure cl) {
         GoCD gocd = new GoCD();

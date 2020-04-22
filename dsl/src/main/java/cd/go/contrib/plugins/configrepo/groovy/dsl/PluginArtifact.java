@@ -74,7 +74,7 @@ public class PluginArtifact extends AbstractArtifact<PluginArtifact> {
     private Map<String, String> secureConfiguration = new LinkedHashMap<>();
 
     @SuppressWarnings("unused" /*method here for serialization only*/)
-    public  PluginArtifact() {
+    public PluginArtifact() {
         this(null);
     }
 
@@ -85,7 +85,7 @@ public class PluginArtifact extends AbstractArtifact<PluginArtifact> {
 
     @JsonGetter("configuration")
     // by default we ignore "empty" values. However, it skips rendering of empty environment vars. So we override
-    @JsonInclude(value = JsonInclude.Include.NON_EMPTY, content = JsonInclude.Include.ALWAYS)
+    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     @SuppressWarnings("unused" /*method here for deserialization only*/)
     private List<Map<String, String>> getPluginConfiguration() {
         ArrayList<Map<String, String>> allVariables = new ArrayList<>();

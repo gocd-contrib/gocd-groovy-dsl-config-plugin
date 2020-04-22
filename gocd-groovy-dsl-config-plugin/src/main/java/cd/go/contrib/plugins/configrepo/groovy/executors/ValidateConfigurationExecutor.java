@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ValidateConfigurationExecutor implements RequestExecutor {
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final ValidatePluginSettingsRequest request;

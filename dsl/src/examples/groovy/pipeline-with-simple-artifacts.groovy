@@ -50,7 +50,7 @@ GoCD.script {
               }
 
               tabs {
-                tab('JCoverage') { path = 'Jcoverage/index.html'}
+                tab('JCoverage') { path = 'Jcoverage/index.html' }
               }
             }
           }

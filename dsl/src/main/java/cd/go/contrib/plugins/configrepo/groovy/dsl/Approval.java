@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static lombok.AccessLevel.NONE;
-
 /**
  * Specifies how a stage should be triggered. Approval of type 'manual' or 'success' can be used to stop a pipeline
  * execution at the start of a stage and can only be resumed when it is manually approved on the pipeline activity page,

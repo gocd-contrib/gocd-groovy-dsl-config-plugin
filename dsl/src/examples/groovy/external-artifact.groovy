@@ -24,7 +24,7 @@ new Jobs().with {
         storeId = 'dockerhub'
         configuration = [
           image: 'gocd/gocd-server',
-          tag: 'latest'
+          tag  : 'latest'
         ]
         secureConfiguration = [
           DB_PASSWORD: 'AES:yBk975e1rJiuRnAx9AZ6Og==:ee6yi/2sEh5/TUlbmNWelg=='

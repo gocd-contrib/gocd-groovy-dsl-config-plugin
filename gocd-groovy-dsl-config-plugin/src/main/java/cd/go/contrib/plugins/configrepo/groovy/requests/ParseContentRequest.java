@@ -17,6 +17,7 @@
 package cd.go.contrib.plugins.configrepo.groovy.requests;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
+import cd.go.contrib.plugins.configrepo.groovy.executors.ParseContentExecutor;
 
 import java.io.IOException;
 import java.util.Map;

@@ -48,10 +48,11 @@ abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
     protected String encryptedPassword;
 
     /**
-    * The plain text password in the form of secret param*
-    *  Use encrypted password instead
-    * @see <a href="https://docs.gocd.org/current/configuration/secrets_management.html">secrets</a>
-    */
+     * The plain text password in the form of secret param*
+     * Use encrypted password instead
+     *
+     * @see <a href="https://docs.gocd.org/current/configuration/secrets_management.html">secrets</a>
+     */
     @JsonProperty("password")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     protected String password;

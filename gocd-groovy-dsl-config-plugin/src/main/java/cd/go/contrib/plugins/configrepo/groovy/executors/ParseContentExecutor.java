@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cd.go.contrib.plugins.configrepo.groovy.requests;
+package cd.go.contrib.plugins.configrepo.groovy.executors;
 
 import cd.go.contrib.plugins.configrepo.groovy.GroovyDslPlugin;
 import cd.go.contrib.plugins.configrepo.groovy.JsonConfigCollection;
@@ -37,18 +37,18 @@ public class ParseContentExecutor implements RequestExecutor {
     }
 
     @Override
-    public GoPluginApiResponse execute() throws Exception {
-        GroovyScriptRunner engine = new GroovyScriptRunner(null, Pipeline.class.getPackage().getName());
-        JsonConfigCollection result = new JsonConfigCollection();
+    public GoPluginApiResponse execute() throws Throwable {
+        final GroovyScriptRunner engine = new GroovyScriptRunner(null, Pipeline.class.getPackage().getName());
+        final JsonConfigCollection result = new JsonConfigCollection();
 
         for (Map.Entry<String, String> entry : contents.entrySet()) {
-            String filename = entry.getKey();
-            String content = entry.getValue();
+            final String filename = entry.getKey();
+            final String content = entry.getValue();
 
-            Object maybeConfig = engine.runScriptWithText(content);
+            final Object maybeConfig = engine.runScriptWithText(content);
 
             if (maybeConfig instanceof GoCD) {
-                GoCD configFromFile = (GoCD) maybeConfig;
+                final GoCD configFromFile = (GoCD) maybeConfig;
                 result.addConfig(filename, configFromFile);
                 GroovyDslPlugin.LOG.debug("Found pipeline configs at {}", filename);
             } else {
@@ -63,5 +63,4 @@ public class ParseContentExecutor implements RequestExecutor {
         result.updateTargetVersionFromFiles();
         return DefaultGoPluginApiResponse.success(GoCDJsonSerializer.toJsonString(result.getJsonObject()));
     }
-
 }
