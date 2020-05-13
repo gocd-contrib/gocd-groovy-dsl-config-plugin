@@ -38,7 +38,7 @@ dependencies {
   implementation group: 'com.google.guava', name: 'guava', version: guavaVersion
   implementation group: 'javax.validation', name: 'validation-api', version: validateApiVersion
 
-  runtimeOnly group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: hiberVersion
+  annotationProcessor group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: hiberVersion
 
   compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: pluginApiVersion
 
@@ -63,11 +63,11 @@ jar {
     attributes 'GoCD-Main-Class': 'cd.go.contrib.plugins.configrepo.groovy.cli.Main'
   }
 
-  from(configurations.compileClasspath) {
+  from(configurations.runtimeClasspath) {
     into "lib/"
   }
 
-//    This is useful for debugging
+  // This is useful for debugging
   from(sourceSets.main.java) {
     into "/"
   }
