@@ -63,7 +63,7 @@ jar {
     attributes 'GoCD-Main-Class': 'cd.go.contrib.plugins.configrepo.groovy.cli.Main'
   }
 
-  from(configurations.compile) {
+  from(configurations.compileClasspath) {
     into "lib/"
   }
 
