@@ -31,8 +31,8 @@ public class CapabilitiesExcutor implements RequestExecutor {
         return new DefaultGoPluginApiResponse(200, MAPPER.writer().writeValueAsString(ImmutableMap.builder()
                 .put("supports_pipeline_export", true)
                 .put("supports_parse_content", true)
-                .put("supportsPipelineExport", true)
-                .put("supportsParseContent", true)
+                .put("supports_list_config_files", false)
+                .put("supports_user_defined_properties", true)
                 .build()));
     }
 }

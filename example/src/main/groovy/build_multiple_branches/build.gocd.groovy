@@ -18,7 +18,6 @@ package build_multiple_branches
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD
 
-
 def releases = ['18.1.0', '17.12.0']
 
 GoCD.script {

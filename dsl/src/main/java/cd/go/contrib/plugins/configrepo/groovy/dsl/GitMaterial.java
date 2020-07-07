@@ -27,6 +27,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
@@ -80,4 +81,7 @@ public class GitMaterial extends ScmMaterial<GitMaterial> {
         configure(cl);
     }
 
+    public GitMaterial(String name, Consumer<GitMaterial> configure) {
+        super(name, configure);
+    }
 }

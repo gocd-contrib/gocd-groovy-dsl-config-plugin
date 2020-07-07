@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 buildscript {
   ext {
     antVersion = '1.10.7'
@@ -37,7 +36,7 @@ buildscript {
     jupiterVersion = '5.6.2'
     lombokVersion = '1.18.10'
     mockitoVersion = '3.2.4'
-    pluginApiVersion = '19.7.0'
+    pluginApiVersion = '20.5.0'
     reflectionsVersion = '0.9.12'
     retrofitVersion = '2.7.2'
     validateApiVersion = '2.0.1.Final'
@@ -66,8 +65,8 @@ java {
 
 gocdPlugin {
   id = 'cd.go.contrib.plugins.configrepo.groovy'
-  pluginVersion = '1.0.3'
-  goCdVersion = '18.3.0'
+  pluginVersion = '1.1.0'
+  goCdVersion = '20.6.0'
   name = 'GoCD Groovy Configuration plugin'
   description = 'GoCD pipelines and environments configuration in Groovy'
   vendorName = 'ThoughtWorks, Inc.'

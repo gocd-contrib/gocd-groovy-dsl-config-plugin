@@ -16,7 +16,8 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import groovy.lang.Closure;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,13 +25,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public abstract class Node<T extends Node> {
+public abstract class Node<T extends Node> implements Configurable, KeyVal.Mixin {
 
-    protected void configure(Closure cl) {
-        if (cl != null) {
-            Closure rehydrate = cl.rehydrate(this, this, this);
-            rehydrate.setResolveStrategy(Closure.DELEGATE_ONLY);
-            rehydrate.call(this);
-        }
-    }
 }
