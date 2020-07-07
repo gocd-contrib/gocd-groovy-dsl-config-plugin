@@ -26,22 +26,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class UriUtils {
 
-    public static boolean isHttp(String url) {
-        try {
-            URI uri = new URI(url);
-            final String scheme = uri.getScheme();
-            return StringUtils.isNotBlank(scheme) && scheme.startsWith("http");
-        } catch (URISyntaxException e) {
-            return false;
-        }
-    }
-
     public static String maskAuth(String url) {
         try {
             URI uri = new URI(url);
             String userInfo = uri.getUserInfo();
             if (StringUtils.isNotBlank(userInfo)) {
-                userInfo = userInfo.replaceFirst(":.*", "********");
+                userInfo = userInfo.replaceFirst(":.*", ":********");
                 uri = new URI(
                         uri.getScheme(),
                         userInfo,
@@ -72,15 +62,6 @@ public class UriUtils {
                         uri.getFragment()
                 );
             }
-            return uri.toString();
-        } catch (URISyntaxException e) {
-            return url;
-        }
-    }
-
-    public static String sanitizeUrl(String url) {
-        try {
-            URI uri = new URI(url);
             return uri.toString();
         } catch (URISyntaxException e) {
             return url;
