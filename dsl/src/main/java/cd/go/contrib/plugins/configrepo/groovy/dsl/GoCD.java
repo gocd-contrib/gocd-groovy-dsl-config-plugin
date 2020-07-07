@@ -28,6 +28,7 @@ import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 import static lombok.AccessLevel.NONE;
@@ -45,6 +46,11 @@ import static lombok.AccessLevel.NONE;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class GoCD extends Node<GoCD> {
+
+    @Getter(value = NONE)
+    @Setter(value = NONE)
+    @NotNull
+    private final BranchedWorkflows branches;
 
     @JsonProperty("target_version")
     @Min(5)
@@ -68,10 +74,19 @@ public class GoCD extends Node<GoCD> {
     @Setter(value = NONE)
     private final Environments environments = new Environments();
 
+    public GoCD() {
+        this.branches = new BranchedWorkflows(pipelines);
+    }
+
     public static GoCD script(@DelegatesTo(value = GoCD.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD") Closure cl) {
         GoCD gocd = new GoCD();
         gocd.configure(cl);
         return gocd;
+    }
+
+    public BranchedWorkflows branches(@DelegatesTo(value = BranchedWorkflows.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.BranchedWorkflows") Closure cl) {
+        branches.configure(cl);
+        return branches;
     }
 
     public Pipelines pipelines(@DelegatesTo(value = Pipelines.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.Pipelines") Closure cl) {

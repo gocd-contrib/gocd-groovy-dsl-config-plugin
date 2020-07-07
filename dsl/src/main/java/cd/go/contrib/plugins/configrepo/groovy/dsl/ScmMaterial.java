@@ -26,6 +26,7 @@ import lombok.ToString;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static lombok.AccessLevel.NONE;
 
@@ -33,7 +34,8 @@ import static lombok.AccessLevel.NONE;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
+public abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
+
 
     @JsonProperty("username")
     protected String username;
@@ -93,6 +95,12 @@ abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
 
     ScmMaterial(String name) {
         super(name);
+    }
+
+    ScmMaterial(String name, Consumer<T> configure) {
+        super(name);
+        //noinspection unchecked
+        configure.accept((T) this);
     }
 
     /**

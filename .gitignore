@@ -65,5 +65,9 @@ jar-class-loader/build/
 jar-class-loader/out/
 json/build/
 json/out/
+providers/build/
+providers/out/
+resolvers/build/
+resolvers/out/
 sandbox/build/
 sandbox/out/

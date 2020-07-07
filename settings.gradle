@@ -17,6 +17,8 @@
 rootProject.name = 'gocd-groovy-dsl-config-plugin'
 
 include ':cli'
+include ':resolvers'
+include ':providers'
 include ':doclet'
 include ':dsl'
 include ':dsl-validation'

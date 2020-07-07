@@ -19,6 +19,10 @@ package cd.go.contrib.plugins.configrepo.groovy.cli;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
+import cd.go.contrib.plugins.configrepo.groovy.resolvers.Branches;
+import cd.go.contrib.plugins.configrepo.groovy.resolvers.ConfigValues;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -54,28 +58,31 @@ public class Main {
         try {
             System.out.print("Parsing file " + getLocation(args.file) + ".");
             final String contents = IOGroovyMethods.getText(getFileAsStream(args.file), "utf-8");
-            Object maybeConfig = getRunner().runScriptWithText(contents);
-            if (maybeConfig instanceof GoCD) {
-                System.out.print(" Ok!");
-                GoCD configFromFile = (GoCD) maybeConfig;
 
-                validate(configFromFile, violations -> {
-                    System.out.println("Found " + violations.size() + " validation errors!");
-                    for (ConstraintViolation<Object> violation : violations) {
-                        System.out.println("  - " + violation.getPropertyPath() + " " + violation.getMessage());
-                    }
-                    System.exit(FAILED_EXIT);
-                });
+            BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> {
+                Object maybeConfig = getRunner().runScriptWithText(contents);
+                if (maybeConfig instanceof GoCD) {
+                    System.out.print(" Ok!");
+                    GoCD configFromFile = (GoCD) maybeConfig;
 
-                System.out.println(" Found environments: " + configFromFile.environments(null).getNames() + ".");
-                System.out.println(" Found pipelines: " + configFromFile.pipelines(null).getNames() + ".");
-                System.out.println();
-                if (args.showJson) {
-                    System.out.println("Showing JSON from file " + getLocation(args.file) + ":");
+                    validate(configFromFile, violations -> {
+                        System.out.println("Found " + violations.size() + " validation errors!");
+                        for (ConstraintViolation<Object> violation : violations) {
+                            System.out.println("  - " + violation.getPropertyPath() + " " + violation.getMessage());
+                        }
+                        System.exit(FAILED_EXIT);
+                    });
+
+                    System.out.println(" Found environments: " + configFromFile.environments(null).getNames() + ".");
+                    System.out.println(" Found pipelines: " + configFromFile.pipelines(null).getNames() + ".");
                     System.out.println();
-                    System.out.println(GoCDJsonSerializer.toJsonString(configFromFile));
+                    if (args.showJson) {
+                        System.out.println("Showing JSON from file " + getLocation(args.file) + ":");
+                        System.out.println();
+                        System.out.println(GoCDJsonSerializer.toJsonString(configFromFile));
+                    }
                 }
-            }
+            }));
         } catch (Throwable e) {
             System.out.println();
             System.out.println(" Bad!");
