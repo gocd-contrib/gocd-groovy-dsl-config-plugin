@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
@@ -83,5 +84,23 @@ public class GitMaterial extends ScmMaterial<GitMaterial> {
 
     public GitMaterial(String name, Consumer<GitMaterial> configure) {
         super(name, configure);
+    }
+
+    @Override
+    public GitMaterial dup(
+            @DelegatesTo(value = GitMaterial.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial")
+                    Closure<GitMaterial> config) {
+        return Configurable.applyTo(config, deepClone());
+    }
+
+    @Override
+    protected GitMaterial deepClone() {
+        return new GitMaterial(name, g -> {
+            injectSettings(g);
+            g.url = url;
+            g.branch = branch;
+            g.shallowClone = shallowClone;
+        });
     }
 }

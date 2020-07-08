@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
@@ -29,6 +30,7 @@ import lombok.ToString;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 import static lombok.AccessLevel.NONE;
@@ -73,18 +75,17 @@ public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
         configure(cl);
     }
 
-    /**
-     * {@includeCode scm.blacklist.groovy }
-     */
-    public void setBlacklist(List<String> blacklist) {
-        filter = new Filter(blacklist);
+    public ConfigRepoMaterial(String name, Consumer<ConfigRepoMaterial> config) {
+        super(name);
+        config.accept(this);
     }
 
-    /**
-     * {@includeCode scm.whitelist.groovy }
-     */
-    public void setWhitelist(List<String> whitelist) {
-        filter = new Filter(true, whitelist);
+    @Override
+    public ConfigRepoMaterial dup(
+            @DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial")
+                    Closure<ConfigRepoMaterial> config) {
+        return Configurable.applyTo(config, deepClone());
     }
 
     @JsonIgnore
@@ -95,11 +96,32 @@ public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
         return null;
     }
 
+    /**
+     * {@includeCode scm.blacklist.groovy }
+     */
+    public void setBlacklist(List<String> blacklist) {
+        filter = new Filter(blacklist);
+    }
+
     @JsonIgnore
     public List<String> getWhitelist() {
         if (this.filter != null && this.filter.isWhitelist()) {
             return this.filter.getItems();
         }
         return null;
+    }
+
+    /**
+     * {@includeCode scm.whitelist.groovy }
+     */
+    public void setWhitelist(List<String> whitelist) {
+        filter = new Filter(true, whitelist);
+    }
+
+    private ConfigRepoMaterial deepClone() {
+        return new ConfigRepoMaterial(name, c -> {
+            c.destination = destination;
+            c.filter = filter.deepClone();
+        });
     }
 }

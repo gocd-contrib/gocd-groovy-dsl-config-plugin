@@ -22,6 +22,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,4 +58,7 @@ public class Filter {
         this.items = items;
     }
 
+    public Filter deepClone() {
+        return new Filter(isWhitelist, new ArrayList<>(items));
+    }
 }

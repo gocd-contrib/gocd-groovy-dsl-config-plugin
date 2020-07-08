@@ -50,7 +50,7 @@ class TestAllSignatures {
         assertThat(actualNodeTypes).isEqualTo(ALL_KNOWN_NODE_TYPES);
     }
 
-    private static ScanResult scanResult = new ClassGraph()
+    private static final ScanResult scanResult = new ClassGraph()
 //            .verbose()
             .enableClassInfo()
             .enableMethodInfo()
@@ -116,9 +116,11 @@ class TestAllSignatures {
     @ParameterizedTest
     @MethodSource("methodsReturningNodeType")
     void verifyFactoryMethodSignatures(Method method) {
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        int closureParamIndex = Arrays.asList(method.getParameterTypes()).indexOf(Closure.class);
-        assertParameterAnnotations(method.getReturnType(), parameterAnnotations[closureParamIndex]);
+        if (!Modifier.isAbstract(method.getModifiers())) {
+            Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+            int closureParamIndex = Arrays.asList(method.getParameterTypes()).indexOf(Closure.class);
+            assertParameterAnnotations(method.getReturnType(), parameterAnnotations[closureParamIndex]);
+        }
     }
 
     private static Stream<Class<Node>> allNodeTypes() {

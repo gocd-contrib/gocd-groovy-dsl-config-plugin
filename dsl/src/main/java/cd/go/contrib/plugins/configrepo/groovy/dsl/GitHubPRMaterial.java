@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -27,6 +28,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
@@ -40,6 +42,9 @@ public class GitHubPRMaterial extends ScmMaterial<GitHubPRMaterial> {
 
     private String branch;
 
+    public GitHubPRMaterial(String name, Consumer<GitHubPRMaterial> configure) {
+        super(name, configure);
+    }
 
     public GitHubPRMaterial(@DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial") Closure cl) {
         this(null, cl);
@@ -50,6 +55,14 @@ public class GitHubPRMaterial extends ScmMaterial<GitHubPRMaterial> {
         configure(cl);
     }
 
+    @Override
+    public GitHubPRMaterial dup(
+            @DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial")
+                    Closure<GitHubPRMaterial> config) {
+        return Configurable.applyTo(config, deepClone());
+    }
+
     public Object toPluggableMaterial() {
         LinkedHashMap<Object, Object> result = new LinkedHashMap<>();
         result.put("name", name);
@@ -57,6 +70,15 @@ public class GitHubPRMaterial extends ScmMaterial<GitHubPRMaterial> {
         result.put("plugin_configuration", pluginConfig());
         result.put("configuration", configuration());
         return result;
+    }
+
+    @Override
+    protected GitHubPRMaterial deepClone() {
+        return new GitHubPRMaterial(name, g -> {
+            injectSettings(g);
+            g.url = url;
+            g.branch = branch;
+        });
     }
 
     private Object configuration() {

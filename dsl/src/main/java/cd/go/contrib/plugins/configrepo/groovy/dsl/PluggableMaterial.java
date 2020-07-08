@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
@@ -30,6 +31,7 @@ import lombok.ToString;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 import static lombok.AccessLevel.NONE;
@@ -74,18 +76,17 @@ public class PluggableMaterial extends Material<PluggableMaterial> {
         configure(cl);
     }
 
-    /**
-     * {@includeCode scm.blacklist.groovy }
-     */
-    public void setBlacklist(List<String> blacklist) {
-        filter = new Filter(blacklist);
+    public PluggableMaterial(String name, Consumer<PluggableMaterial> config) {
+        super(name);
+        config.accept(this);
     }
 
-    /**
-     * {@includeCode scm.whitelist.groovy }
-     */
-    public void setWhitelist(List<String> whitelist) {
-        filter = new Filter(true, whitelist);
+    @Override
+    public PluggableMaterial dup(
+            @DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial")
+                    Closure<PluggableMaterial> config) {
+        return Configurable.applyTo(config, deepClone());
     }
 
     @JsonIgnore
@@ -96,11 +97,33 @@ public class PluggableMaterial extends Material<PluggableMaterial> {
         return null;
     }
 
+    /**
+     * {@includeCode scm.blacklist.groovy }
+     */
+    public void setBlacklist(List<String> blacklist) {
+        filter = new Filter(blacklist);
+    }
+
     @JsonIgnore
     public List<String> getWhitelist() {
         if (this.filter != null && this.filter.isWhitelist()) {
             return this.filter.getItems();
         }
         return null;
+    }
+
+    /**
+     * {@includeCode scm.whitelist.groovy }
+     */
+    public void setWhitelist(List<String> whitelist) {
+        filter = new Filter(true, whitelist);
+    }
+
+    private PluggableMaterial deepClone() {
+        return new PluggableMaterial(name, p -> {
+            p.destination = destination;
+            p.filter = filter.deepClone();
+            p.scm = scm;
+        });
     }
 }
