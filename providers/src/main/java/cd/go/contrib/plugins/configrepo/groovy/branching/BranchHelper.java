@@ -20,11 +20,11 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.BranchContext;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.ScmMaterial;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.*;
-import cd.go.contrib.plugins.configrepo.groovy.dsl.util.RefUtils;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
 
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.RefUtils.gitShortRef;
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.UriUtils.stripAuth;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.firstNonBlank;
@@ -53,7 +53,7 @@ public class BranchHelper {
 
     public static BranchContext createContext(Attributes attrs, MergeParent merge) {
         final String ref = merge.ref();
-        final String branch = RefUtils.gitShortRef(ref);
+        final String branch = prettifyRef(gitShortRef(ref), attrs);
         return new BranchContext(ref, branch, createMaterial(attrs, merge));
     }
 
@@ -83,7 +83,7 @@ public class BranchHelper {
 
             final String ref = merge.ref();
             git.setUrl(url);
-            git.setBranch(format("%s:refs/remotes/origin/%s", ref, RefUtils.gitShortRef(ref)));
+            git.setBranch(format("%s:refs/remotes/origin/%s", ref, gitShortRef(ref)));
             git.setShallowClone(true);
             git.setAutoUpdate(true);
         });
@@ -97,5 +97,16 @@ public class BranchHelper {
         }
 
         return new SimpleImmutableEntry<>(fullName.substring(0, slash), fullName.substring(slash + 1));
+    }
+
+    private static String prettifyRef(String shortRef, Attributes attrs) {
+        switch (attrs.type()) {
+            case github:
+            case gitlab:
+                if (shortRef.endsWith("/head")) {
+                    return shortRef.substring(0, shortRef.length() - "/head".length());
+                }
+        }
+        return shortRef;
     }
 }
