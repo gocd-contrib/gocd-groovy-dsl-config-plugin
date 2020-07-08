@@ -79,11 +79,12 @@ public class TfsMaterial extends ScmMaterial<TfsMaterial> {
         super(name, configure);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public TfsMaterial dup(
             @DelegatesTo(value = TfsMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TfsMaterial")
-                    Closure<TfsMaterial> config) {
+                    Closure config) {
         return Configurable.applyTo(config, deepClone());
     }
 

@@ -86,11 +86,12 @@ public class GitMaterial extends ScmMaterial<GitMaterial> {
         super(name, configure);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public GitMaterial dup(
             @DelegatesTo(value = GitMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial")
-                    Closure<GitMaterial> config) {
+                    Closure config) {
         return Configurable.applyTo(config, deepClone());
     }
 

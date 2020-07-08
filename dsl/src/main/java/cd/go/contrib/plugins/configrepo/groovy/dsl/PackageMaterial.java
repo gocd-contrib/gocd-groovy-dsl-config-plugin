@@ -60,11 +60,12 @@ public class PackageMaterial extends Material<PackageMaterial> {
         config.accept(this);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public PackageMaterial dup(
             @DelegatesTo(value = PackageMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PackageMaterial")
-                    Closure<PackageMaterial> config) {
+                    Closure config) {
         return Configurable.applyTo(config, deepClone());
     }
 

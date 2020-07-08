@@ -68,11 +68,12 @@ public class HgMaterial extends ScmMaterial<HgMaterial> {
         super(name, configure);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public HgMaterial dup(
             @DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial")
-                    Closure<HgMaterial> config) {
+                    Closure config) {
         return Configurable.applyTo(config, deepClone());
     }
 

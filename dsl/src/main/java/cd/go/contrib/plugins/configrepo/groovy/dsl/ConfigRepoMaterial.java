@@ -80,11 +80,12 @@ public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
         config.accept(this);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public ConfigRepoMaterial dup(
             @DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial")
-                    Closure<ConfigRepoMaterial> config) {
+                    Closure config) {
         return Configurable.applyTo(config, deepClone());
     }
 

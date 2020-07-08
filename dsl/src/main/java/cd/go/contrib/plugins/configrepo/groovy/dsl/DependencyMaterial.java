@@ -71,11 +71,12 @@ public class DependencyMaterial extends Material<DependencyMaterial> {
         config.accept(this);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public DependencyMaterial dup(
             @DelegatesTo(value = DependencyMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.DependencyMaterial")
-                    Closure<DependencyMaterial> config) {
+                    Closure config) {
         return Configurable.applyTo(config, deepClone());
     }
 

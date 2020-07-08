@@ -71,11 +71,12 @@ public class SvnMaterial extends ScmMaterial<SvnMaterial> {
         super(name, configure);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public SvnMaterial dup(
             @DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial")
-                    Closure<SvnMaterial> config) {
+                    Closure config) {
         return Configurable.applyTo(config, deepClone());
     }
 

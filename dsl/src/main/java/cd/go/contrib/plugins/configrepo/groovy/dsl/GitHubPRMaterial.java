@@ -55,11 +55,12 @@ public class GitHubPRMaterial extends ScmMaterial<GitHubPRMaterial> {
         configure(cl);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public GitHubPRMaterial dup(
             @DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial")
-                    Closure<GitHubPRMaterial> config) {
+                    Closure config) {
         return Configurable.applyTo(config, deepClone());
     }
 
