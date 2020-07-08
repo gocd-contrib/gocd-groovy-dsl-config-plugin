@@ -67,7 +67,7 @@ public class Branches {
      * @return a {@link List} of {@link BranchContext} instances
      */
     public static List<BranchContext> stubbed(final BranchStrategy s, @SuppressWarnings("unused") final Pattern p) {
-        final String ref = "stubbed-ref-" + randomHex();
+        final String ref = "refs/heads/stubbed-ref-" + randomHex();
 
         return Collections.singletonList(createContext(s.attrs(), new MergeParent() {
             @Override
