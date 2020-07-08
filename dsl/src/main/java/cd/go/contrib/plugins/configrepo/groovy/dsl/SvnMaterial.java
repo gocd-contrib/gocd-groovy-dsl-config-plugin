@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
@@ -27,6 +28,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.Valid;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
@@ -65,4 +67,24 @@ public class SvnMaterial extends ScmMaterial<SvnMaterial> {
         configure(cl);
     }
 
+    public SvnMaterial(String name, Consumer<SvnMaterial> configure) {
+        super(name, configure);
+    }
+
+    @Override
+    public SvnMaterial dup(
+            @DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial")
+                    Closure<SvnMaterial> config) {
+        return Configurable.applyTo(config, deepClone());
+    }
+
+    @Override
+    protected SvnMaterial deepClone() {
+        return new SvnMaterial(name, s -> {
+            injectSettings(s);
+            s.url = url;
+            s.checkExternals = checkExternals;
+        });
+    }
 }

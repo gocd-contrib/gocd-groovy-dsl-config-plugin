@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
@@ -27,6 +28,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
@@ -55,6 +57,10 @@ public class P4Material extends ScmMaterial<P4Material> {
     @NotEmpty
     private String view;
 
+    public P4Material(String name, Consumer<P4Material> configure) {
+        super(name, configure);
+    }
+
     public P4Material() {
         this(null);
     }
@@ -66,6 +72,24 @@ public class P4Material extends ScmMaterial<P4Material> {
     public P4Material(String name, @DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure cl) {
         super(name);
         configure(cl);
+    }
+
+    @Override
+    public P4Material dup(
+            @DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material")
+                    Closure<P4Material> config) {
+        return Configurable.applyTo(config, deepClone());
+    }
+
+    @Override
+    protected P4Material deepClone() {
+        return new P4Material(name, p -> {
+            injectSettings(p);
+            p.port = port;
+            p.view = view;
+            p.useTickets = useTickets;
+        });
     }
 
 }

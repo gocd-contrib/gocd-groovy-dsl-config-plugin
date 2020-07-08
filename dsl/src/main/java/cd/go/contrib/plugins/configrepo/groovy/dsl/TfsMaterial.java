@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -26,6 +27,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
@@ -73,4 +75,24 @@ public class TfsMaterial extends ScmMaterial<TfsMaterial> {
         configure(cl);
     }
 
+    public TfsMaterial(String name, Consumer<TfsMaterial> configure) {
+        super(name, configure);
+    }
+
+    @Override
+    public TfsMaterial dup(
+            @DelegatesTo(value = TfsMaterial.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TfsMaterial")
+                    Closure<TfsMaterial> config) {
+        return Configurable.applyTo(config, deepClone());
+    }
+
+    @Override
+    protected TfsMaterial deepClone() {
+        return new TfsMaterial(name, t -> {
+            t.url = url;
+            t.domain = domain;
+            t.projectPath = projectPath;
+        });
+    }
 }

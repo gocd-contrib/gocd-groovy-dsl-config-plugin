@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
@@ -27,6 +28,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
@@ -64,4 +66,24 @@ public class DependencyMaterial extends Material<DependencyMaterial> {
         configure(cl);
     }
 
+    public DependencyMaterial(String name, Consumer<DependencyMaterial> config) {
+        super(name);
+        config.accept(this);
+    }
+
+    @Override
+    public DependencyMaterial dup(
+            @DelegatesTo(value = DependencyMaterial.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.DependencyMaterial")
+                    Closure<DependencyMaterial> config) {
+        return Configurable.applyTo(config, deepClone());
+    }
+
+    private DependencyMaterial deepClone() {
+        return new DependencyMaterial(name, d -> {
+            d.pipeline = pipeline;
+            d.stage = stage;
+            d.ignoreForScheduling = ignoreForScheduling;
+        });
+    }
 }

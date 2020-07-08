@@ -16,7 +16,10 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.export;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.*;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.CollectionNode;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.NamedNode;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.Node;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.NodeTypes;
 import groovy.lang.Closure;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
@@ -40,7 +43,23 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 public class GroovyExporter {
 
+    private static final List<String> NON_FACTORY_EXCLUDES = List.of("dup", "deepClone");
+
     private final IndentedStringWriter writer;
+
+    private static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+        Map<Object, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    private static Stream<Method> getAllMethods(Class<? extends Node> aClass) {
+        Method[] methodArray = aClass.getDeclaredMethods();
+        final List<Class<?>> superclassList = ClassUtils.getAllSuperclasses(aClass);
+        for (final Class<?> klass : superclassList) {
+            methodArray = ArrayUtils.addAll(methodArray, klass.getDeclaredMethods());
+        }
+        return Arrays.stream(methodArray).sorted(Comparator.comparing(Method::getName));
+    }
 
     public GroovyExporter(Writer writer) {
         this.writer = new IndentedStringWriter(writer);
@@ -207,6 +226,7 @@ public class GroovyExporter {
                 .filter(method -> !method.isSynthetic())
                 .filter(method -> Modifier.isPublic(method.getModifiers()))
                 .filter(method -> ArrayUtils.contains(method.getParameterTypes(), Closure.class))
+                .filter(m -> !NON_FACTORY_EXCLUDES.contains(m.getName()))
                 .collect(Collectors.toList());
     }
 
@@ -219,11 +239,6 @@ public class GroovyExporter {
                 .sorted(Comparator.comparing(Method::getName)).collect(Collectors.toList());
     }
 
-    private static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
-        Map<Object, Boolean> map = new ConcurrentHashMap<>();
-        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
-
     private Method getPublicGetterMethodFor(Node node, String fieldName) {
         return getAllMethods(node.getClass())
                 .filter(method -> !method.isSynthetic())
@@ -231,15 +246,6 @@ public class GroovyExporter {
                 .filter(method -> method.getName().equals("get" + capitalize(fieldName)) || method.getName().equals("is" + capitalize(fieldName)))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Unable to find getter method for " + fieldName + " on type " + node.getClass().getSimpleName()));
-    }
-
-    private static Stream<Method> getAllMethods(Class<? extends Node> aClass) {
-        Method[] methodArray = aClass.getDeclaredMethods();
-        final List<Class<?>> superclassList = ClassUtils.getAllSuperclasses(aClass);
-        for (final Class<?> klass : superclassList) {
-            methodArray = ArrayUtils.addAll(methodArray, klass.getDeclaredMethods());
-        }
-        return Arrays.stream(methodArray).sorted(Comparator.comparing(Method::getName));
     }
 
 }

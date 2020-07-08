@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
@@ -27,6 +28,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 
@@ -62,4 +64,23 @@ public class HgMaterial extends ScmMaterial<HgMaterial> {
         configure(cl);
     }
 
+    public HgMaterial(String name, Consumer<HgMaterial> configure) {
+        super(name, configure);
+    }
+
+    @Override
+    public HgMaterial dup(
+            @DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY)
+            @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial")
+                    Closure<HgMaterial> config) {
+        return Configurable.applyTo(config, deepClone());
+    }
+
+    @Override
+    protected HgMaterial deepClone() {
+        return new HgMaterial(name, h -> {
+            injectSettings(h);
+            h.url = url;
+        });
+    }
 }

@@ -18,6 +18,7 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import groovy.lang.Closure;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,4 +58,5 @@ public abstract class Material<T extends Material> extends NamedNode<T> {
         super(name);
     }
 
+    public abstract T dup(Closure<T> config);
 }

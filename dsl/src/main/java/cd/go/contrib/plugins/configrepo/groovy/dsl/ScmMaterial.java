@@ -36,7 +36,6 @@ import static lombok.AccessLevel.NONE;
 @ToString(callSuper = true)
 public abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
 
-
     @JsonProperty("username")
     protected String username;
 
@@ -74,7 +73,6 @@ public abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
     @JsonProperty("auto_update")
     private Boolean autoUpdate = true;
 
-
     /**
      * The {@link Filter} element specifies files in changesets that should not trigger a pipeline automatically. When a
      * pipeline is triggered by files that are not ignored the filtered files will still be updated with other files.
@@ -103,11 +101,27 @@ public abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
         configure.accept((T) this);
     }
 
+    @JsonIgnore
+    public List<String> getBlacklist() {
+        if (this.filter != null && !this.filter.isWhitelist()) {
+            return this.filter.getItems();
+        }
+        return null;
+    }
+
     /**
      * {@includeCode scm.blacklist.groovy }
      */
     public void setBlacklist(List<String> blacklist) {
         filter = new Filter(blacklist);
+    }
+
+    @JsonIgnore
+    public List<String> getWhitelist() {
+        if (this.filter != null && this.filter.isWhitelist()) {
+            return this.filter.getItems();
+        }
+        return null;
     }
 
     /**
@@ -117,19 +131,19 @@ public abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
         filter = new Filter(true, whitelist);
     }
 
-    @JsonIgnore
-    public List<String> getBlacklist() {
-        if (this.filter != null && !this.filter.isWhitelist()) {
-            return this.filter.getItems();
-        }
-        return null;
-    }
+    protected abstract T deepClone();
 
-    @JsonIgnore
-    public List<String> getWhitelist() {
-        if (this.filter != null && this.filter.isWhitelist()) {
-            return this.filter.getItems();
+    @SuppressWarnings("unchecked")
+    protected T injectSettings(ScmMaterial<T> other) {
+        other.username = username;
+        other.password = password;
+        other.encryptedPassword = encryptedPassword;
+        other.autoUpdate = autoUpdate;
+        other.destination = destination;
+        if (null != filter) {
+            other.filter = filter.deepClone();
         }
-        return null;
+
+        return (T) other;
     }
 }
