@@ -16,35 +16,37 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.branching.api.github;
 
-import cd.go.contrib.plugins.configrepo.groovy.branching.MergeParent;
+import cd.go.contrib.plugins.configrepo.groovy.branching.MergeCandidate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PullRequest implements MergeParent {
+public class PullRequest implements MergeCandidate {
 
     @JsonProperty
     @SuppressWarnings("unused")
     private int number;
 
+    @JsonProperty
+    @SuppressWarnings("unused")
+    private String title;
+
+    private String author;
+
     private String repoUrl;
 
-    @JsonProperty("base")
-    @SuppressWarnings({"unchecked", "unused"})
-    private void unpackRepoUrl(Map<String, Object> baseNode) {
-        if (null != baseNode) {
-            repoUrl = requireNonNull((String) requireNonNull(
-                    (Map<String, Object>) baseNode.get("repo"),
-                    "Missing PR repo"
-            ).get("clone_url"), "Missing PR repo clone URL");
-        }
-    }
+    private String showUrl;
 
+    private List<String> labels;
+
+    @Override
     public String ref() {
         return format("refs/pull/%d/head", number);
     }
@@ -52,5 +54,57 @@ public class PullRequest implements MergeParent {
     @Override
     public String url() {
         return repoUrl;
+    }
+
+    @Override
+    public String title() {
+        return title;
+    }
+
+    @Override
+    public String author() {
+        return author;
+    }
+
+    @Override
+    public String showUrl() {
+        return showUrl;
+    }
+
+    @Override
+    public List<String> labels() {
+        return labels;
+    }
+
+    @JsonProperty("base")
+    @SuppressWarnings({"unchecked", "unused"})
+    private void unpackRepoUrl(Map<String, Object> node) {
+        if (null != node) {
+            repoUrl = requireNonNull((String) requireNonNull(
+                    (Map<String, Object>) node.get("repo"),
+                    "Missing PR repo"
+            ).get("clone_url"), "Missing PR repo clone URL");
+        }
+    }
+
+    @JsonProperty("user")
+    @SuppressWarnings({"unused"})
+    private void unpackAuthor(Map<String, Object> node) {
+        author = (String) requireNonNull(node.get("login"));
+    }
+
+    @JsonProperty("labels")
+    @SuppressWarnings({"unchecked", "unused"})
+    private void unpackLabels(List<Object> node) {
+        labels = node.stream().map(l -> ((Map<String, String>) l).get("name")).collect(Collectors.toList());
+    }
+
+    @JsonProperty("_links")
+    @SuppressWarnings({"unchecked", "unused"})
+    private void unpackShowUrl(Map<String, Object> node) {
+        showUrl = requireNonNull((String) requireNonNull(
+                (Map<String, Object>) node.get("html"),
+                "Missing PR html link entry"
+        ).get("href"), "Missing PR html link href");
     }
 }

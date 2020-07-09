@@ -16,7 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.branching.api.bitbucketserver;
 
-import cd.go.contrib.plugins.configrepo.groovy.branching.MergeParent;
+import cd.go.contrib.plugins.configrepo.groovy.branching.MergeCandidate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,11 +26,19 @@ import java.util.Map;
 import static java.util.Objects.requireNonNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PullRequest implements MergeParent {
+public class PullRequest implements MergeCandidate {
 
     private String branchName;
 
     private String repoUrl;
+
+    @JsonProperty
+    @SuppressWarnings("unused")
+    private String title;
+
+    private String author;
+
+    private String showUrl;
 
     @Override
     public String ref() {
@@ -42,13 +50,33 @@ public class PullRequest implements MergeParent {
         return repoUrl;
     }
 
+    @Override
+    public String title() {
+        return title;
+    }
+
+    @Override
+    public String author() {
+        return author;
+    }
+
+    @Override
+    public String showUrl() {
+        return showUrl;
+    }
+
+    @Override
+    public List<String> labels() {
+        return null;
+    }
+
     @JsonProperty("fromRef")
     @SuppressWarnings("unused")
-    private void unpackSourceRepo(Map<String, Object> refNode) {
-        if (null != refNode) {
-            this.branchName = requireNonNull((String) refNode.get("id"), "Missing PR branch ref");
+    private void unpackSourceRepo(Map<String, Object> node) {
+        if (null != node) {
+            this.branchName = requireNonNull((String) node.get("id"), "Missing PR branch ref");
             this.repoUrl = requireNonNull(
-                    unpackCloneUrls(unpackLinks(unpackRepo(refNode))).
+                    unpackCloneUrls(unpackLinks(unpackRepo(node))).
                             stream().
                             filter(u -> "http".equals(u.get("name"))).
                             map(u -> u.get("href")).
@@ -59,20 +87,47 @@ public class PullRequest implements MergeParent {
         }
     }
 
+    @JsonProperty("author")
+    @SuppressWarnings({"unused", "unchecked"})
+    private void unpackAuthor(Map<String, Object> node) {
+        author = (String) requireNonNull(
+                requireNonNull((Map<String, Object>) node.get("user"),
+                        "Missing PR author.user object"
+                ).get("name"),
+                "Missing PR author.user.name"
+        );
+    }
+
+    @JsonProperty("links")
+    @SuppressWarnings({"unused", "unchecked"})
+    private void unpackShowUrl(Map<String, Object> node) {
+        showUrl = requireNonNull(
+                requireNonNull(
+                        (List<Map<String, String>>) node.get("self"),
+                        "Missing PR self link"
+                ).
+                        stream().
+                        map(u -> u.get("href")).
+                        findFirst().
+                        orElse(null),
+                "Missing PR self link href"
+        );
+    }
+
     private List<Map<String, String>> unpackCloneUrls(Map<String, List<Map<String, String>>> links) {
         return requireNonNull(links.get("clone"), "Missing PR source repo clone URLs");
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, List<Map<String, String>>> unpackLinks(Map<String, Object> repoNode) {
+    private Map<String, List<Map<String, String>>> unpackLinks(Map<String, Object> node) {
         return requireNonNull(
-                (Map<String, List<Map<String, String>>>) repoNode.get("links"),
+                (Map<String, List<Map<String, String>>>) node.get("links"),
                 "Missing PR source repo links"
         );
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> unpackRepo(Map<String, Object> refNode) {
-        return requireNonNull((Map<String, Object>) refNode.get("repository"), "Missing PR source repo information");
+    private Map<String, Object> unpackRepo(Map<String, Object> node) {
+        return requireNonNull((Map<String, Object>) node.get("repository"), "Missing PR source repo information");
     }
 }

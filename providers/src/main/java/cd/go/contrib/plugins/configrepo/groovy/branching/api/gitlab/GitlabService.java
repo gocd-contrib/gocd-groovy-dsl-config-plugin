@@ -32,10 +32,10 @@ public interface GitlabService {
 
     String PAGINATION_HEADER = "x-next-page";
 
-    @GET("api/v4/projects/{id}/merge_requests?state=opened&view=simple")
+    @GET("api/v4/projects/{id}/merge_requests?state=opened")
     Call<List<PullRequest>> pullRequests(@Path("id") String id);
 
-    @GET("api/v4/projects/{id}/merge_requests?state=opened&view=simple")
+    @GET("api/v4/projects/{id}/merge_requests?state=opened")
     Call<List<PullRequest>> pullRequests(@Path("id") String id, @Query("page") int page);
 
     default List<PullRequest> allPullRequests(String owner, String repo) throws IOException {

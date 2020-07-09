@@ -16,28 +16,38 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.branching.api.gitlab;
 
-import cd.go.contrib.plugins.configrepo.groovy.branching.MergeParent;
+import cd.go.contrib.plugins.configrepo.groovy.branching.MergeCandidate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+import java.util.Map;
+
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PullRequest implements MergeParent {
+public class PullRequest implements MergeCandidate {
 
-    public static final String TO_REPO_URL = "/-/merge_requests/\\d+$";
+    private static final String TO_REPO_URL = "/-/merge_requests/\\d+$";
 
     @JsonProperty("iid")
     @SuppressWarnings("unused")
     private int number;
 
+    @JsonProperty
+    @SuppressWarnings("unused")
+    private String title;
+
+    private String author;
+
     private String repoUrl;
 
-    @JsonProperty("web_url")
+    private String showUrl;
+
+    @JsonProperty
     @SuppressWarnings("unused")
-    private void unpackWebUrl(String webUrl) {
-        repoUrl = webUrl.replaceAll(TO_REPO_URL, "");
-    }
+    private List<String> labels;
 
     @Override
     public String ref() {
@@ -47,5 +57,38 @@ public class PullRequest implements MergeParent {
     @Override
     public String url() {
         return repoUrl;
+    }
+
+    @Override
+    public String title() {
+        return title;
+    }
+
+    @Override
+    public String author() {
+        return author;
+    }
+
+    @Override
+    public String showUrl() {
+        return showUrl;
+    }
+
+    @Override
+    public List<String> labels() {
+        return labels;
+    }
+
+    @JsonProperty("web_url")
+    @SuppressWarnings("unused")
+    private void unpackWebUrl(String webUrl) {
+        showUrl = webUrl;
+        repoUrl = webUrl.replaceAll(TO_REPO_URL, "");
+    }
+
+    @JsonProperty("author")
+    @SuppressWarnings("unused")
+    private void unpackAuthor(Map<String, String> node) {
+        author = requireNonNull(node.get("username"), "Missing MR author username");
     }
 }
