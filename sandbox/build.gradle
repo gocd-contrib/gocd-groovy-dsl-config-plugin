@@ -16,6 +16,7 @@
 
 dependencies {
   implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
+  implementation group: 'org.codehaus.groovy', name: 'groovy-json', version: groovyVersion
   implementation group: 'org.codehaus.groovy', name: 'groovy-sql', version: groovyVersion
   implementation group: 'org.codehaus.groovy', name: 'groovy-swing', version: groovyVersion
   implementation group: 'org.codehaus.groovy', name: 'groovy-dateutil', version: groovyVersion

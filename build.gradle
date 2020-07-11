@@ -24,7 +24,7 @@ buildscript {
     dom4jVersion = '1.6.1'
     glassfishVersion = '3.0.0'
     groovySandboxVersion = '1.24'
-    groovyVersion = '2.5.9'
+    groovyVersion = '2.5.12'
     guavaVersion = '28.2-jre'
     hamcrestVersion = '2.2'
     hiberVersion = '6.1.1.Final'
