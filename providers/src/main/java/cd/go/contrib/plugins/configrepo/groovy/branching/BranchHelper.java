@@ -21,15 +21,26 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.ScmMaterial;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.RefUtils.gitShortRef;
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.UriUtils.stripAuth;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNullElse;
 import static org.apache.commons.lang3.StringUtils.firstNonBlank;
 
 public class BranchHelper {
+
+    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     private BranchHelper() {
     }
@@ -51,10 +62,26 @@ public class BranchHelper {
         }
     }
 
-    public static BranchContext createContext(Attributes attrs, MergeParent merge) {
+    public static BranchContext createContext(Attributes attrs, MergeCandidate merge) {
         final String ref = merge.ref();
         final String branch = prettifyRef(gitShortRef(ref), attrs);
-        return new BranchContext(ref, branch, createMaterial(attrs, merge));
+        final BranchContext bc = new BranchContext(ref, branch, createMaterial(attrs, merge));
+
+        bc.setTitle(requireNonNullElse(merge.title(), ""));
+        bc.setAuthor(requireNonNullElse(merge.author(), ""));
+        bc.setReferenceUrl(requireNonNullElse(merge.showUrl(), ""));
+        bc.setLabels(new ArrayList<>(requireNonNullElse(merge.labels(), Collections.emptyList())));
+
+        final Set<ConstraintViolation<BranchContext>> errors = VALIDATOR.validate(bc);
+        if (!errors.isEmpty()) {
+            throw new ValidationException("Branch context binding is missing data! " +
+                    "Check the provider's API response. Error(s):\n" +
+                    errors.stream().
+                            map(ConstraintViolation::getMessage).
+                            collect(Collectors.joining("\n", "  ", ""))
+            );
+        }
+        return bc;
     }
 
     /**
@@ -70,6 +97,7 @@ public class BranchHelper {
      *
      * @return an {@link ScmMaterial} instance representing the given {@link MergeParent}
      */
+    @SuppressWarnings("rawtypes")
     public static ScmMaterial createMaterial(final Attributes attrs, final MergeParent merge) {
         // TODO: expand support for other SCMs beyond git
         return new GitMaterial("repo", git -> {

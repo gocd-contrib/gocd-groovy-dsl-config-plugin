@@ -34,6 +34,10 @@ class BranchContextSerializationTest {
                 "\"branch_name\": \"foo\"," +
                 "\"sanitized_branch_name\": \"foo\"," +
                 "\"full_ref_name\": \"refs/heads/foo\"," +
+                "\"title\": \"this is a foo\"," +
+                "\"author\": \"me\"," +
+                "\"reference_url\": \"https://pull/request\"," +
+                "\"labels\": [\"a\", \"b\"]," +
                 "\"repo\": {" +
                 "    \"type\": \"git\"," +
                 "    \"url\": \"https://gitbud.com/repo.git\"," +
@@ -49,6 +53,10 @@ class BranchContextSerializationTest {
 
         assertEquals("foo", c.getBranch());
         assertEquals("https://gitbud.com/repo.git", ((GitMaterial) c.getRepo()).getUrl());
+        assertEquals("this is a foo", c.getTitle());
+        assertEquals("me", c.getAuthor());
+        assertEquals("https://pull/request", c.getReferenceUrl());
+        assertEquals(List.of("a", "b"), c.getLabels());
     }
 
     @Test
@@ -57,6 +65,10 @@ class BranchContextSerializationTest {
                 "\"branch_name\": \"foo\"," +
                 "\"sanitized_branch_name\": \"foo\"," +
                 "\"full_ref_name\": \"refs/heads/foo\"," +
+                "\"title\": \"this is a foo\"," +
+                "\"author\": \"me\"," +
+                "\"reference_url\": \"https://pull/request\"," +
+                "\"labels\": [\"a\", \"b\"]," +
                 "\"repo\": {" +
                 "    \"type\": \"git\"," +
                 "    \"url\": \"https://gitbud.com/repo.git\"," +
@@ -77,6 +89,10 @@ class BranchContextSerializationTest {
 
         assertEquals("foo", c.getBranch());
         assertEquals("https://gitbud.com/repo.git", ((GitMaterial) c.getRepo()).getUrl());
+        assertEquals("this is a foo", c.getTitle());
+        assertEquals("me", c.getAuthor());
+        assertEquals("https://pull/request", c.getReferenceUrl());
+        assertEquals(List.of("a", "b"), c.getLabels());
     }
 
 }

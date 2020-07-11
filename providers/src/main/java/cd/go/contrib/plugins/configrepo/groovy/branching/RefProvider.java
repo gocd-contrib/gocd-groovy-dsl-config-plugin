@@ -20,5 +20,5 @@ import java.util.List;
 
 public interface RefProvider {
 
-    List<? extends MergeParent> fetch();
+    List<? extends MergeCandidate> fetch();
 }
