@@ -18,7 +18,14 @@ package cd.go.contrib.plugins.configrepo.groovy.branching;
 
 import java.util.List;
 
-public interface RefProvider {
+public interface MergeCandidate extends MergeParent {
 
-    List<? extends MergeCandidate> fetch();
+    String title();
+
+    String author();
+
+    String showUrl();
+
+    List<String> labels();
+
 }

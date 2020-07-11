@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.RefUtils.gitShortRef;
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.UriUtils.embedAuth;
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.UriUtils.maskAuth;
 import static cd.go.contrib.plugins.configrepo.groovy.utils.CommandUtils.*;
@@ -78,7 +79,7 @@ public class BasicGitRefProvider implements RefProvider {
         return refs;
     }
 
-    public static class GitRef implements MergeParent {
+    public static class GitRef implements MergeCandidate {
 
         private final String ref;
 
@@ -97,6 +98,26 @@ public class BasicGitRefProvider implements RefProvider {
         @Override
         public String url() {
             return url;
+        }
+
+        @Override
+        public String title() {
+            return gitShortRef(ref);
+        }
+
+        @Override
+        public String author() {
+            return null;
+        }
+
+        @Override
+        public String showUrl() {
+            return null;
+        }
+
+        @Override
+        public List<String> labels() {
+            return null;
         }
     }
 }

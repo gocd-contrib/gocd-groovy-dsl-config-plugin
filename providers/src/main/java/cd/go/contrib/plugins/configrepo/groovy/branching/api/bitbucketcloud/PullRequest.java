@@ -16,14 +16,18 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.branching.api.bitbucketcloud;
 
-import cd.go.contrib.plugins.configrepo.groovy.branching.MergeParent;
+import cd.go.contrib.plugins.configrepo.groovy.branching.MergeCandidate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.firstNonBlank;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PullRequest implements MergeParent {
+public class PullRequest implements MergeCandidate {
 
     @JsonProperty
     @SuppressWarnings("unused")
@@ -33,11 +37,56 @@ public class PullRequest implements MergeParent {
     @SuppressWarnings("unused")
     private MergeEndpoint destination;
 
+    @JsonProperty
+    @SuppressWarnings("unused")
+    private String title;
+
+    private String author;
+
+    private String showUrl;
+
+    @Override
+    public String ref() {
+        return source.ref();
+    }
+
+    @Override
     public String url() {
         return firstNonBlank(source.url(), destination.url());
     }
 
-    public String ref() {
-        return source.ref();
+    @Override
+    public String title() {
+        return title;
+    }
+
+    @Override
+    public String author() {
+        return author;
+    }
+
+    @Override
+    public String showUrl() {
+        return showUrl;
+    }
+
+    @Override
+    public List<String> labels() {
+        return null;
+    }
+
+    @JsonProperty("author")
+    @SuppressWarnings({"unused"})
+    private void unpackAuthor(Map<String, Object> node) {
+        author = (String) requireNonNull(node.get("nickname"));
+    }
+
+    @JsonProperty("links")
+    @SuppressWarnings({"unused", "unchecked"})
+    private void unpackLinks(Map<String, Object> node) {
+        showUrl = requireNonNull((String) requireNonNull(
+                (Map<String, Object>) node.get("html"),
+                "Missing PR html link entry"
+        ).get("href"), "Missing PR html link href");
     }
 }

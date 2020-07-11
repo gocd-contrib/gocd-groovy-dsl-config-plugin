@@ -16,7 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.resolvers;
 
-import cd.go.contrib.plugins.configrepo.groovy.branching.MergeParent;
+import cd.go.contrib.plugins.configrepo.groovy.branching.MergeCandidate;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.BranchContext;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 
@@ -67,9 +67,30 @@ public class Branches {
      * @return a {@link List} of {@link BranchContext} instances
      */
     public static List<BranchContext> stubbed(final BranchStrategy s, @SuppressWarnings("unused") final Pattern p) {
-        final String ref = "refs/heads/stubbed-ref-" + randomHex();
+        final String identifier = randomHex();
+        final String ref = "refs/heads/stubbed-ref-" + identifier;
 
-        return Collections.singletonList(createContext(s.attrs(), new MergeParent() {
+        return Collections.singletonList(createContext(s.attrs(), new MergeCandidate() {
+            @Override
+            public String title() {
+                return "stubbed-title-for-" + identifier;
+            }
+
+            @Override
+            public String author() {
+                return "stubbed-author";
+            }
+
+            @Override
+            public String showUrl() {
+                return "https://stubbed.repository.url/pulls/" + ref;
+            }
+
+            @Override
+            public List<String> labels() {
+                return Collections.emptyList();
+            }
+
             @Override
             public String ref() {
                 return ref;

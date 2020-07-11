@@ -24,20 +24,42 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Setter
 public class BranchContext implements KeyVal.Mixin {
 
+    /**
+     * Required for JSON deserialization
+     */
+    @SuppressWarnings("unused")
     public BranchContext() {
     }
 
+    @SuppressWarnings("rawtypes")
     public BranchContext(@NotEmpty String fullRefName, @NotEmpty String branch, @NotNull ScmMaterial repo) {
         this.fullRefName = fullRefName;
         this.branch = branch;
         this.branchSanitized = RefUtils.sanitizeRef(branch);
         this.repo = repo;
     }
+
+    @JsonProperty
+    @NotEmpty
+    private String title;
+
+    @JsonProperty
+    @NotNull
+    private String author;
+
+    @JsonProperty("reference_url")
+    @NotNull
+    private String referenceUrl;
+
+    @JsonProperty
+    @NotNull
+    private List<String> labels;
 
     @JsonProperty("full_ref_name")
     @NotEmpty
@@ -51,7 +73,8 @@ public class BranchContext implements KeyVal.Mixin {
     @NotEmpty
     private String branchSanitized;
 
-    @JsonProperty("repo")
+    @JsonProperty
     @NotNull
+    @SuppressWarnings("rawtypes")
     private ScmMaterial repo;
 }
