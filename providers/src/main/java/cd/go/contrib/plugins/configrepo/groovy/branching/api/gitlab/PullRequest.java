@@ -35,6 +35,8 @@ public class PullRequest implements MergeCandidate {
     @SuppressWarnings("unused")
     private int number;
 
+    private String identifier;
+
     @JsonProperty
     @SuppressWarnings("unused")
     private String title;
@@ -57,6 +59,11 @@ public class PullRequest implements MergeCandidate {
     @Override
     public String url() {
         return repoUrl;
+    }
+
+    @Override
+    public String identifier() {
+        return identifier;
     }
 
     @Override
@@ -90,5 +97,10 @@ public class PullRequest implements MergeCandidate {
     @SuppressWarnings("unused")
     private void unpackAuthor(Map<String, String> node) {
         author = requireNonNull(node.get("username"), "Missing MR author username");
+    }
+
+    @JsonProperty("references")
+    private void unpackIdentifier(Map<String, String> node) {
+        identifier = requireNonNull(node.get("full"), "Missing PR full reference");
     }
 }

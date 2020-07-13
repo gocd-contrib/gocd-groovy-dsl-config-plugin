@@ -52,7 +52,7 @@ class ApiTest {
     void 'fetches pull requests'() {
       GithubService api = Api.github(
         new MockedHttp().GET('/repos/gocd/gocd/pulls', { r ->
-          r.body = '[ { "number": 1, "state": "open", "base": { "repo": { "clone_url": "git.repo" } } } ]'
+          r.body = toJson([[number: 1, state: 'open', base: [repo: [clone_url: 'git.repo', full_name: 'gocd/gocd']]]])
         })
       )
       def prs = api.allPullRequests('gocd', 'gocd')
@@ -67,15 +67,15 @@ class ApiTest {
       GithubService api = Api.github(new MockedHttp().
         GET('/repos/gocd/gocd/pulls', { r ->
           r.headers.add(PAGING_HEADER, '<https://api.github.com/repositories/1234/pulls?page=2>; rel="next"')
-          r.body = '[ { "number": 1, "state": "open", "base": { "repo": { "clone_url": "git.repo" } } } ]'
+          r.body = toJson([[number: 1, state: 'open', base: [repo: [clone_url: 'git.repo', full_name: 'repositories/1234']]]])
         }).
         GET('/repos/gocd/gocd/pulls?page=2', { r ->
           r.headers.add(PAGING_HEADER, '<https://api.github.com/repositories/1234/pulls?page=3>; rel="next"')
-          r.body = '[ { "number": 2, "state": "open", "base": { "repo": { "clone_url": "git.repo" } } } ]'
+          r.body = toJson([[number: 2, state: 'open', base: [repo: [clone_url: 'git.repo', full_name: 'repositories/1234']]]])
         }).
         GET('/repos/gocd/gocd/pulls?page=3', { r ->
           r.headers.add(PAGING_HEADER, '<https://api.github.com/repositories/1234/pulls?page=2>; rel="prev"')
-          r.body = '[ { "number": 3, "state": "open", "base": { "repo": { "clone_url": "git.repo" } } } ]'
+          r.body = toJson([[number: 3, state: 'open', base: [repo: [clone_url: 'git.repo', full_name: 'repositories/1234']]]])
         })
       )
       def prs = api.allPullRequests('gocd', 'gocd')
@@ -97,7 +97,7 @@ class ApiTest {
       GithubService api = Api.github(
         new MockedHttp().GET('/repos/gocd/gocd/pulls', { r ->
           r.body = toJson([[
-            number: 1, state: 'open', base: [repo: [clone_url: 'git.repo']],
+            number: 1, state: 'open', base: [repo: [clone_url: 'git.repo', full_name: 'gocd/gocd']],
             labels: [[name: 'red'], [name: 'green']],
             title : 'Such a fancy PR',
             user  : [login: 'the-boss'],
@@ -110,6 +110,7 @@ class ApiTest {
       assertEquals(1, prs.size())
 
       def pr = prs.get(0)
+      assertEquals('gocd/gocd#1', pr.identifier())
       assertEquals('refs/pull/1/head', pr.ref())
       assertEquals('git.repo', pr.url())
       assertEquals('Such a fancy PR', pr.title())
@@ -139,7 +140,7 @@ class ApiTest {
     void 'fetches pull requests'() {
       GitlabService api = Api.gitlab(
         new MockedHttp().GET('/api/v4/projects/gocd%2Fgocd/merge_requests?state=opened', { r ->
-          r.body = '[ {"iid": 5, "web_url": "https://repo.com/gocd/gocd/-/merge_requests/5"} ]'
+          r.body = toJson([[iid: 5, web_url: 'https://repo.com/gocd/gocd/-/merge_requests/5']])
         }), null
       )
       def prs = api.allPullRequests('gocd', 'gocd')
@@ -154,14 +155,14 @@ class ApiTest {
       GitlabService api = Api.gitlab(new MockedHttp().
         GET('/api/v4/projects/gocd%2Fgocd/merge_requests?state=opened', { r ->
           r.headers.add(PAGING_HEADER, '2')
-          r.body = '[ {"iid": 5, "web_url": "https://repo.com/gocd/gocd/-/merge_requests/5"} ]'
+          r.body = toJson([[iid: 5, web_url: 'https://repo.com/gocd/gocd/-/merge_requests/5']])
         }).
         GET('/api/v4/projects/gocd%2Fgocd/merge_requests?state=opened&page=2', { r ->
           r.headers.add(PAGING_HEADER, '3')
-          r.body = '[ {"iid": 6, "web_url": "https://repo.com/gocd/gocd/-/merge_requests/6"} ]'
+          r.body = toJson([[iid: 6, web_url: 'https://repo.com/gocd/gocd/-/merge_requests/6']])
         }).
         GET('/api/v4/projects/gocd%2Fgocd/merge_requests?state=opened&page=3', { r ->
-          r.body = '[ {"iid": 7, "web_url": "https://repo.com/gocd/gocd/-/merge_requests/7"} ]'
+          r.body = toJson([[iid: 7, web_url: 'https://repo.com/gocd/gocd/-/merge_requests/7']])
         }), null
       )
       def prs = api.allPullRequests('gocd', 'gocd')
@@ -187,6 +188,7 @@ class ApiTest {
             labels: ['red', 'green'],
             title : 'Such a fancy PR',
             author: [username: 'the-boss'],
+            references: [full: 'gocd/gocd!5']
           ]])
         }), null
       )
@@ -195,6 +197,7 @@ class ApiTest {
       assertEquals(1, prs.size())
 
       def pr = prs.get(0)
+      assertEquals('gocd/gocd!5', pr.identifier())
       assertEquals('refs/merge-requests/5/head', pr.ref())
       assertEquals('https://repo.com/gocd/gocd', pr.url())
       assertEquals('Such a fancy PR', pr.title())
@@ -290,6 +293,7 @@ class ApiTest {
           r.body = toJson([
             page  : 1,
             values: [[
+              id: 3,
               source: internal("change"), destination: master("gocd/gocd"),
               title : 'Such a fancy PR',
               author: [nickname: 'the-boss'],
@@ -304,6 +308,7 @@ class ApiTest {
       assertEquals(1, prs.size())
 
       def pr = prs.get(0)
+      assertEquals('gocd/gocd#3', pr.identifier())
       assertEquals('refs/heads/change', pr.ref())
       assertEquals('https://bb.org/gocd/gocd', pr.url())
       assertEquals('Such a fancy PR', pr.title())
@@ -329,7 +334,7 @@ class ApiTest {
       }
       return [
         branch    : [name: branch],
-        repository: [links: [html: [href: format("https://bb.org/%s", reponame)]]]
+        repository: [links: [html: [href: format("https://bb.org/%s", reponame)]], full_name: reponame]
       ]
     }
   }
@@ -421,7 +426,9 @@ class ApiTest {
             isLastPage: true,
             start     : 0,
             values    : [[
+              id: 5,
               fromRef: from("change", "gocd/gocd"),
+              toRef: to("master", "gocd/gocd"),
               title  : 'Such a fancy PR',
               author : [user: [name: 'the-boss']],
               links  : [self: [[href: 'https://greathub.com/pull/my/finger']]],
@@ -435,6 +442,7 @@ class ApiTest {
       assertEquals(1, prs.size())
 
       def pr = prs.get(0)
+      assertEquals('gocd/gocd#5', pr.identifier())
       assertEquals('refs/heads/change', pr.ref())
       assertEquals(repoUrl('gocd/gocd'), pr.url())
       assertEquals('Such a fancy PR', pr.title())
@@ -446,14 +454,22 @@ class ApiTest {
       return mergePoint(branch, reponame)
     }
 
+    def to(String branch, String reponame) {
+      return mergePoint(branch, reponame)
+    }
+
     def repoUrl(String name) {
       return [BASE_URL, name].join("/")
     }
 
     private def mergePoint(String branch, String reponame) {
+      final String[] parts = reponame.split("/")
+      final String project = parts[0]
+      final String slug = parts[1]
+
       return [
         id        : format("refs/heads/%s", branch),
-        repository: [links: [clone: [[href: repoUrl(reponame), name: "http"]]]]
+        repository: [links: [clone: [[href: repoUrl(reponame), name: "http"]]], slug: slug, project: [key: project]]
       ]
     }
   }

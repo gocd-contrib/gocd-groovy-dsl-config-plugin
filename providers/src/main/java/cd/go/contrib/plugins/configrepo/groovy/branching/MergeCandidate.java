@@ -20,6 +20,8 @@ import java.util.List;
 
 public interface MergeCandidate extends MergeParent {
 
+    String identifier();
+
     String title();
 
     String author();

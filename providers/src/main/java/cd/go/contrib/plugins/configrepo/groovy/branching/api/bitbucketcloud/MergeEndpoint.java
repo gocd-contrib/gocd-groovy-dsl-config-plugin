@@ -36,6 +36,8 @@ public class MergeEndpoint implements MergeParent {
 
     private String repoUrl;
 
+    private String fullName;
+
     @Override
     public String ref() {
         return format("refs/heads/%s", branchName);
@@ -46,6 +48,10 @@ public class MergeEndpoint implements MergeParent {
         return repoUrl;
     }
 
+    public String fullName() {
+        return fullName;
+    }
+
     @JsonProperty("branch")
     @SuppressWarnings("unused")
     private void unpackBranchName(Map<String, Object> branchNode) {
@@ -54,14 +60,16 @@ public class MergeEndpoint implements MergeParent {
 
     @JsonProperty("repository")
     @SuppressWarnings("unused")
-    private void unpackRepositoryUrl(Map<String, Object> repoNode) {
+    private void unpackRepository(Map<String, Object> repoNode) {
         if (null != repoNode) {
             this.repoUrl = requireNonNull(
                     requireNonNull(
-                            unpackLinks(repoNode).get("html"), "Missing PR source repo clone link"
+                            unpackLinks(repoNode).get("html"), "Missing PR repo clone link"
                     ).get("href"),
-                    "Missing PR source repo HTTP clone URL"
+                    "Missing PR repo HTTP clone URL"
             );
+
+            this.fullName = (String) requireNonNull(repoNode.get("full_name"), "Missing PR repo full name");
         }
     }
 

@@ -23,10 +23,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PullRequest implements MergeCandidate {
+
+    @JsonProperty
+    @SuppressWarnings("unused")
+    private int id;
+
+    private String fullName;
 
     private String branchName;
 
@@ -48,6 +55,11 @@ public class PullRequest implements MergeCandidate {
     @Override
     public String url() {
         return repoUrl;
+    }
+
+    @Override
+    public String identifier() {
+        return format("%s#%d", fullName, id);
     }
 
     @Override
@@ -87,6 +99,19 @@ public class PullRequest implements MergeCandidate {
         }
     }
 
+    @JsonProperty("toRef")
+    @SuppressWarnings({"unused", "unchecked"})
+    private void unpackDestRepo(Map<String, Object> node) {
+        final Map<String, Object> repo = unpackRepo(node);
+        final String slug = (String) requireNonNull(repo.get("slug"), "Missing PR repo slug");
+        final String project = (String) requireNonNull(
+                requireNonNull((Map<String, Object>) repo.get("project"),
+                        "Missing PR repo project"
+                ).get("key"), "Missing PR repo project key"
+        );
+        fullName = project + "/" + slug;
+    }
+
     @JsonProperty("author")
     @SuppressWarnings({"unused", "unchecked"})
     private void unpackAuthor(Map<String, Object> node) {
@@ -115,19 +140,19 @@ public class PullRequest implements MergeCandidate {
     }
 
     private List<Map<String, String>> unpackCloneUrls(Map<String, List<Map<String, String>>> links) {
-        return requireNonNull(links.get("clone"), "Missing PR source repo clone URLs");
+        return requireNonNull(links.get("clone"), "Missing PR repo clone URLs");
     }
 
     @SuppressWarnings("unchecked")
     private Map<String, List<Map<String, String>>> unpackLinks(Map<String, Object> node) {
         return requireNonNull(
                 (Map<String, List<Map<String, String>>>) node.get("links"),
-                "Missing PR source repo links"
+                "Missing PR repo links"
         );
     }
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> unpackRepo(Map<String, Object> node) {
-        return requireNonNull((Map<String, Object>) node.get("repository"), "Missing PR source repo information");
+        return requireNonNull((Map<String, Object>) node.get("repository"), "Missing PR repo information");
     }
 }

@@ -47,6 +47,10 @@ public class BranchContext implements KeyVal.Mixin {
 
     @JsonProperty
     @NotEmpty
+    private String identifier;
+
+    @JsonProperty
+    @NotEmpty
     private String title;
 
     @JsonProperty

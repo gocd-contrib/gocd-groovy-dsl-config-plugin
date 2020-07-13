@@ -23,11 +23,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.firstNonBlank;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PullRequest implements MergeCandidate {
+
+    @JsonProperty
+    @SuppressWarnings("unused")
+    private int id;
 
     @JsonProperty
     @SuppressWarnings("unused")
@@ -53,6 +58,11 @@ public class PullRequest implements MergeCandidate {
     @Override
     public String url() {
         return firstNonBlank(source.url(), destination.url());
+    }
+
+    @Override
+    public String identifier() {
+        return format("%s#%d", destination.fullName(), id);
     }
 
     @Override
