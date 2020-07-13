@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.firstNonBlank;
 
@@ -61,7 +62,7 @@ public class PullRequest implements MergeCandidate {
 
     @Override
     public String identifier() {
-        return Integer.toString(id);
+        return format("%s#%d", destination.fullName(), id);
     }
 
     @Override

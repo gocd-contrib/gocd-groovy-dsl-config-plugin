@@ -34,6 +34,8 @@ public class PullRequest implements MergeCandidate {
     @SuppressWarnings("unused")
     private int number;
 
+    private String fullName;
+
     @JsonProperty
     @SuppressWarnings("unused")
     private String title;
@@ -58,7 +60,7 @@ public class PullRequest implements MergeCandidate {
 
     @Override
     public String identifier() {
-        return Integer.toString(number);
+        return format("%s#%d", fullName, number);
     }
 
     @Override
@@ -83,12 +85,14 @@ public class PullRequest implements MergeCandidate {
 
     @JsonProperty("base")
     @SuppressWarnings({"unchecked", "unused"})
-    private void unpackRepoUrl(Map<String, Object> node) {
+    private void unpackRepo(Map<String, Object> node) {
         if (null != node) {
-            repoUrl = requireNonNull((String) requireNonNull(
+            final Map<String, Object> repo = requireNonNull(
                     (Map<String, Object>) node.get("repo"),
                     "Missing PR repo"
-            ).get("clone_url"), "Missing PR repo clone URL");
+            );
+            repoUrl = requireNonNull((String) repo.get("clone_url"), "Missing PR repo clone URL");
+            fullName = requireNonNull((String) repo.get("full_name"), "Missig PR repo full name");
         }
     }
 
