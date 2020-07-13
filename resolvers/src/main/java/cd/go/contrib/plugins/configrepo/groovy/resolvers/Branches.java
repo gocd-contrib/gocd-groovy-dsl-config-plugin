@@ -72,6 +72,11 @@ public class Branches {
 
         return Collections.singletonList(createContext(s.attrs(), new MergeCandidate() {
             @Override
+            public String identifier() {
+                return "stubbed-pr-number-" + identifier;
+            }
+
+            @Override
             public String title() {
                 return "stubbed-title-for-" + identifier;
             }

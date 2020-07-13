@@ -110,6 +110,7 @@ class ApiTest {
       assertEquals(1, prs.size())
 
       def pr = prs.get(0)
+      assertEquals('1', pr.identifier())
       assertEquals('refs/pull/1/head', pr.ref())
       assertEquals('git.repo', pr.url())
       assertEquals('Such a fancy PR', pr.title())
@@ -195,6 +196,7 @@ class ApiTest {
       assertEquals(1, prs.size())
 
       def pr = prs.get(0)
+      assertEquals('5', pr.identifier())
       assertEquals('refs/merge-requests/5/head', pr.ref())
       assertEquals('https://repo.com/gocd/gocd', pr.url())
       assertEquals('Such a fancy PR', pr.title())
@@ -290,6 +292,7 @@ class ApiTest {
           r.body = toJson([
             page  : 1,
             values: [[
+              id: 3,
               source: internal("change"), destination: master("gocd/gocd"),
               title : 'Such a fancy PR',
               author: [nickname: 'the-boss'],
@@ -304,6 +307,7 @@ class ApiTest {
       assertEquals(1, prs.size())
 
       def pr = prs.get(0)
+      assertEquals('3', pr.identifier())
       assertEquals('refs/heads/change', pr.ref())
       assertEquals('https://bb.org/gocd/gocd', pr.url())
       assertEquals('Such a fancy PR', pr.title())
@@ -421,6 +425,7 @@ class ApiTest {
             isLastPage: true,
             start     : 0,
             values    : [[
+              id: 5,
               fromRef: from("change", "gocd/gocd"),
               title  : 'Such a fancy PR',
               author : [user: [name: 'the-boss']],
@@ -435,6 +440,7 @@ class ApiTest {
       assertEquals(1, prs.size())
 
       def pr = prs.get(0)
+      assertEquals('5', pr.identifier())
       assertEquals('refs/heads/change', pr.ref())
       assertEquals(repoUrl('gocd/gocd'), pr.url())
       assertEquals('Such a fancy PR', pr.title())

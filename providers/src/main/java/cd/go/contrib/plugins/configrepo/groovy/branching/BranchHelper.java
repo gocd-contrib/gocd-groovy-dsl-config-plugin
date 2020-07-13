@@ -67,6 +67,7 @@ public class BranchHelper {
         final String branch = prettifyRef(gitShortRef(ref), attrs);
         final BranchContext bc = new BranchContext(ref, branch, createMaterial(attrs, merge));
 
+        bc.setIdentifier(requireNonNullElse(merge.identifier(), ""));
         bc.setTitle(requireNonNullElse(merge.title(), ""));
         bc.setAuthor(requireNonNullElse(merge.author(), ""));
         bc.setReferenceUrl(requireNonNullElse(merge.showUrl(), ""));

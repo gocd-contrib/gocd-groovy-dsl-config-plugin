@@ -31,6 +31,10 @@ public class PullRequest implements MergeCandidate {
 
     @JsonProperty
     @SuppressWarnings("unused")
+    private int id;
+
+    @JsonProperty
+    @SuppressWarnings("unused")
     private MergeEndpoint source;
 
     @JsonProperty
@@ -53,6 +57,11 @@ public class PullRequest implements MergeCandidate {
     @Override
     public String url() {
         return firstNonBlank(source.url(), destination.url());
+    }
+
+    @Override
+    public String identifier() {
+        return Integer.toString(id);
     }
 
     @Override

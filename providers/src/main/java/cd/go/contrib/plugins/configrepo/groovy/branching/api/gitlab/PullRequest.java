@@ -60,6 +60,11 @@ public class PullRequest implements MergeCandidate {
     }
 
     @Override
+    public String identifier() {
+        return Integer.toString(number);
+    }
+
+    @Override
     public String title() {
         return title;
     }

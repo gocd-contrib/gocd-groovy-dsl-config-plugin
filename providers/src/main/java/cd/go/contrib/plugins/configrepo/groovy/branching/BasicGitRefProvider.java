@@ -101,6 +101,11 @@ public class BasicGitRefProvider implements RefProvider {
         }
 
         @Override
+        public String identifier() {
+            return gitShortRef(ref);
+        }
+
+        @Override
         public String title() {
             return gitShortRef(ref);
         }

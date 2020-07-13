@@ -28,6 +28,10 @@ import static java.util.Objects.requireNonNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PullRequest implements MergeCandidate {
 
+    @JsonProperty
+    @SuppressWarnings("unused")
+    private int id;
+
     private String branchName;
 
     private String repoUrl;
@@ -48,6 +52,11 @@ public class PullRequest implements MergeCandidate {
     @Override
     public String url() {
         return repoUrl;
+    }
+
+    @Override
+    public String identifier() {
+        return Integer.toString(id);
     }
 
     @Override
