@@ -49,7 +49,7 @@ GoCD.script {
           // the material or choose to not use it and manually configure a material.
           materials { add(ctx.repo) }
           stages { stage('tests') {
-            jobs {job('units') { tasks {
+            jobs { job('units') { tasks {
               bash { commandString = 'npm run tests' }
             } } }
           } }

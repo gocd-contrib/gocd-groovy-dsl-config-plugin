@@ -58,11 +58,11 @@ public class SvnMaterial extends ScmMaterial<SvnMaterial> {
         this(null);
     }
 
-    public SvnMaterial(@DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial") Closure cl) {
+    public SvnMaterial(@DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial") Closure<?> cl) {
         this(null, cl);
     }
 
-    public SvnMaterial(String name, @DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial") Closure cl) {
+    public SvnMaterial(String name, @DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial") Closure<?> cl) {
         super(name);
         configure(cl);
     }
@@ -71,12 +71,11 @@ public class SvnMaterial extends ScmMaterial<SvnMaterial> {
         super(name, configure);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public SvnMaterial dup(
             @DelegatesTo(value = SvnMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.SvnMaterial")
-                    Closure config) {
+                    Closure<?> config) {
         return Configurable.applyTo(config, deepClone());
     }
 

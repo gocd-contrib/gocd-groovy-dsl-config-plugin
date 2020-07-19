@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+import cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD
 
 GoCD.script {
@@ -47,10 +49,20 @@ GoCD.script {
           // the material or choose to not use it and manually configure a material.
           materials { add(ctx.repo) }
           stages { stage('tests') {
-            jobs {job('units') { tasks {
+            jobs { job('units') { tasks {
               bash { commandString = 'build.sh' }
             } } }
           } }
+
+          // When a build stage runs or completes, git materials can be configured to
+          // notify a git provider of the build status of a particular commit SHA.
+          //
+          // Here, we notify GitHub of the build status; `ctx.provider` is preconfigured
+          // to direct notifications back to the same provider and repository used to
+          // enumerate pull requests.
+          //
+          // For further customization, see the example at the bottom of this file.
+          ctx.repo.notifiesBy(ctx.provider)
         }
 
         pipeline("deploy-experimental-pr-${ctx.branchSanitized}") {
@@ -74,10 +86,32 @@ GoCD.script {
       onMatch { ctx ->
         pipeline("groovy-plugin-pr-${ctx.branchSanitized}") {
           group = "plugins"
-          materials { add(ctx.repo) }
+          materials {
+            add((ctx.repo as GitMaterial).dup { // dup() modifies a deep-copy; the explicit cast helps the IDE with auto-complete
+              // When configuring multiple materials, each must specify a distinct destination dir
+              // to clone into.
+              destination = "main-repo"
+
+              // Notify the upstream GitHub repo of the build status
+              notifiesBy(ctx.provider)
+            })
+
+            // We can also notify on additional materials to any supported provider. Here,
+            // we are simply defining a second git material and notifying the corresponding
+            // GitHub repo.
+            git("security") {
+              url = "https://github.com/gocd/not-a-real-repo"
+              destination = "security"
+
+              notifiesGitHubAt { // Configuring notifications to GitHub is simple
+                fullRepoName = "gocd/not-a-real-repo"
+                apiAuthToken = lookup("my.oauth.token")
+              }
+            }
+          }
           stages { stage("tests") {
             jobs { job("units") { tasks {
-              bash { commandString = './gradlew clean test assemble' }
+              bash { commandString = './gradlew clean test assemble'; workingDir = "main-repo" }
             } } }
           } }
         }

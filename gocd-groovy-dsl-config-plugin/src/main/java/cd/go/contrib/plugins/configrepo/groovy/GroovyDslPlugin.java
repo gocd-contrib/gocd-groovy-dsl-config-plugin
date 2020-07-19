@@ -53,7 +53,7 @@ public class GroovyDslPlugin implements GoPlugin {
                 case PLUGIN_SETTINGS_VALIDATE_CONFIGURATION:
                     return ValidatePluginSettingsRequest.fromJSON(request.requestBody()).executor().execute();
                 case GET_CAPABILITIES:
-                    return new CapabilitiesExcutor().execute();
+                    return new CapabilitiesExecutor().execute();
                 case PIPELINE_EXPORT:
                     return PipelineExportRequest.fromJSON(request.requestBody()).executor().execute();
                 case PARSE_CONTENT:
@@ -73,6 +73,6 @@ public class GroovyDslPlugin implements GoPlugin {
 
     @Override
     public GoPluginIdentifier pluginIdentifier() {
-        return Constants.PLUGIN_IDENTIFIER;
+        return Constants.CONFIGREPO_PLUGIN_IDENTIFIER;
     }
 }

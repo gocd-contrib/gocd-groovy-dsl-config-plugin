@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+import cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD
 
 GoCD.script {
@@ -53,10 +55,20 @@ GoCD.script {
           // the material or choose to not use it and manually configure a material.
           materials { add(ctx.repo) }
           stages { stage('tests') {
-            jobs {job('units') { tasks {
+            jobs { job('units') { tasks {
               bash { commandString = 'npm run tests' }
             } } }
           } }
+
+          // When a build stage runs or completes, git materials can be configured to
+          // notify a git provider of the build status of a particular commit SHA.
+          //
+          // Here, we notify Bitbucket of the build status; `ctx.provider` is preconfigured
+          // to direct notifications back to the same provider and repository used to
+          // enumerate pull requests.
+          //
+          // For further customization, see the example at the bottom of this file.
+          ctx.repo.notifiesBy(ctx.provider)
         }
 
         pipeline("deploy-experimental-pr-${ctx.branchSanitized}") {
@@ -75,7 +87,7 @@ GoCD.script {
     matching {
       // NOTE: Self-hosted Bitbucket has a differently named configuration block with
       // different options. All of these are required.
-      from = bitbucketServer {
+      from = bitbucketSelfHosted {
         fullRepoName = "something/internally-hosted"
         serverBaseUrl = "https://my-hosted-server:8443/bucket"
         apiAuthToken = lookup("my.oauth.secret")
@@ -84,10 +96,46 @@ GoCD.script {
       onMatch { ctx ->
         pipeline("yet-another-pr-${ctx.branchSanitized}") {
           group = "main"
-          materials { add(ctx.repo) }
+          materials {
+            add((ctx.repo as GitMaterial).dup { // dup() modifies a deep-copy; the explicit cast helps the IDE with auto-complete
+              // When configuring multiple materials, each must specify a distinct destination dir
+              // to clone into.
+              destination = "main-repo"
+
+              // Notify the upstream Bitbucket repo of the build status
+              notifiesBy(ctx.provider)
+            })
+
+            // We can also notify on additional materials to any supported provider. Here,
+            // we are simply defining a second git material and notifying the corresponding
+            // Bitbucket repo.
+            git("security") {
+              url = "https://bitbucket.org/gocd/not-a-real-repo"
+              destination = "security"
+
+              notifiesBitbucketAt { // Configuring notifications to Bitbucket is simple
+                fullRepoName = "gocd/not-a-real-repo"
+                apiUser = "readonly-api-user"
+                apiPass = lookup("my.oauth.token")
+              }
+            }
+
+            // Self-hosted Bitbucket repos can be notified via the `notifiesBitbucketSelfHostedAt()`
+            // method on the git material.
+            git("other") {
+              url = "https://my-hosted-server:8443/bucket/something/else-entirely"
+              destination = "other"
+
+              notifiesBitbucketSelfHostedAt {
+                fullRepoName = "something/internally-hosted"
+                serverBaseUrl = "https://my-hosted-server:8443/bucket"
+                apiAuthToken = lookup("my.oauth.secret")
+              }
+            }
+          }
           stages { stage("tests") {
             jobs { job("units") { tasks {
-              bash { commandString = 'yarn run tests' }
+              bash { commandString = 'yarn run tests'; workingDir = "main-repo" }
             } } }
           } }
         }

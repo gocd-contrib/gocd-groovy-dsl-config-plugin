@@ -20,4 +20,7 @@ dependencies {
 
   implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
   implementation group: 'javax.validation', name: 'validation-api', version: validateApiVersion
+
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 }

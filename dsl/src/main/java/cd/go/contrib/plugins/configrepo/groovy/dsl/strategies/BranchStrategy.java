@@ -17,6 +17,8 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl.strategies;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.BranchContext;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.ConnectionConfig;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.Type;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.ThrowingRunnable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -45,32 +47,32 @@ public class BranchStrategy {
         }
     }
 
-    private final Attributes attrs;
+    private final Attributes<? extends ConnectionConfig> attrs;
 
-    public BranchStrategy(Attributes attrs) {
+    public BranchStrategy(Attributes<? extends ConnectionConfig> attrs) {
         this.attrs = attrs;
     }
 
     @JsonProperty("type")
-    public Attributes.Type type() {
+    public Type type() {
         return attrs.type();
     }
 
     @JsonProperty("attributes")
-    public Attributes attrs() {
+    public Attributes<? extends ConnectionConfig> attrs() {
         return attrs;
     }
 
     public void validate() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        final Set<ConstraintViolation<Attributes>> errors = factory.getValidator().validate(attrs());
+        final Set<ConstraintViolation<Attributes<? extends ConnectionConfig>>> errors = factory.getValidator().validate(attrs());
 
         if (errors.size() != 0) {
             throw invalidConfig(errors);
         }
     }
 
-    private ValidationException invalidConfig(Set<ConstraintViolation<Attributes>> errors) {
+    private ValidationException invalidConfig(Set<ConstraintViolation<Attributes<? extends ConnectionConfig>>> errors) {
         return new ValidationException(format(
                 "Invalid branch matching config block `%s {}`; please address the following:\n%s",
                 type(),

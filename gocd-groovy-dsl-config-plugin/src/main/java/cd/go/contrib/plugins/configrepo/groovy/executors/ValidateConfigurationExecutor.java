@@ -39,7 +39,6 @@ public class ValidateConfigurationExecutor implements RequestExecutor {
 
     public GoPluginApiResponse execute() throws JsonProcessingException {
         ArrayList<Map<String, String>> result = new ArrayList<>();
-
         for (Map.Entry<String, Field> entry : GetPluginConfigurationExecutor.FIELDS.entrySet()) {
             Field field = entry.getValue();
             Map<String, String> validationError = field.validate(request.get(entry.getKey()));

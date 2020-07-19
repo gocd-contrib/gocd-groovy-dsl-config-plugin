@@ -16,6 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Notifies;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,7 +35,7 @@ import static lombok.AccessLevel.NONE;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
+public abstract class ScmMaterial<T extends ScmMaterial<?>> extends Material<T> implements Notifies.MaterialMixin {
 
     @JsonProperty("username")
     protected String username;
@@ -133,7 +134,7 @@ public abstract class ScmMaterial<T extends ScmMaterial> extends Material<T> {
 
     protected abstract T deepClone();
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "UnusedReturnValue"})
     protected T injectSettings(ScmMaterial<T> other) {
         other.username = username;
         other.password = password;

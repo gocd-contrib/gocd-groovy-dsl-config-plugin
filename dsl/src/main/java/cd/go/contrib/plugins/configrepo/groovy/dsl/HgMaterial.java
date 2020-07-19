@@ -55,11 +55,11 @@ public class HgMaterial extends ScmMaterial<HgMaterial> {
         this(null);
     }
 
-    public HgMaterial(@DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial") Closure cl) {
+    public HgMaterial(@DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial") Closure<?> cl) {
         this(null, cl);
     }
 
-    public HgMaterial(String name, @DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial") Closure cl) {
+    public HgMaterial(String name, @DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial") Closure<?> cl) {
         super(name);
         configure(cl);
     }
@@ -68,12 +68,11 @@ public class HgMaterial extends ScmMaterial<HgMaterial> {
         super(name, configure);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public HgMaterial dup(
             @DelegatesTo(value = HgMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.HgMaterial")
-                    Closure config) {
+                    Closure<?> config) {
         return Configurable.applyTo(config, deepClone());
     }
 

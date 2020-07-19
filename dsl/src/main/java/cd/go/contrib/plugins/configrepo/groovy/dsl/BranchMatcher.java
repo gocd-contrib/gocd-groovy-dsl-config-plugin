@@ -18,7 +18,9 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
-import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.*;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.UtilsMixin;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes.*;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -36,13 +38,13 @@ import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
-public class BranchMatcher implements Configurable, KeyVal.Mixin {
+public class BranchMatcher implements Configurable, KeyVal.Mixin, UtilsMixin {
 
     @NotNull(message = "`matching {}` block requires `pattern` (regexp), set with `pattern = ~/(your|regexp|here)?.+/`")
     private Pattern pattern = Pattern.compile(".+");
 
     @NotNull(message = "`matching {}` block requires `from = <branching provider>` to be set before the `onMatch {}` " +
-            "block. Available providers: [git {}, github {}, gitlab {}, bitbucket {}, bitbucketServer {}]")
+            "block. Available providers: [git {}, github {}, gitlab {}, bitbucket {}, bitbucketSelfHosted {}]")
     private BranchStrategy from;
 
     @Getter(value = NONE)
@@ -54,28 +56,28 @@ public class BranchMatcher implements Configurable, KeyVal.Mixin {
         this.pipelines = pipelines;
     }
 
-    public BranchStrategy git(@DelegatesTo(value = Basic.Git.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Basic.Git") Closure cl) {
-        return new BranchStrategy(redelegateAndCall(cl, new Basic.Git()));
+    public BranchStrategy git(@DelegatesTo(value = GitBranch.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes.GitBranch") Closure<?> cl) {
+        return new BranchStrategy(redelegateAndCall(cl, new GitBranch()));
     }
 
-    public BranchStrategy github(@DelegatesTo(value = Github.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Github") Closure cl) {
-        return new BranchStrategy(redelegateAndCall(cl, new Github()));
+    public BranchStrategy github(@DelegatesTo(value = GitHubPR.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes.GithubPR") Closure<?> cl) {
+        return new BranchStrategy(redelegateAndCall(cl, new GitHubPR()));
     }
 
-    public BranchStrategy gitlab(@DelegatesTo(value = Gitlab.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Gitlab") Closure cl) {
-        return new BranchStrategy(redelegateAndCall(cl, new Gitlab()));
+    public BranchStrategy gitlab(@DelegatesTo(value = GitLabMR.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes.GitLabMR") Closure<?> cl) {
+        return new BranchStrategy(redelegateAndCall(cl, new GitLabMR()));
     }
 
-    public BranchStrategy bitbucket(@DelegatesTo(value = BitBucketCloud.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BitBucketCloud") Closure cl) {
-        return new BranchStrategy(redelegateAndCall(cl, new BitBucketCloud()));
+    public BranchStrategy bitbucket(@DelegatesTo(value = BitbucketPR.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes.BitbucketPR") Closure<?> cl) {
+        return new BranchStrategy(redelegateAndCall(cl, new BitbucketPR()));
     }
 
-    public BranchStrategy bitbucketServer(@DelegatesTo(value = BitBucketServer.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BitBucketServer") Closure cl) {
-        return new BranchStrategy(redelegateAndCall(cl, new BitBucketServer()));
+    public BranchStrategy bitbucketSelfHosted(@DelegatesTo(value = BitbucketSelfHostedPR.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes.BitbucketSelfHostedPR") Closure<?> cl) {
+        return new BranchStrategy(redelegateAndCall(cl, new BitbucketSelfHostedPR()));
     }
 
-    public void onMatch(@DelegatesTo(value = Pipelines.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.BranchContext") Closure cl) {
-        final Closure lambda = redelegate(cl, pipelines);
+    public void onMatch(@DelegatesTo(value = Pipelines.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.BranchContext") Closure<?> cl) {
+        final Closure<?> lambda = redelegate(cl, pipelines);
         from.fetch(pattern).forEach(lambda::call);
     }
 }
