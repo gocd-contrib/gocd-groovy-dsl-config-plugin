@@ -17,6 +17,9 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl.strategies;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Delegate;
 
 import static org.apache.commons.lang3.StringUtils.isAllBlank;
 
@@ -24,26 +27,14 @@ public interface Attributes<T extends ConnectionConfig> {
 
     Type type();
 
-    /**
-     * OPTIONAL: User can override the URL, with say, ssh or a proxy
-     * <p>
-     * Assumes material accepts URL (since we are only supporting Git at the moment, this
-     * is fine; if we later expand to other SCMs, P4 is the only oddball.)
-     */
-    String materialUrl = null;
+    String getMaterialUrl();
 
-    /**
-     * OPTIONAL: Username for material auth
-     */
-    String materialUsername = null;
+    String getMaterialUsername();
 
-    /**
-     * OPTIONAL: Username for material password
-     */
-    String materialPassword = null;
+    String getMaterialPassword();
 
-    default boolean credentialsGiven() {
-        return !isAllBlank(materialUsername, materialPassword);
+    default boolean materialCredentialsGiven() {
+        return !isAllBlank(getMaterialUsername(), getMaterialPassword());
     }
 
     /**
@@ -53,7 +44,33 @@ public interface Attributes<T extends ConnectionConfig> {
      */
     T asConnectionConfig();
 
+    @Getter
+    @Setter
+    class MaterialFields {
+
+        /**
+         * OPTIONAL: User can override the URL, with say, ssh or a proxy
+         * <p>
+         * Assumes material accepts URL (since we are only supporting Git at the moment, this
+         * is fine; if we later expand to other SCMs, P4 is the only oddball.)
+         */
+        private String materialUrl = null;
+
+        /**
+         * OPTIONAL: Username for material auth
+         */
+        private String materialUsername = null;
+
+        /**
+         * OPTIONAL: Password for material auth
+         */
+        private String materialPassword = null;
+    }
+
     class GitBranch extends Basic.Git implements Attributes<Basic.Git> {
+
+        @Delegate
+        private final MaterialFields materialConfig = new MaterialFields();
 
         @Override
         public Basic.Git asConnectionConfig() {
@@ -62,6 +79,9 @@ public interface Attributes<T extends ConnectionConfig> {
     }
 
     class GitHubPR extends GitHub implements Attributes<GitHub> {
+
+        @Delegate
+        private final MaterialFields materialConfig = new MaterialFields();
 
         @Override
         public GitHub asConnectionConfig() {
@@ -73,6 +93,9 @@ public interface Attributes<T extends ConnectionConfig> {
     }
 
     class GitLabMR extends GitLab implements Attributes<GitLab> {
+
+        @Delegate
+        private final MaterialFields materialConfig = new MaterialFields();
 
         @Override
         public GitLab asConnectionConfig() {
@@ -86,6 +109,9 @@ public interface Attributes<T extends ConnectionConfig> {
 
     class BitbucketPR extends Bitbucket implements Attributes<Bitbucket> {
 
+        @Delegate
+        private final MaterialFields materialConfig = new MaterialFields();
+
         @Override
         public Bitbucket asConnectionConfig() {
             return new Bitbucket(self -> {
@@ -97,6 +123,9 @@ public interface Attributes<T extends ConnectionConfig> {
     }
 
     class BitbucketSelfHostedPR extends BitbucketSelfHosted implements Attributes<BitbucketSelfHosted> {
+
+        @Delegate
+        private final MaterialFields materialConfig = new MaterialFields();
 
         @Override
         public BitbucketSelfHosted asConnectionConfig() {

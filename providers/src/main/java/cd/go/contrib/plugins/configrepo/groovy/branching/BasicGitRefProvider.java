@@ -43,7 +43,7 @@ public class BasicGitRefProvider implements RefProvider {
     }
 
     public static BasicGitRefProvider create(Attributes.GitBranch s) {
-        String fetchUrl = embedAuth(s.url, s.materialUsername, s.materialPassword);
+        String fetchUrl = embedAuth(s.url, s.getMaterialUsername(), s.getMaterialPassword());
         return new BasicGitRefProvider(fetchUrl);
     }
 

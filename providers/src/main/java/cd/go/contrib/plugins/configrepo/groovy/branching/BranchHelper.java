@@ -101,12 +101,12 @@ public class BranchHelper {
     public static ScmMaterial createMaterial(final Attributes<?> attrs, final MergeParent merge) {
         // TODO: expand support for other SCMs beyond git
         return new GitMaterial("repo", git -> {
-            String url = firstNonBlank(attrs.materialUrl, merge.url());
+            String url = firstNonBlank(attrs.getMaterialUrl(), merge.url());
 
-            if (attrs.credentialsGiven()) {
+            if (attrs.materialCredentialsGiven()) {
                 url = stripAuth(url);
-                git.setUsername(attrs.materialUsername);
-                git.setPassword(attrs.materialPassword);
+                git.setUsername(attrs.getMaterialUsername());
+                git.setPassword(attrs.getMaterialPassword());
             }
 
             final String ref = merge.ref();
