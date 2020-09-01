@@ -31,28 +31,35 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static java.lang.String.format;
 
 public class Notifications {
 
-    /**
-     * While unlikely, it may be possible for more than one thread to concurrently read/write to this if 2 (or more)
-     * distinct config repos configure notifications on the same material.
-     */
-    private static final Map<String, Set<ConnectionConfig>> registrar = new ConcurrentHashMap<>();
+    /** Maps a namespace to a Map of materials to notification configurations. */
+    private static final Map<String, Map<String, Set<ConnectionConfig>>> registrar = new ConcurrentHashMap<>();
 
     private static final ThreadLocal<Consumer<NotifyPayload>> emitter = ThreadLocal.withInitial(() -> n -> {
     });
 
-    public static void realConfig(GitMaterial git, ConnectionConfig spec) {
-        final String key = keyFor(git);
+    public static BiConsumer<GitMaterial, ConnectionConfig> realConfig(final String namespace) {
+        // Because we do not have a means to detect the removal of notification configurations during parseDirectory(),
+        // we clear and reinitialize the namespaced storage that holds the notification configs under the given
+        // namespace each time we parse. The namespace limits this purge to notifiers created through the  parsing
+        // of this config repo material.
+        registrar.put(namespace, new ConcurrentHashMap<>()); // clear and reinitialize namespace storage
+        final Map<String, Set<ConnectionConfig>> registered = registrar.get(namespace);
 
-        if (!registrar.containsKey(key)) {
-            registrar.put(key, new ConnectionConfigSet());
-        }
-        registrar.get(key).add(spec);
+        return (git, spec) -> {
+            final String key = keyFor(git);
+
+            if (!registered.containsKey(key)) {
+                registered.put(key, new ConnectionConfigSet());
+            }
+            registered.get(key).add(spec);
+        };
     }
 
     public static void with(Consumer<NotifyPayload> fn, ThrowingRunnable body) throws Throwable {
@@ -64,17 +71,48 @@ public class Notifications {
         }
     }
 
+    /**
+     * Performs the actual notification to git repository providers.
+     *
+     * @param p
+     *         the {@link NotifyPayload} data object containing the relevant information about the stage build event
+     */
     public static void realEmit(final NotifyPayload p) {
-        if (registrar.containsKey(p.key())) {
-            registrar.get(p.key()).forEach(cfg -> {
-                try {
-                    publish(cfg, p.revision(), p.label(), p.status(), p.url());
-                } catch (IOException e) {
-                    final String message = format("Failed to publish to endpoint [%s] with payload: %s", cfg.identifier(), p.toString());
-                    throw new NotificationFailure(message, e);
-                }
-            });
-        }
+        notifiersMatchingKey(p.key()).forEach(cfg -> {
+            try {
+                publish(cfg, p.revision(), p.label(), p.status(), p.url());
+            } catch (IOException e) {
+                final String message = format("Failed to publish to endpoint [%s] with payload: %s", cfg.identifier(), p.toString());
+                throw new NotificationFailure(message, e);
+            }
+        });
+    }
+
+    /**
+     * Collects all notifiers from all namespaces that match the material build cause key.
+     * <p>
+     * Yes, not the most efficient as we end up looping again over the result in {@link #realEmit(NotifyPayload)},
+     * but this is easier to read and reason about as compared to handling everything in a single
+     * iteration.
+     * <p>
+     * I can't see this trade-off becoming the major bottleneck anywhere, but I hope I don't eat my words.
+     *
+     * @param key
+     *         the build cause key from a stage notification event; generally represents a material
+     *
+     * @return a {@link ConnectionConfigSet} of matching notifiers
+     */
+    private static ConnectionConfigSet notifiersMatchingKey(final String key) {
+        return registrar.values().stream().
+                reduce(new ConnectionConfigSet(), (memo, map) -> {
+                    if (map.containsKey(key)) {
+                        memo.addAll(map.get(key));
+                    }
+                    return memo;
+                }, (a, b) -> {
+                    a.addAll(b);
+                    return a;
+                });
     }
 
     /**

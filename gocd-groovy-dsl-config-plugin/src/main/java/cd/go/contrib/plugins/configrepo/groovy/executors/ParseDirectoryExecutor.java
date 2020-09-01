@@ -39,6 +39,7 @@ import org.apache.tools.ant.types.PatternSet;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -78,9 +79,11 @@ public class ParseDirectoryExecutor implements RequestExecutor {
         final String[] files = getFilesMatchingPattern();
         final JsonConfigCollection result = new JsonConfigCollection();
 
+        final String namespace = Paths.get(directory).getFileName().toString(); // flyweight material directory name
+
         for (final String file : files) {
             try {
-                BranchStrategy.with(Branches::real, () -> KeyVal.with(ConfigValues.real(this.configurations), () -> Notifies.with(Notifications::realConfig, () -> {
+                BranchStrategy.with(Branches::real, () -> KeyVal.with(ConfigValues.real(this.configurations), () -> Notifies.with(Notifications.realConfig(namespace), () -> {
                     Object maybeConfig = engine.runScript(file);
 
                     if (maybeConfig instanceof GoCD) {
