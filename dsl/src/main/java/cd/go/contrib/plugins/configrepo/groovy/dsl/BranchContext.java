@@ -16,8 +16,8 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
-import cd.go.contrib.plugins.configrepo.groovy.dsl.util.RefUtils;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.ConnectionConfig;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.util.TextUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +28,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class BranchContext implements KeyVal.Mixin {
+public class BranchContext {
 
     /**
      * Required for JSON deserialization
@@ -41,9 +41,12 @@ public class BranchContext implements KeyVal.Mixin {
     public BranchContext(@NotEmpty String fullRefName, @NotEmpty String branch, @NotNull ScmMaterial repo) {
         this.fullRefName = fullRefName;
         this.branch = branch;
-        this.branchSanitized = RefUtils.sanitizeRef(branch);
+        this.branchSanitized = TextUtils.sanitizeName(branch);
         this.repo = repo;
     }
+
+    @NotNull
+    private ConnectionConfig provider;
 
     @JsonProperty
     @NotEmpty

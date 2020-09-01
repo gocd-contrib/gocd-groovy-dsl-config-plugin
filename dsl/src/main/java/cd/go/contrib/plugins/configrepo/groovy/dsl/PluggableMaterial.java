@@ -67,11 +67,11 @@ public class PluggableMaterial extends Material<PluggableMaterial> {
         this(null);
     }
 
-    public PluggableMaterial(@DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial") Closure cl) {
+    public PluggableMaterial(@DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial") Closure<?> cl) {
         this(null, cl);
     }
 
-    public PluggableMaterial(String name, @DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial") Closure cl) {
+    public PluggableMaterial(String name, @DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial") Closure<?> cl) {
         super(name);
         configure(cl);
     }
@@ -81,12 +81,11 @@ public class PluggableMaterial extends Material<PluggableMaterial> {
         config.accept(this);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public PluggableMaterial dup(
             @DelegatesTo(value = PluggableMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PluggableMaterial")
-                    Closure config) {
+                    Closure<?> config) {
         return Configurable.applyTo(config, deepClone());
     }
 

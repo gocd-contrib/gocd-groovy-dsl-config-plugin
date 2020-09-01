@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+import cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD
 
 GoCD.script {
@@ -44,15 +46,25 @@ GoCD.script {
         pipeline("build-PR-${ctx.branchSanitized}") {
           group = "main"
 
-          // As a convenience, a preconfigured material pointing to the pull request
+          // As a convenience, a preconfigured material pointing to the merge request
           // is available in the template binding context. Of course, one may modify
           // the material or choose to not use it and manually configure a material.
           materials { add(ctx.repo) }
           stages { stage('tests') {
-            jobs {job('units') { tasks {
+            jobs { job('units') { tasks {
               bash { commandString = 'npm run tests' }
             } } }
           } }
+
+          // When a build stage runs or completes, git materials can be configured to
+          // notify a git provider of the build status of a particular commit SHA.
+          //
+          // Here, we notify GitLab of the build status; `ctx.provider` is preconfigured
+          // to direct notifications back to the same provider and repository used to
+          // enumerate merge requests.
+          //
+          // For further customization, see the example at the bottom of this file.
+          ctx.repo.notifiesBy(ctx.provider)
         }
 
         pipeline("deploy-experimental-pr-${ctx.branchSanitized}") {
@@ -79,10 +91,32 @@ GoCD.script {
       onMatch { ctx ->
         pipeline("yet-another-pr-${ctx.branchSanitized}") {
           group = "main"
-          materials { add(ctx.repo) }
+          materials {
+            add((ctx.repo as GitMaterial).dup { // dup() modifies a deep-copy; the explicit cast helps the IDE with auto-complete
+              // When configuring multiple materials, each must specify a distinct destination dir
+              // to clone into.
+              destination = "main-repo"
+
+              // Notify the upstream GitLab repo of the build status
+              notifiesBy(ctx.provider)
+            })
+
+            // We can also notify on additional materials to any supported provider. Here,
+            // we are simply defining a second git material and notifying the corresponding
+            // GitLab repo.
+            git("security") {
+              url = "https://gitlab.com/gocd/not-a-real-repo"
+              destination = "security"
+
+              notifiesGitLabAt { // Configuring notifications to GitLab is simple
+                fullRepoName = "gocd/not-a-real-repo"
+                apiAuthToken = lookup("my.oauth.token")
+              }
+            }
+          }
           stages { stage("tests") {
             jobs { job("units") { tasks {
-              bash { commandString = 'yarn run tests' }
+              bash { commandString = 'yarn run tests'; workingDir = "main-repo" }
             } } }
           } }
         }

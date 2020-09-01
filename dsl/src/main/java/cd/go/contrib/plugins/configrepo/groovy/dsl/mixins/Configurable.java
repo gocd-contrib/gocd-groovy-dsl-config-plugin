@@ -20,12 +20,12 @@ import groovy.lang.Closure;
 
 public interface Configurable {
 
-    static <U> U redelegateAndCall(Closure cl, U delegate, Object... args) {
+    static <U> U redelegateAndCall(Closure<?> cl, U delegate, Object... args) {
         redelegate(cl, delegate).call(args);
         return delegate;
     }
 
-    static Closure redelegate(Closure cl, Object delegate) {
+    static Closure<?> redelegate(Closure<?> cl, Object delegate) {
         if (cl != null) {
             cl = cl.rehydrate(delegate, delegate, delegate);
             cl.setResolveStrategy(Closure.DELEGATE_ONLY);
@@ -33,14 +33,14 @@ public interface Configurable {
         return cl;
     }
 
-    static <T> T applyTo(Closure cl, T delegate) {
+    static <T> T applyTo(Closure<?> cl, T delegate) {
         if (cl != null) {
             redelegateAndCall(cl, delegate, delegate);
         }
         return delegate;
     }
 
-    default Configurable configure(Closure cl) {
+    default Configurable configure(Closure<?> cl) {
         return applyTo(cl, this);
     }
 }

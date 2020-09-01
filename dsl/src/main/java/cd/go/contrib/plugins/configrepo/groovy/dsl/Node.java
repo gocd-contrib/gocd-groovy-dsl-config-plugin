@@ -18,6 +18,7 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.UtilsMixin;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public abstract class Node<T extends Node> implements Configurable, KeyVal.Mixin {
+public abstract class Node<T extends Node> implements Configurable, KeyVal.Mixin, UtilsMixin {
 
 }

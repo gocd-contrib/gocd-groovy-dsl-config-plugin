@@ -20,7 +20,7 @@ import com.thoughtworks.go.plugin.api.GoApplicationAccessor;
 import com.thoughtworks.go.plugin.api.request.DefaultGoApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoApiResponse;
 
-import static cd.go.contrib.plugins.configrepo.groovy.Constants.PLUGIN_IDENTIFIER;
+import static cd.go.contrib.plugins.configrepo.groovy.Constants.CONFIGREPO_PLUGIN_IDENTIFIER;
 import static cd.go.contrib.plugins.configrepo.groovy.Constants.REQUEST_SERVER_GET_PLUGIN_SETTINGS;
 
 /**
@@ -35,7 +35,7 @@ public class PluginRequest {
     }
 
     public PluginSettings getPluginSettings() throws ServerRequestFailedException {
-        DefaultGoApiRequest request = new DefaultGoApiRequest(REQUEST_SERVER_GET_PLUGIN_SETTINGS, "1.0", PLUGIN_IDENTIFIER);
+        DefaultGoApiRequest request = new DefaultGoApiRequest(REQUEST_SERVER_GET_PLUGIN_SETTINGS, "1.0", CONFIGREPO_PLUGIN_IDENTIFIER);
         GoApiResponse response = accessor.submit(request);
 
         if (response.responseCode() != 200) {

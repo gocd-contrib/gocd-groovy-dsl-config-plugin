@@ -14,6 +14,8 @@
   ~ limitations under the License.
   -->
 
+<h1>DSL Settings</h1>
+
 <div class="form_item_block">
   <label>GoCD Groovy Config Files Global Include Pattern:</label>
   <input type="text" ng-model="include_file_pattern" ng-required="false" placeholder="**/*.gocd.groovy,**/GoCDFile"/>
@@ -24,4 +26,14 @@
   <label>GoCD Groovy Config Files Global Exclude Pattern:</label>
   <input type="text" ng-model="exclude_file_pattern" ng-required="false"/>
   <span class="form_error" ng-show="GOINPUTNAME[exclude_file_pattern].$error.server">{{ GOINPUTNAME[exclude_file_pattern].$error.server }}</span>
+</div>
+
+<hr/>
+
+<h1>Notification Settings</h1>
+
+<div class="form_item_block">
+  <label>GoCD Server Base URL:</label>
+  <input type="text" ng-model="server_base_url" ng-required="true" placeholder="https://host.tld:port/go"/>
+  <span class="form_error" ng-show="GOINPUTNAME[server_base_url].$error.server">{{ GOINPUTNAME[server_base_url].$error.server }}</span>
 </div>

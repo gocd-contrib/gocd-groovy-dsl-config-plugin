@@ -16,7 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.branching;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Basic;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.RefUtils.gitShortRef;
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.TextUtils.gitShortRef;
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.UriUtils.embedAuth;
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.UriUtils.maskAuth;
 import static cd.go.contrib.plugins.configrepo.groovy.utils.CommandUtils.*;
@@ -42,7 +42,7 @@ public class BasicGitRefProvider implements RefProvider {
         this.authedUrl = authedUrl;
     }
 
-    public static BasicGitRefProvider create(Basic.Git s) {
+    public static BasicGitRefProvider create(Attributes.GitBranch s) {
         String fetchUrl = embedAuth(s.url, s.materialUsername, s.materialPassword);
         return new BasicGitRefProvider(fetchUrl);
     }

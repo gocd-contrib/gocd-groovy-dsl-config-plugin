@@ -19,12 +19,11 @@ package cd.go.contrib.plugins.configrepo.groovy.branching;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.BranchContext;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.ScmMaterial;
-import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.*;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.ValidationException;
-import javax.validation.Validator;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,15 +31,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.RefUtils.gitShortRef;
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.TextUtils.gitShortRef;
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.UriUtils.stripAuth;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNullElse;
+import static javax.validation.Validation.buildDefaultValidatorFactory;
 import static org.apache.commons.lang3.StringUtils.firstNonBlank;
 
 public class BranchHelper {
-
-    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     private BranchHelper() {
     }
@@ -48,32 +46,33 @@ public class BranchHelper {
     public static RefProvider createProvider(BranchStrategy s) {
         switch (s.type()) {
             case git:
-                return BasicGitRefProvider.create((Basic.Git) s.attrs());
-            case github:
-                return GithubRefProvider.create((Github) s.attrs());
-            case gitlab:
-                return GitlabRefProvider.create((Gitlab) s.attrs());
-            case bitbucketcloud:
-                return BitBucketCloudRefProvider.create((BitBucketCloud) s.attrs());
-            case bitbucketserver:
-                return BitBucketServerRefProvider.create((BitBucketServer) s.attrs());
+                return BasicGitRefProvider.create((Attributes.GitBranch) s.attrs());
+            case GitHub:
+                return GitHubRefProvider.create((Attributes.GitHubPR) s.attrs());
+            case GitLab:
+                return GitLabRefProvider.create((Attributes.GitLabMR) s.attrs());
+            case Bitbucket:
+                return BitbucketRefProvider.create((Attributes.BitbucketPR) s.attrs());
+            case BitbucketSelfHosted:
+                return BitbucketSelfHostedRefProvider.create((Attributes.BitbucketSelfHostedPR) s.attrs());
             default:
                 throw new IllegalArgumentException("Unsupported branch matching type: " + s.type());
         }
     }
 
-    public static BranchContext createContext(Attributes attrs, MergeCandidate merge) {
+    public static BranchContext createContext(Attributes<?> attrs, MergeCandidate merge) {
         final String ref = merge.ref();
         final String branch = prettifyRef(gitShortRef(ref), attrs);
         final BranchContext bc = new BranchContext(ref, branch, createMaterial(attrs, merge));
 
+        bc.setProvider(attrs.asConnectionConfig());
         bc.setIdentifier(requireNonNullElse(merge.identifier(), ""));
         bc.setTitle(requireNonNullElse(merge.title(), ""));
         bc.setAuthor(requireNonNullElse(merge.author(), ""));
         bc.setReferenceUrl(requireNonNullElse(merge.showUrl(), ""));
         bc.setLabels(new ArrayList<>(requireNonNullElse(merge.labels(), Collections.emptyList())));
 
-        final Set<ConstraintViolation<BranchContext>> errors = VALIDATOR.validate(bc);
+        final Set<ConstraintViolation<BranchContext>> errors = buildDefaultValidatorFactory().getValidator().validate(bc);
         if (!errors.isEmpty()) {
             throw new ValidationException("Branch context binding is missing data! " +
                     "Check the provider's API response. Error(s):\n" +
@@ -99,7 +98,7 @@ public class BranchHelper {
      * @return an {@link ScmMaterial} instance representing the given {@link MergeParent}
      */
     @SuppressWarnings("rawtypes")
-    public static ScmMaterial createMaterial(final Attributes attrs, final MergeParent merge) {
+    public static ScmMaterial createMaterial(final Attributes<?> attrs, final MergeParent merge) {
         // TODO: expand support for other SCMs beyond git
         return new GitMaterial("repo", git -> {
             String url = firstNonBlank(attrs.materialUrl, merge.url());
@@ -128,10 +127,10 @@ public class BranchHelper {
         return new SimpleImmutableEntry<>(fullName.substring(0, slash), fullName.substring(slash + 1));
     }
 
-    private static String prettifyRef(String shortRef, Attributes attrs) {
+    private static String prettifyRef(String shortRef, Attributes<?> attrs) {
         switch (attrs.type()) {
-            case github:
-            case gitlab:
+            case GitHub:
+            case GitLab:
                 if (shortRef.endsWith("/head")) {
                     return shortRef.substring(0, shortRef.length() - "/head".length());
                 }

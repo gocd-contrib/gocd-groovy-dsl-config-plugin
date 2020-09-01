@@ -46,11 +46,11 @@ public class PackageMaterial extends Material<PackageMaterial> {
         this(null);
     }
 
-    public PackageMaterial(@DelegatesTo(value = PackageMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PackageMaterial") Closure cl) {
+    public PackageMaterial(@DelegatesTo(value = PackageMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PackageMaterial") Closure<?> cl) {
         this(null, cl);
     }
 
-    public PackageMaterial(String name, @DelegatesTo(value = PackageMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PackageMaterial") Closure cl) {
+    public PackageMaterial(String name, @DelegatesTo(value = PackageMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PackageMaterial") Closure<?> cl) {
         super(name);
         configure(cl);
     }
@@ -60,18 +60,15 @@ public class PackageMaterial extends Material<PackageMaterial> {
         config.accept(this);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public PackageMaterial dup(
             @DelegatesTo(value = PackageMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.PackageMaterial")
-                    Closure config) {
+                    Closure<?> config) {
         return Configurable.applyTo(config, deepClone());
     }
 
     private PackageMaterial deepClone() {
-        return new PackageMaterial(name, p -> {
-            p.ref = ref;
-        });
+        return new PackageMaterial(name, p -> p.ref = ref);
     }
 }

@@ -65,21 +65,20 @@ public class P4Material extends ScmMaterial<P4Material> {
         this(null);
     }
 
-    public P4Material(@DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure cl) {
+    public P4Material(@DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure<?> cl) {
         this(null, cl);
     }
 
-    public P4Material(String name, @DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure cl) {
+    public P4Material(String name, @DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material") Closure<?> cl) {
         super(name);
         configure(cl);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public P4Material dup(
             @DelegatesTo(value = P4Material.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.P4Material")
-                    Closure config) {
+                    Closure<?> config) {
         return Configurable.applyTo(config, deepClone());
     }
 

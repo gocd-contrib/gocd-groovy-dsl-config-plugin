@@ -18,13 +18,15 @@ package cd.go.contrib.plugins.configrepo.groovy.executors;
 
 import cd.go.contrib.plugins.configrepo.groovy.*;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
-import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Notifies;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 import cd.go.contrib.plugins.configrepo.groovy.meta.Configurations;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.Branches;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.ConfigValues;
+import cd.go.contrib.plugins.configrepo.groovy.resolvers.Notifications;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
@@ -78,7 +80,7 @@ public class ParseDirectoryExecutor implements RequestExecutor {
 
         for (final String file : files) {
             try {
-                BranchStrategy.with(Branches::real, () -> KeyVal.with(ConfigValues.real(this.configurations), () -> {
+                BranchStrategy.with(Branches::real, () -> KeyVal.with(ConfigValues.real(this.configurations), () -> Notifies.with(Notifications::realConfig, () -> {
                     Object maybeConfig = engine.runScript(file);
 
                     if (maybeConfig instanceof GoCD) {
@@ -93,7 +95,7 @@ public class ParseDirectoryExecutor implements RequestExecutor {
                         result.addError("The object returned by the script is of unexpected type " + type, file);
                         GroovyDslPlugin.LOG.warn("Skipping file " + new File(directory, file) + ", the object returned by the script is of type " + type);
                     }
-                }));
+                })));
             } catch (Throwable e) {
                 result.addError("Unable to parse file " + file + ". " + e.getMessage(), file);
                 GroovyDslPlugin.LOG.warn("Skipping file " + file + " in directory " + directory, e);

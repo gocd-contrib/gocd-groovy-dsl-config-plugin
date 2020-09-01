@@ -50,6 +50,7 @@ public class Branches {
      * @return a {@link List} of {@link BranchContext} instances
      */
     public static List<BranchContext> real(final BranchStrategy strategy, final Pattern pattern) {
+        strategy.validate();
         return createProvider(strategy).fetch().stream().
                 filter(pr -> pattern.matcher(pr.ref()).matches()).
                 map(pr -> createContext(strategy.attrs(), pr)).
@@ -67,6 +68,7 @@ public class Branches {
      * @return a {@link List} of {@link BranchContext} instances
      */
     public static List<BranchContext> stubbed(final BranchStrategy s, @SuppressWarnings("unused") final Pattern p) {
+        s.validate();
         final String identifier = randomHex();
         final String ref = "refs/heads/stubbed-ref-" + identifier;
 

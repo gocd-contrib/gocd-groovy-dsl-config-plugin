@@ -66,11 +66,11 @@ public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
         this(null);
     }
 
-    public ConfigRepoMaterial(@DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial") Closure cl) {
+    public ConfigRepoMaterial(@DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial") Closure<?> cl) {
         this(null, cl);
     }
 
-    public ConfigRepoMaterial(String name, @DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial") Closure cl) {
+    public ConfigRepoMaterial(String name, @DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial") Closure<?> cl) {
         super(name);
         configure(cl);
     }
@@ -80,12 +80,11 @@ public class ConfigRepoMaterial extends Material<ConfigRepoMaterial> {
         config.accept(this);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public ConfigRepoMaterial dup(
             @DelegatesTo(value = ConfigRepoMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.ConfigRepoMaterial")
-                    Closure config) {
+                    Closure<?> config) {
         return Configurable.applyTo(config, deepClone());
     }
 

@@ -46,21 +46,20 @@ public class GitHubPRMaterial extends ScmMaterial<GitHubPRMaterial> {
         super(name, configure);
     }
 
-    public GitHubPRMaterial(@DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial") Closure cl) {
+    public GitHubPRMaterial(@DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial") Closure<?> cl) {
         this(null, cl);
     }
 
-    public GitHubPRMaterial(String name, @DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial") Closure cl) {
+    public GitHubPRMaterial(String name, @DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial") Closure<?> cl) {
         super(name);
         configure(cl);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public GitHubPRMaterial dup(
             @DelegatesTo(value = GitHubPRMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial")
-                    Closure config) {
+                    Closure<?> config) {
         return Configurable.applyTo(config, deepClone());
     }
 

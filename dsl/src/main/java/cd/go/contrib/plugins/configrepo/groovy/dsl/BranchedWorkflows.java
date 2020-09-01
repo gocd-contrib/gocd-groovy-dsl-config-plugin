@@ -18,6 +18,7 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.UtilsMixin;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
@@ -32,7 +33,7 @@ import java.util.function.Supplier;
 import static groovy.lang.Closure.DELEGATE_ONLY;
 import static lombok.AccessLevel.NONE;
 
-public class BranchedWorkflows extends ArrayList<BranchMatcher> implements Configurable, KeyVal.Mixin {
+public class BranchedWorkflows extends ArrayList<BranchMatcher> implements Configurable, KeyVal.Mixin, UtilsMixin {
 
     @Getter(value = NONE)
     @Setter(value = NONE)

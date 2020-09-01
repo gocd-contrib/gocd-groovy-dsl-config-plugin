@@ -58,6 +58,5 @@ public abstract class Material<T extends Material> extends NamedNode<T> {
         super(name);
     }
 
-    @SuppressWarnings("rawtypes")
-    public abstract T dup(Closure config);
+    public abstract T dup(Closure<?> config);
 }

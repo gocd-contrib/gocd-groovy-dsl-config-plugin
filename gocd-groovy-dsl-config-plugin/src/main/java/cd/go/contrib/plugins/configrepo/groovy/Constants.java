@@ -26,13 +26,16 @@ public interface Constants {
     String PLUGIN_ID = Util.pluginId();
 
     // The type of this extension
-    String EXTENSION_TYPE = "configrepo";
+    String CONFIGREPO_EXTENSION_TYPE = "configrepo";
+    String NOTIFICATION_EXTENSION_TYPE = "notification";
 
     // The extension point API version that this plugin understands
-    String API_VERSION = "3.0";
+    String CONFIGREPO_API_VERSION = "3.0";
+    String NOTIFICATION_API_VERSION = "4.0";
 
     // the identifier of this plugin
-    GoPluginIdentifier PLUGIN_IDENTIFIER = new GoPluginIdentifier(EXTENSION_TYPE, Collections.singletonList(API_VERSION));
+    GoPluginIdentifier CONFIGREPO_PLUGIN_IDENTIFIER = new GoPluginIdentifier(CONFIGREPO_EXTENSION_TYPE, Collections.singletonList(CONFIGREPO_API_VERSION));
+    GoPluginIdentifier NOTIFICATION_PLUGIN_IDENTIFIER = new GoPluginIdentifier(NOTIFICATION_EXTENSION_TYPE, Collections.singletonList(NOTIFICATION_API_VERSION));
 
     // requests that the plugin makes to the server
     String REQUEST_SERVER_PREFIX = "go.processor";

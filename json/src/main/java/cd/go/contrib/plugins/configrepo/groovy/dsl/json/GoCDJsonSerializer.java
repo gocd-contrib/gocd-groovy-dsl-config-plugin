@@ -16,7 +16,10 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl.json;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.*;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.Filter;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.GitHubPRMaterial;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.ShellTask;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.Task;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;

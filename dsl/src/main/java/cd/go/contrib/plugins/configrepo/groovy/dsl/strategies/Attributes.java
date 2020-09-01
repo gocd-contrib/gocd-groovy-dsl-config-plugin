@@ -16,17 +16,13 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl.strategies;
 
-import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.*;
 
 import static org.apache.commons.lang3.StringUtils.isAllBlank;
 
-public abstract class Attributes implements KeyVal.Mixin {
+public interface Attributes<T extends ConnectionConfig> {
 
-    public enum Type {
-        git, github, gitlab, bitbucketcloud, bitbucketserver
-    }
-
-    public abstract Type type();
+    Type type();
 
     /**
      * OPTIONAL: User can override the URL, with say, ssh or a proxy
@@ -34,19 +30,81 @@ public abstract class Attributes implements KeyVal.Mixin {
      * Assumes material accepts URL (since we are only supporting Git at the moment, this
      * is fine; if we later expand to other SCMs, P4 is the only oddball.)
      */
-    public String materialUrl;
+    String materialUrl = null;
 
     /**
      * OPTIONAL: Username for material auth
      */
-    public String materialUsername;
+    String materialUsername = null;
 
     /**
      * OPTIONAL: Username for material password
      */
-    public String materialPassword;
+    String materialPassword = null;
 
-    public boolean credentialsGiven() {
+    default boolean credentialsGiven() {
         return !isAllBlank(materialUsername, materialPassword);
+    }
+
+    /**
+     * @return a "pure" {@link ConnectionConfig} (i.e., sans material config fields). Ideally, this is
+     * a completely separate instance from this {@link Attributes} instance so as to avoid any side
+     * effects from sharing data among the mechanisms manipulating it.
+     */
+    T asConnectionConfig();
+
+    class GitBranch extends Basic.Git implements Attributes<Basic.Git> {
+
+        @Override
+        public Basic.Git asConnectionConfig() {
+            throw new IllegalArgumentException("asConnectionConfig() is not supported by plain `git`");
+        }
+    }
+
+    class GitHubPR extends GitHub implements Attributes<GitHub> {
+
+        @Override
+        public GitHub asConnectionConfig() {
+            return new GitHub(self -> {
+                self.apiAuthToken = apiAuthToken;
+                self.fullRepoName = fullRepoName;
+            });
+        }
+    }
+
+    class GitLabMR extends GitLab implements Attributes<GitLab> {
+
+        @Override
+        public GitLab asConnectionConfig() {
+            return new GitLab(self -> {
+                self.apiAuthToken = apiAuthToken;
+                self.fullRepoName = fullRepoName;
+                self.serverBaseUrl = serverBaseUrl;
+            });
+        }
+    }
+
+    class BitbucketPR extends Bitbucket implements Attributes<Bitbucket> {
+
+        @Override
+        public Bitbucket asConnectionConfig() {
+            return new Bitbucket(self -> {
+                self.apiUser = apiUser;
+                self.apiPass = apiPass;
+                self.fullRepoName = fullRepoName;
+            });
+        }
+    }
+
+    class BitbucketSelfHostedPR extends BitbucketSelfHosted implements Attributes<BitbucketSelfHosted> {
+
+        @Override
+        public BitbucketSelfHosted asConnectionConfig() {
+            return new BitbucketSelfHosted(self -> {
+                self.apiAuthToken = apiAuthToken;
+                self.serverBaseUrl = serverBaseUrl;
+                self.fullRepoName = fullRepoName;
+            });
+        }
     }
 }

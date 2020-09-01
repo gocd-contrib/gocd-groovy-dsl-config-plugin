@@ -66,11 +66,11 @@ public class TfsMaterial extends ScmMaterial<TfsMaterial> {
         this(null);
     }
 
-    public TfsMaterial(@DelegatesTo(value = TfsMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TfsMaterial") Closure cl) {
+    public TfsMaterial(@DelegatesTo(value = TfsMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TfsMaterial") Closure<?> cl) {
         this(null, cl);
     }
 
-    public TfsMaterial(String name, @DelegatesTo(value = TfsMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TfsMaterial") Closure cl) {
+    public TfsMaterial(String name, @DelegatesTo(value = TfsMaterial.class, strategy = DELEGATE_ONLY) @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TfsMaterial") Closure<?> cl) {
         super(name);
         configure(cl);
     }
@@ -79,12 +79,11 @@ public class TfsMaterial extends ScmMaterial<TfsMaterial> {
         super(name, configure);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public TfsMaterial dup(
             @DelegatesTo(value = TfsMaterial.class, strategy = DELEGATE_ONLY)
             @ClosureParams(value = SimpleType.class, options = "cd.go.contrib.plugins.configrepo.groovy.dsl.TfsMaterial")
-                    Closure config) {
+                    Closure<?> config) {
         return Configurable.applyTo(config, deepClone());
     }
 
