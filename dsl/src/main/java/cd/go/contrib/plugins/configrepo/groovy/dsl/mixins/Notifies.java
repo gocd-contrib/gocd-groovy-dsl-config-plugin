@@ -50,8 +50,12 @@ public class Notifies {
             if (!(this instanceof GitMaterial)) {
                 throw new IllegalArgumentException("notifications are currently only supported on `git` materials");
             }
-            configurer.get().accept((GitMaterial) this, provider);
 
+            if (provider instanceof Basic.Git) {
+                throw new IllegalArgumentException("unable to send notifications to vanilla `git` repo; please use a supported provider configuration by: [notifiesGitHubAt{}, notifiesGitLabAt{}, notifiesBitbucketAt{}, or notifiesBitbucketSelfHostedAt{}]");
+            }
+
+            configurer.get().accept((GitMaterial) this, provider);
         }
 
         default void notifiesGitHubAt(

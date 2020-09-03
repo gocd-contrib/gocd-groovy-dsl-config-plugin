@@ -74,7 +74,9 @@ public interface Attributes<T extends ConnectionConfig> {
 
         @Override
         public Basic.Git asConnectionConfig() {
-            throw new IllegalArgumentException("asConnectionConfig() is not supported by plain `git`");
+            return new Basic.Git(self -> {
+                self.url = url;
+            });
         }
     }
 
