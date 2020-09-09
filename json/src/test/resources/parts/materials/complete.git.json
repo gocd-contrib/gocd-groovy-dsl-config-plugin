@@ -6,7 +6,7 @@
   "url": "http://my.git.repository.com",
   "branch": "feature12",
   "filter": {
-    "whitelist": [
+    "includes": [
       "externals",
       "tools"
     ]

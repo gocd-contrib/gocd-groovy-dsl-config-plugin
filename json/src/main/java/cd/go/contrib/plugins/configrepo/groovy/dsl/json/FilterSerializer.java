@@ -33,7 +33,7 @@ public class FilterSerializer extends StdSerializer<Filter> {
 
     @Override
     public void serialize(Filter value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        String key = value.isWhitelist() ? "whitelist" : "ignore";
+        String key = value.isWhitelist() ? "includes" : "ignore";
         List<String> items = value.getItems();
 
         gen.writeObject(Collections.singletonMap(key, items));
