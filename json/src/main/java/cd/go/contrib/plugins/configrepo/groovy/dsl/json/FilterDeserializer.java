@@ -50,9 +50,9 @@ public class FilterDeserializer extends StdDeserializer<Filter> {
             if (objectNode.has("ignore")) {
                 isWhitelist = false;
                 itemsAsArray = (ArrayNode) objectNode.get("ignore");
-            } else if (objectNode.has("whitelist")) {
+            } else if (objectNode.has("includes")) {
                 isWhitelist = true;
-                itemsAsArray = (ArrayNode) objectNode.get("whitelist");
+                itemsAsArray = (ArrayNode) objectNode.get("includes");
             } else {
                 throw new UnrecognizedPropertyException(p, "Filter contains neither a whitelist nor an ignore", p.getCurrentLocation(), getClass(), "filter", null);
             }
