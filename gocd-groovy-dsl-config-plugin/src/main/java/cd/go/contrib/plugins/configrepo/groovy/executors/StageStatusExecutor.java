@@ -21,16 +21,18 @@ import cd.go.contrib.plugins.configrepo.groovy.RequestExecutor;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
 import cd.go.contrib.plugins.configrepo.groovy.meta.NotifyPayload;
 import cd.go.contrib.plugins.configrepo.groovy.requests.StageNotificationsRequest;
+import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
 import java.util.Collections;
 import java.util.function.Consumer;
 
-import static cd.go.contrib.plugins.configrepo.groovy.BuildStatusNotificationPlugin.LOG;
 import static java.lang.String.format;
 
 public class StageStatusExecutor implements RequestExecutor {
+
+    private static final Logger LOG = Logger.getLoggerFor(StageStatusExecutor.class);
 
     private final PluginRequest pluginRequest;
 
@@ -50,7 +52,11 @@ public class StageStatusExecutor implements RequestExecutor {
         final String status = stageRequest.state();
         final String url = stageRequest.stageUrl(pluginRequest.getPluginSettings().serverBaseUrl());
 
+        LOG.debug("Received stage status event for {}", label);
+
         stageRequest.buildCausesOfType("git").forEach(c -> {
+            LOG.debug("  > Looking at {} build cause [key: {}] @ revision {}", c.type(), c.key(), c.revision());
+
             try {
                 this.notifier.accept(new NotifyPayload(c.key(), c.revision(), label, status, url));
             } catch (Throwable e) {

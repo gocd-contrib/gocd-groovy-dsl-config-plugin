@@ -26,6 +26,7 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.*;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.ThrowingRunnable;
 import cd.go.contrib.plugins.configrepo.groovy.exceptions.NotificationFailure;
 import cd.go.contrib.plugins.configrepo.groovy.meta.NotifyPayload;
+import com.thoughtworks.go.plugin.api.logging.Logger;
 
 import java.io.IOException;
 import java.util.Map;
@@ -37,6 +38,8 @@ import java.util.function.Consumer;
 import static java.lang.String.format;
 
 public class Notifications {
+
+    private static final Logger LOG = Logger.getLoggerFor(Notifications.class);
 
     /** Maps a namespace to a Map of materials to notification configurations. */
     private static final Map<String, Map<String, Set<ConnectionConfig>>> registrar = new ConcurrentHashMap<>();
@@ -54,6 +57,8 @@ public class Notifications {
 
         return (git, spec) -> {
             final String key = keyFor(git);
+
+            LOG.debug("Registering material [{}] to notify {}", key, spec.identifier());
 
             if (!registered.containsKey(key)) {
                 registered.put(key, new ConnectionConfigSet());
@@ -80,6 +85,7 @@ public class Notifications {
     public static void realEmit(final NotifyPayload p) {
         notifiersMatchingKey(p.key()).forEach(cfg -> {
             try {
+                LOG.debug("Notifying {} on {}", cfg.identifier(), p);
                 publish(cfg, p.revision(), p.label(), p.status(), p.url());
             } catch (IOException e) {
                 final String message = format("Failed to publish to endpoint [%s] with payload: %s", cfg.identifier(), p.toString());
@@ -103,16 +109,21 @@ public class Notifications {
      * @return a {@link ConnectionConfigSet} of matching notifiers
      */
     private static ConnectionConfigSet notifiersMatchingKey(final String key) {
-        return registrar.values().stream().
-                reduce(new ConnectionConfigSet(), (memo, map) -> {
-                    if (map.containsKey(key)) {
-                        memo.addAll(map.get(key));
-                    }
-                    return memo;
-                }, (a, b) -> {
-                    a.addAll(b);
-                    return a;
-                });
+        LOG.debug("Finding notifiers matching build cause [{}] in all registration partitions", key);
+
+        return registrar.keySet().stream().reduce(new ConnectionConfigSet(), (memo, ns) -> {
+            Map<String, Set<ConnectionConfig>> map = registrar.get(ns);
+            if (map.containsKey(key)) {
+                LOG.debug("  > Located match in namespace partition: {}", ns);
+                memo.addAll(map.get(key));
+            } else {
+                LOG.debug("  > No match found in namespace: {}", ns);
+            }
+            return memo;
+        }, (a, b) -> {
+            a.addAll(b);
+            return a;
+        });
     }
 
     /**
