@@ -38,7 +38,7 @@ buildscript {
     mockitoVersion = '3.2.4'
     pluginApiVersion = '20.7.0'
     reflectionsVersion = '0.9.12'
-    retrofitVersion = '2.7.2'
+    retrofitVersion = '2.9.0'
     validateApiVersion = '2.0.1.Final'
   }
 
