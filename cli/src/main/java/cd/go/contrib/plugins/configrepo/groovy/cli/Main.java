@@ -20,9 +20,11 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Notifies;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.Branches;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.ConfigValues;
+import cd.go.contrib.plugins.configrepo.groovy.resolvers.Notifications;
 import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -59,7 +61,7 @@ public class Main {
             System.out.print("Parsing file " + getLocation(args.file) + ".");
             final String contents = IOGroovyMethods.getText(getFileAsStream(args.file), "utf-8");
 
-            BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> {
+            BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpConfig, () -> {
                 Object maybeConfig = getRunner().runScriptWithText(contents);
                 if (maybeConfig instanceof GoCD) {
                     System.out.print(" Ok!");
@@ -67,7 +69,7 @@ public class Main {
 
                     validate(configFromFile, violations -> {
                         System.out.println("Found " + violations.size() + " validation errors!");
-                        for (ConstraintViolation<Object> violation : violations) {
+                        for (ConstraintViolation<GoCD> violation : violations) {
                             System.out.println("  - " + violation.getPropertyPath() + " " + violation.getMessage());
                         }
                         System.exit(FAILED_EXIT);
@@ -82,7 +84,7 @@ public class Main {
                         System.out.println(GoCDJsonSerializer.toJsonString(configFromFile));
                     }
                 }
-            }));
+            })));
         } catch (Throwable e) {
             System.out.println();
             System.out.println(" Bad!");

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD
 
@@ -48,7 +47,14 @@ GoCD.script {
       onMatch { ctx ->
         // Build your entire workflow; you can have many pipeline blocks here.
         pipeline("build-PR-${ctx.branchSanitized}") {
-          group = "main"
+          // `sanitizeName()` will sanitize strings for use as GoCD identifiers for group, pipeline,
+          // stage, job, etc.
+          //
+          // NOTE: The `ctx` context binding object has various useful metadata about the
+          // matched git ref. Download this plugin's related dsl.jar and configure it as a dependency
+          // when writing your configs so your IDE can provide hints and inspections for the
+          // other fields on this object.
+          group = sanitizeName("app-${ctx.branch}-${ctx.title}")
 
           // As a convenience, a preconfigured material pointing to the pull request
           // is available in the template binding context. Of course, one may modify
@@ -72,7 +78,7 @@ GoCD.script {
         }
 
         pipeline("deploy-experimental-pr-${ctx.branchSanitized}") {
-          group = "main"
+          group = sanitizeName("app-${ctx.branch}-${ctx.title}")
           materials { add(ctx.repo) }
           stages { stage("publish") {
             jobs { job("publish") { tasks {
@@ -95,7 +101,7 @@ GoCD.script {
 
       onMatch { ctx ->
         pipeline("yet-another-pr-${ctx.branchSanitized}") {
-          group = "main"
+          group = sanitizeName("internal-${ctx.branch}-${ctx.title}")
           materials {
             add((ctx.repo as GitMaterial).dup { // dup() modifies a deep-copy; the explicit cast helps the IDE with auto-complete
               // When configuring multiple materials, each must specify a distinct destination dir

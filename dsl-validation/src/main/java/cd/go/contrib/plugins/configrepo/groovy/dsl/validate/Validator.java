@@ -24,12 +24,12 @@ import java.util.function.Consumer;
 
 public class Validator {
 
-    public static void validate(Object configFromFile, Consumer<Set<ConstraintViolation<Object>>> errorHandler) {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        javax.validation.Validator validator = validatorFactory.getValidator();
-        Set<ConstraintViolation<Object>> violations = validator.validate(configFromFile);
-        if (!violations.isEmpty()) {
-            errorHandler.accept(violations);
+    public static <T> void validate(T node, Consumer<Set<ConstraintViolation<T>>> errorHandler) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        final Set<ConstraintViolation<T>> errors = factory.getValidator().validate(node);
+
+        if (!errors.isEmpty()) {
+            errorHandler.accept(errors);
         }
     }
 }

@@ -16,11 +16,15 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl.connection;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import java.util.function.Consumer;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.connection.Type.Bitbucket;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNullElse;
+import static org.apache.commons.lang3.StringUtils.isAllEmpty;
+import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
 
 public class Bitbucket implements ConnectionConfig {
 
@@ -48,5 +52,12 @@ public class Bitbucket implements ConnectionConfig {
     @Override
     public String identifier() {
         return format("%s[%s]", type(), fullRepoName);
+    }
+
+    @SuppressWarnings("unused")
+    @AssertTrue(message = "When configuring authentication in `bitbucket {}` block, you must set both `apiUser` and `apiPass` (this can be either an auth token or user password)")
+    public boolean isValidAuth() {
+        final String normalizedUsername = requireNonNullElse(apiUser, "").trim();
+        return isAllEmpty(normalizedUsername, apiPass) || isNoneEmpty(normalizedUsername, apiPass);
     }
 }

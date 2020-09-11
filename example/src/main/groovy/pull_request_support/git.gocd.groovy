@@ -42,7 +42,7 @@ GoCD.script {
       onMatch { ctx ->
         // Build your entire workflow; you can have many pipeline blocks here.
         pipeline("build-branch-${ctx.branchSanitized}") {
-          group = "main"
+          group = sanitizeName("feature-branch-${ctx.branch}")
 
           // As a convenience, a preconfigured material pointing to the pull request
           // is available in the template binding context. Of course, one may modify
@@ -56,7 +56,7 @@ GoCD.script {
         }
 
         pipeline("deploy-experimental-branch-${ctx.branchSanitized}") {
-          group = "main"
+          group = sanitizeName("feature-branch-${ctx.branch}")
           materials { add(ctx.repo) }
           stages { stage("publish") {
             jobs { job("publish") { tasks {
@@ -77,7 +77,7 @@ GoCD.script {
 
       onMatch { ctx ->
         pipeline("yet-another-release-${ctx.branchSanitized}") {
-          group = "main"
+          group = sanitizeName("release-${ctx.branch}")
           materials { add(ctx.repo) }
           stages { stage("publish") {
             jobs { job("publish") { tasks {

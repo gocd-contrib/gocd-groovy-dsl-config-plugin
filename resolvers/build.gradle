@@ -16,6 +16,7 @@
 
 dependencies {
   implementation project(':dsl')
+  implementation project(':dsl-validation')
   implementation project(':providers')
 
   implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion

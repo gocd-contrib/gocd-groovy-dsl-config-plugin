@@ -32,15 +32,15 @@ public class JsonConfigCollection {
 
     private static final int DEFAULT_VERSION = 2;
 
-    private Set<Integer> uniqueVersions = new HashSet<>();
+    private final Set<Integer> uniqueVersions = new HashSet<>();
 
-    private ObjectNode mainObject = JsonNodeFactory.instance.objectNode();
+    private final ObjectNode mainObject = JsonNodeFactory.instance.objectNode();
 
-    private ArrayNode environments = JsonNodeFactory.instance.arrayNode();
+    private final ArrayNode environments = JsonNodeFactory.instance.arrayNode();
 
-    private ArrayNode pipelines = JsonNodeFactory.instance.arrayNode();
+    private final ArrayNode pipelines = JsonNodeFactory.instance.arrayNode();
 
-    private ArrayNode errors = JsonNodeFactory.instance.arrayNode();
+    private final ArrayNode errors = JsonNodeFactory.instance.arrayNode();
 
     public JsonConfigCollection() {
         updateTargetVersionTo(DEFAULT_VERSION);
@@ -114,7 +114,7 @@ public class JsonConfigCollection {
         validate(config, constraintViolations -> {
             StringBuilder buf = new StringBuilder();
 
-            for (ConstraintViolation<Object> violation : constraintViolations) {
+            for (ConstraintViolation<GoCD> violation : constraintViolations) {
                 buf.append("  - ").append(violation.getPropertyPath()).append(" ").append(violation.getMessage());
                 buf.append("\n");
             }

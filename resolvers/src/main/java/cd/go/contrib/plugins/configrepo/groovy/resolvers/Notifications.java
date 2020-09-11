@@ -28,6 +28,8 @@ import cd.go.contrib.plugins.configrepo.groovy.exceptions.NotificationFailure;
 import cd.go.contrib.plugins.configrepo.groovy.meta.NotifyPayload;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +37,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.validate.Validator.validate;
 import static java.lang.String.format;
+import static java.util.stream.Collectors.joining;
 
 public class Notifications {
 
@@ -56,6 +60,7 @@ public class Notifications {
         final Map<String, Set<ConnectionConfig>> registered = registrar.get(namespace);
 
         return (git, spec) -> {
+            validate(spec, invalidNotifyConfig(git, spec));
             final String key = keyFor(git);
 
             LOG.debug("Registering material [{}] to notify {}", key, spec.identifier());
@@ -65,6 +70,10 @@ public class Notifications {
             }
             registered.get(key).add(spec);
         };
+    }
+
+    public static void validatingNoOpConfig(GitMaterial git, ConnectionConfig spec) {
+        validate(spec, invalidNotifyConfig(git, spec));
     }
 
     public static void with(Consumer<NotifyPayload> fn, ThrowingRunnable body) throws Throwable {
@@ -161,6 +170,20 @@ public class Notifications {
                 // should never get here
                 throw new IllegalArgumentException(format("Don't know how to handle notification type %s", config.type()));
         }
+    }
+
+    private static Consumer<Set<ConstraintViolation<ConnectionConfig>>> invalidNotifyConfig(final GitMaterial git, final ConnectionConfig spec) {
+        final String material = format("GitMaterial{url=%s; branch=%s}", git.getUrl(), git.getBranch());
+        return (errors) -> {
+            throw new ValidationException(
+                    format(
+                            "Invalid notification config block `%s {}` on material %s; please address the following:\n%s",
+                            spec.type(),
+                            material,
+                            errors.stream().map(ConstraintViolation::getMessage).collect(joining(";\n"))
+                    )
+            );
+        };
     }
 
     private static CommitStatusGitHub github(String status, String label, String url) {

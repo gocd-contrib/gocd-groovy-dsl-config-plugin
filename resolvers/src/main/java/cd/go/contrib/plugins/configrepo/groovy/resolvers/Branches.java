@@ -18,16 +18,25 @@ package cd.go.contrib.plugins.configrepo.groovy.resolvers;
 
 import cd.go.contrib.plugins.configrepo.groovy.branching.MergeCandidate;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.BranchContext;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.ConnectionConfig;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static cd.go.contrib.plugins.configrepo.groovy.branching.BranchHelper.createContext;
 import static cd.go.contrib.plugins.configrepo.groovy.branching.BranchHelper.createProvider;
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.validate.Validator.validate;
+import static java.lang.String.format;
+import static java.util.stream.Collectors.joining;
 
 public class Branches {
 
@@ -50,7 +59,8 @@ public class Branches {
      * @return a {@link List} of {@link BranchContext} instances
      */
     public static List<BranchContext> real(final BranchStrategy strategy, final Pattern pattern) {
-        strategy.validate();
+        validate(strategy.attrs(), invalidBranchStrategy(strategy));
+
         return createProvider(strategy).fetch().stream().
                 filter(pr -> pattern.matcher(pr.ref()).matches()).
                 map(pr -> createContext(strategy.attrs(), pr)).
@@ -68,7 +78,8 @@ public class Branches {
      * @return a {@link List} of {@link BranchContext} instances
      */
     public static List<BranchContext> stubbed(final BranchStrategy s, @SuppressWarnings("unused") final Pattern p) {
-        s.validate();
+        validate(s.attrs(), invalidBranchStrategy(s));
+
         final String identifier = randomHex();
         final String ref = "refs/heads/stubbed-ref-" + identifier;
 
@@ -108,6 +119,15 @@ public class Branches {
                 return "https://stubbed.repository.url";
             }
         }));
+    }
+
+    private static Consumer<Set<ConstraintViolation<Attributes<? extends ConnectionConfig>>>> invalidBranchStrategy(final BranchStrategy strategy) {
+        return (errors) -> {
+            throw new ValidationException(format(
+                    "Invalid branch matching config block `%s {}`; please address the following:\n%s",
+                    strategy.type(),
+                    errors.stream().map(ConstraintViolation::getMessage).collect(joining(";\n"))));
+        };
     }
 
     /** @return a random hexadecimal string */

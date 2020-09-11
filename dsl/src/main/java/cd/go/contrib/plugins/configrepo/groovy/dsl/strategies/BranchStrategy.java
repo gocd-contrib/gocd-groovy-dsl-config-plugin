@@ -22,17 +22,9 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.Type;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.ThrowingRunnable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-import javax.validation.ValidatorFactory;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
-
-import static java.lang.String.format;
-import static java.util.stream.Collectors.joining;
 
 public class BranchStrategy {
 
@@ -61,23 +53,6 @@ public class BranchStrategy {
     @JsonProperty("attributes")
     public Attributes<? extends ConnectionConfig> attrs() {
         return attrs;
-    }
-
-    public void validate() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        final Set<ConstraintViolation<Attributes<? extends ConnectionConfig>>> errors = factory.getValidator().validate(attrs());
-
-        if (errors.size() != 0) {
-            throw invalidConfig(errors);
-        }
-    }
-
-    private ValidationException invalidConfig(Set<ConstraintViolation<Attributes<? extends ConnectionConfig>>> errors) {
-        return new ValidationException(format(
-                "Invalid branch matching config block `%s {}`; please address the following:\n%s",
-                type(),
-                errors.stream().map(ConstraintViolation::getMessage).collect(joining(";\n"))
-        ));
     }
 
     public List<BranchContext> fetch(Pattern filter) {

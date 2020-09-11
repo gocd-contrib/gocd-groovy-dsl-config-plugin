@@ -8,4 +8,4 @@ Supports enumerating/scanning `git` refs from:
 * Self-hosted Bitbucket
 * Git branches (plain, vanilla `git`)
 
-Look through the example scripts for basic usage.
+Look through the example scripts for basic usage as well as concrete examples of various utility methods and build notification configurations.
