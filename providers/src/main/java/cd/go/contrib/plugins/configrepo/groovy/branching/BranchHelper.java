@@ -28,14 +28,13 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.TextUtils.gitShortRef;
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.util.UriUtils.stripAuth;
+import static cd.go.contrib.plugins.configrepo.groovy.dsl.validate.Validator.validate;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNullElse;
-import static javax.validation.Validation.buildDefaultValidatorFactory;
 import static org.apache.commons.lang3.StringUtils.firstNonBlank;
 
 public class BranchHelper {
@@ -72,15 +71,14 @@ public class BranchHelper {
         bc.setReferenceUrl(requireNonNullElse(merge.showUrl(), ""));
         bc.setLabels(new ArrayList<>(requireNonNullElse(merge.labels(), Collections.emptyList())));
 
-        final Set<ConstraintViolation<BranchContext>> errors = buildDefaultValidatorFactory().getValidator().validate(bc);
-        if (!errors.isEmpty()) {
+        validate(bc, (errors) -> {
             throw new ValidationException("Branch context binding is missing data! " +
                     "Check the provider's API response. Error(s):\n" +
                     errors.stream().
                             map(ConstraintViolation::getMessage).
                             collect(Collectors.joining("\n", "  ", ""))
             );
-        }
+        });
         return bc;
     }
 

@@ -55,7 +55,7 @@ public class Bitbucket implements ConnectionConfig {
     }
 
     @SuppressWarnings("unused")
-    @AssertTrue(message = "When configuring authentication in `bitbucket {}` block, you must set both `apiUser` and `apiPass` (this can be either an auth token or user password)")
+    @AssertTrue(message = "When configuring authentication in a `bitbucket {}` block, you must set both `apiUser` and `apiPass` (this can be either an auth token or user password)")
     public boolean isValidAuth() {
         final String normalizedUsername = requireNonNullElse(apiUser, "").trim();
         return isAllEmpty(normalizedUsername, apiPass) || isNoneEmpty(normalizedUsername, apiPass);

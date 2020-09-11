@@ -18,6 +18,7 @@ apply plugin: 'groovy'
 
 dependencies {
   implementation project(':dsl')
+  implementation project(':dsl-validation')
 
   implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
   implementation group: 'org.apache.ant', name: 'ant', version: antVersion
