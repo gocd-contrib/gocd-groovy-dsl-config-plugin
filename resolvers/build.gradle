@@ -19,11 +19,11 @@ dependencies {
   implementation project(':dsl-validation')
   implementation project(':providers')
 
-  implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
-  implementation group: 'javax.validation', name: 'validation-api', version: validateApiVersion
+  implementation project.deps.groovy
+  implementation project.deps.validateApi
 
-  compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: pluginApiVersion
+  compileOnly project.deps.pluginApi
 
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-  compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+  annotationProcessor project.deps.lombok
+  compileOnly project.deps.lombok
 }

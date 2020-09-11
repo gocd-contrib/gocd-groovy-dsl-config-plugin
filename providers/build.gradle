@@ -20,18 +20,18 @@ dependencies {
   implementation project(':dsl')
   implementation project(':dsl-validation')
 
-  implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
-  implementation group: 'org.apache.ant', name: 'ant', version: antVersion
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
-  implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: retrofitVersion
-  implementation group: 'com.squareup.retrofit2', name: 'converter-jackson', version: retrofitVersion
-  implementation group: 'javax.validation', name: 'validation-api', version: validateApiVersion
+  implementation project.deps.groovy
+  implementation project.deps.ant
+  implementation project.deps.commonsLang
+  implementation project.deps.retrofit
+  implementation project.deps.retrofitJacksonConv
+  implementation project.deps.validateApi
 
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiterVersion
-  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiterVersion
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: jupiterVersion
-  testImplementation group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
-  testImplementation group: 'org.codehaus.groovy', name: 'groovy-json', version: groovyVersion
+  testImplementation project.deps.junitJupiterApi
+  testRuntimeOnly project.deps.junitJupiterEngine
+  testImplementation project.deps.junitJupiterParams
+  testImplementation project.deps.mockito
+  testImplementation project.deps.groovyJson
 }
 
 test {

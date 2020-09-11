@@ -25,25 +25,25 @@ configurations {
 
 dependencies {
   doclet project(':doclet')
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-  annotationProcessor group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: hiberVersion
+  annotationProcessor project.deps.lombok
+  annotationProcessor project.deps.hibernateValidatorAnnotationProcessor
 
-  compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+  compileOnly project.deps.lombok
 
-  implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
-  implementation group: 'org.codehaus.groovy', name: 'groovy-json', version: groovyVersion
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
-  implementation group: 'javax.validation', name: 'validation-api', version: validateApiVersion
+  implementation project.deps.groovy
+  implementation project.deps.groovyJson
+  implementation project.deps.jacksonAnnotations
+  implementation project.deps.commonsLang
+  implementation project.deps.validateApi
 
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiterVersion
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: jupiterVersion
-  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiterVersion
+  testImplementation project.deps.junitJupiterApi
+  testImplementation project.deps.junitJupiterParams
+  testRuntimeOnly project.deps.junitJupiterEngine
 
-  testImplementation group: 'org.assertj', name: 'assertj-core', version: assertJVersion
-  testImplementation group: 'org.reflections', name: 'reflections', version: reflectionsVersion
-  testImplementation group: 'io.github.classgraph', name: 'classgraph', version: classgraphVersion
-  testImplementation group: 'dom4j', name: 'dom4j', version: dom4jVersion
+  testImplementation project.deps.assertJ
+  testImplementation project.deps.reflections
+  testImplementation project.deps.classgraph
+  testImplementation project.deps.dom4j
 }
 
 test {
@@ -115,7 +115,7 @@ javadoc {
   options.overview('overview.html')
   options.showFromPublic()
 
-  options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/gapi")
+  options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-${project.vers.groovyVersion}/html/gapi")
   title = "GoCD Groovy DSL API ${version}"
   options.footer = 'Copyright (c) 2019 ThoughtWorks, Inc.'
 }

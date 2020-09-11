@@ -20,17 +20,17 @@ apply plugin: 'maven-publish'
 dependencies {
   implementation project(':dsl')
   implementation project(':json')
-  implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
-  implementation group: 'org.apache.commons', name: 'commons-text', version: commonsTextVersion
+  implementation project.deps.groovy
+  implementation project.deps.commonsLang
+  implementation project.deps.commonsText
 
   testImplementation project(path: ':json', configuration: 'testArchives')
   testImplementation project(':sandbox')
-  testImplementation group: 'org.assertj', name: 'assertj-core', version: assertJVersion
-  testImplementation group: 'com.google.guava', name: 'guava', version: guavaVersion
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiterVersion
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: jupiterVersion
-  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiterVersion
+  testImplementation project.deps.assertJ
+  testImplementation project.deps.guava
+  testImplementation project.deps.junitJupiterApi
+  testImplementation project.deps.junitJupiterParams
+  testRuntimeOnly project.deps.junitJupiterEngine
 }
 
 test {

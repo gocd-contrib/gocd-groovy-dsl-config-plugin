@@ -20,9 +20,9 @@ dependencies {
   implementation project(':json')
   implementation project(':resolvers')
   implementation project(':sandbox')
-  implementation group: 'com.beust', name: 'jcommander', version: jcommanderVersion
-  implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
-  implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: hiberVersion
-  implementation group: 'org.glassfish', name: 'javax.el', version: glassfishVersion
+  implementation project.deps.jcommander
+  implementation project.deps.groovy
+  implementation project.deps.jacksonCore
+  implementation project.deps.hibernateValidator
+  implementation project.deps.glassfish
 }

@@ -15,29 +15,29 @@
  */
 
 dependencies {
-  implementation group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
-  implementation group: 'org.codehaus.groovy', name: 'groovy-json', version: groovyVersion
-  implementation group: 'org.codehaus.groovy', name: 'groovy-sql', version: groovyVersion
-  implementation group: 'org.codehaus.groovy', name: 'groovy-swing', version: groovyVersion
-  implementation group: 'org.codehaus.groovy', name: 'groovy-dateutil', version: groovyVersion
-  implementation group: 'org.codehaus.groovy', name: 'groovy-xml', version: groovyVersion
+  implementation project.deps.groovy
+  implementation project.deps.groovyJson
+  implementation project.deps.groovySql
+  implementation project.deps.groovySwing
+  implementation project.deps.groovyDateUtil
+  implementation project.deps.groovyXml
 
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: commonsLangVersion
+  implementation project.deps.commonsLang
 
-  implementation(group: 'org.kohsuke', name: 'groovy-sandbox', version: groovySandboxVersion) {
+  implementation(project.deps.groovySandbox) {
     exclude(group: 'org.codehaus.groovy')
   }
 
-  implementation group: 'com.google.guava', name: 'guava', version: guavaVersion
+  implementation project.deps.guava
 
-  testImplementation group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiterVersion
-  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiterVersion
+  testImplementation project.deps.groovyAll
+  testImplementation project.deps.junitJupiterApi
+  testRuntimeOnly project.deps.junitJupiterEngine
 
   // for @Grab annotation
-  testImplementation group: 'org.apache.ivy', name: 'ivy', version: ivyVersion
-  testImplementation group: 'org.hamcrest', name: 'hamcrest-core', version: hamcrestVersion
-  testImplementation group: 'org.hamcrest', name: 'hamcrest-library', version: hamcrestVersion
+  testImplementation project.deps.ivy
+  testImplementation project.deps.hamcrestCore
+  testImplementation project.deps.hamcrestLib
 }
 
 tasks.withType(JavaCompile) {
