@@ -62,6 +62,11 @@ allprojects {
   group = 'cd.go.groovydsl'
   version = gocdPlugin.fullVersion(project)
 
+  java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
+
   tasks.withType(JavaCompile) {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
@@ -78,7 +83,6 @@ subprojects {
       }
     }
   }
-
 }
 
 nexusStaging {
