@@ -27,7 +27,7 @@ static def versionOf(String dependencySpec) {
 // Keep plaintext versions here so Dependabot can parse the versions; don't interpolate version variables here
 // because Dependabot is not smart enough to understand those.
 project.deps.ant = 'org.apache.ant:ant:1.10.8'
-project.deps.assertJ = 'org.assertj:assertj-core:3.14.0'
+project.deps.assertJ = 'org.assertj:assertj-core:3.17.2'
 project.deps.classgraph = 'io.github.classgraph:classgraph:4.8.64'
 project.deps.commonsLang = 'org.apache.commons:commons-lang3:3.11'
 project.deps.commonsText = 'org.apache.commons:commons-text:1.9'
