@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse
 import org.junit.jupiter.api.Test
 
-import static org.assertj.core.api.Assertions.assertThat
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class GetPluginSettingsIconExecutorTest {
 
@@ -29,13 +29,12 @@ class GetPluginSettingsIconExecutorTest {
   void rendersIconInBase64() throws Exception {
     GoPluginApiResponse response = new GetPluginSettingsIconExecutor().execute()
 
-    assertThat(response.responseCode()).isEqualTo(200)
+    assertEquals(200, response.responseCode())
     ObjectMapper objectMapper = new ObjectMapper()
     Map<String, String> hashMap = objectMapper.readValue(response.responseBody(), objectMapper.getTypeFactory().constructMapType(Map.class, String.class, String.class))
 
-    assertThat(hashMap)
-      .hasSize(2)
-      .containsEntry("content_type", "image/svg+xml")
-      .containsEntry("data", Base64.getEncoder().encodeToString(Util.readResourceBytes("/groovy.svg")))
+    assertEquals(2, hashMap.size())
+    assertEquals("image/svg+xml", hashMap.get("content_type"))
+    assertEquals(Base64.getEncoder().encodeToString(Util.readResourceBytes("/groovy.svg")), hashMap.get("data"))
   }
 }

@@ -49,7 +49,6 @@ dependencies {
   testImplementation project.deps.groovy
   testImplementation project.deps.groovyJson
   testImplementation project.deps.mockito
-  testImplementation project.deps.assertJ
   testImplementation project.deps.jsonFluent
 }
 

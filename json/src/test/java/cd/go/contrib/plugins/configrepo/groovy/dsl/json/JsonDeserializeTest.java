@@ -27,11 +27,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 import javax.validation.ConstraintViolation;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.Objects.requireNonNullElse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JsonDeserializeTest extends TestBase {
 
@@ -40,7 +43,7 @@ class JsonDeserializeTest extends TestBase {
     void testGroovyToJSON(String path) throws IOException {
         GroovyScriptRunner engine = getRunner();
         Object result = engine.runScript(path + ".groovy");
-        assertThat(result).isInstanceOf(Node.class);
+        assertTrue(result instanceof Node);
 
         String actualJson = GoCDJsonSerializer.toJsonString(result);
         String expectedJSON = ResourceGroovyMethods.getText(new File(path + ".json"), "utf-8");
@@ -56,7 +59,7 @@ class JsonDeserializeTest extends TestBase {
         Consumer<Set<ConstraintViolation<Object>>> consumer = errors -> constraintViolations.set(errors);
         validate(result, consumer);
 
-        assertThat(constraintViolations.get()).isNullOrEmpty();
+        assertTrue(requireNonNullElse(constraintViolations.get(), Collections.emptySet()).isEmpty());
     }
 
     @ParameterizedTest
@@ -67,8 +70,8 @@ class JsonDeserializeTest extends TestBase {
 
         String actualJson = ResourceGroovyMethods.getText(new File(path + ".json"), "utf-8");
         Object node = GoCDJsonSerializer.fromJson(actualJson, result.getClass());
-        assertThat(node).isExactlyInstanceOf(result.getClass());
-        assertThat(node).isEqualTo(result);
+        assertEquals(result.getClass(), node.getClass());
+        assertEquals(result, node);
     }
 
 }

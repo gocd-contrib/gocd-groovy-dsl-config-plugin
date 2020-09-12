@@ -40,7 +40,6 @@ dependencies {
   testImplementation project.deps.junitJupiterParams
   testRuntimeOnly project.deps.junitJupiterEngine
 
-  testImplementation project.deps.assertJ
   testImplementation project.deps.reflections
   testImplementation project.deps.classgraph
   testImplementation project.deps.dom4j

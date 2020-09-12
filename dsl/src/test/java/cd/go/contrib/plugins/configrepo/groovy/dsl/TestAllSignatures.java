@@ -33,25 +33,27 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.NodeTypes.ALL_KNOWN_NODE_TYPES;
 import static groovy.lang.Closure.DELEGATE_ONLY;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestAllSignatures {
 
     @Test
     void testJSONIndex() {
         Set<Class<? extends Node>> actualNodeTypes = allNodeTypes().collect(Collectors.toSet());
-        assertThat(actualNodeTypes).isEqualTo(ALL_KNOWN_NODE_TYPES);
+        assertEquals(ALL_KNOWN_NODE_TYPES, actualNodeTypes);
     }
 
     private static final ScanResult scanResult = new ClassGraph()
-//            .verbose()
             .enableClassInfo()
             .enableMethodInfo()
             .ignoreClassVisibility()
@@ -60,7 +62,7 @@ class TestAllSignatures {
     @ParameterizedTest
     @MethodSource("allNonAbstractNodeTypes")
     void nonAbstractClassesShouldBePublic(Class<? extends Node> type) {
-        assertThat(Modifier.isPublic(type.getModifiers())).isTrue();
+        assertTrue(Modifier.isPublic(type.getModifiers()));
     }
 
     @ParameterizedTest
@@ -81,25 +83,13 @@ class TestAllSignatures {
     }
 
     private void assertParameterAnnotations(Class<?> type, Annotation[] parameterAnnotation) {
-        assertThat(parameterAnnotation)
-                .hasSize(2)
-                .anySatisfy(annotation -> {
-                    assertThat(annotation.annotationType()).isSameAs(DelegatesTo.class);
-                    DelegatesTo delegatesTo = (DelegatesTo) annotation;
-                    assertThat(delegatesTo.value())
-                            .isSameAs(type);
-                    assertThat(delegatesTo.strategy())
-                            .isSameAs(DELEGATE_ONLY);
-                }).anySatisfy(annotation -> {
-                    assertThat(annotation.annotationType()).isSameAs(ClosureParams.class);
-                    ClosureParams closureParams = (ClosureParams) annotation;
-                    assertThat(closureParams.value())
-                            .isSameAs(SimpleType.class);
-                    assertThat(closureParams.options())
-                            .hasSize(1)
-                            .containsExactly(type.getName());
-                }
-        );
+        assertEquals(2, parameterAnnotation.length);
+        assertTrue(Arrays.stream(parameterAnnotation).anyMatch(annotation -> DelegatesTo.class == annotation.annotationType() &&
+                type == ((DelegatesTo) annotation).value() &&
+                DELEGATE_ONLY == ((DelegatesTo) annotation).strategy()));
+        assertTrue(Arrays.stream(parameterAnnotation).anyMatch(annotation -> ClosureParams.class == annotation.annotationType() &&
+                SimpleType.class == ((ClosureParams) annotation).value() &&
+                Collections.singletonList(type.getName()).equals(Arrays.asList(((ClosureParams) annotation).options()))));
     }
 
     @ParameterizedTest
@@ -107,9 +97,7 @@ class TestAllSignatures {
     void publicClassConstructorsMustBePublic(Class<? extends Node> type) {
         Constructor<?>[] constructors = type.getDeclaredConstructors();
         for (Constructor<?> constructor : constructors) {
-            assertThat(Modifier.isPublic(constructor.getModifiers()))
-                    .describedAs("Constructor %s was not public", constructor)
-                    .isTrue();
+            assertTrue(Modifier.isPublic(constructor.getModifiers()), format("Constructor %s was not public", constructor));
         }
     }
 

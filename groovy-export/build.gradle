@@ -26,7 +26,6 @@ dependencies {
 
   testImplementation project(path: ':json', configuration: 'testArchives')
   testImplementation project(':sandbox')
-  testImplementation project.deps.assertJ
   testImplementation project.deps.guava
   testImplementation project.deps.junitJupiterApi
   testImplementation project.deps.junitJupiterParams

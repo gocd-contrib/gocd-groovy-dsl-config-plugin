@@ -28,7 +28,6 @@ dependencies {
   testRuntimeOnly project.deps.junitJupiterEngine
 
   testImplementation project(':sandbox')
-  testImplementation project.deps.assertJ
   testImplementation project.deps.jsonFluent
   testImplementation project.deps.groovy
   testImplementation project.deps.hibernateValidator

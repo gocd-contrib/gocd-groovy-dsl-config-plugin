@@ -32,7 +32,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GroovyExporterTest extends TestBase {
 
@@ -40,15 +41,17 @@ class GroovyExporterTest extends TestBase {
     @MethodSource("values")
     void shouldExportNodeAsGroovyCode(String path) throws Throwable {
         GroovyScriptRunner engine = getRunner();
-        Node result = (Node) engine.runScript(path + ".groovy");
-        assertThat(result).isInstanceOf(Node.class);
+        final Object output = engine.runScript(path + ".groovy");
+        assertNotNull(output);
+        assertTrue(output instanceof Node);
+        final Node<?> result = (Node<?>) output;
 
         StringWriter writer = new StringWriter();
         GroovyExporter exporter = new GroovyExporter(writer);
         exporter.export(result);
 
-        assertThat(sourceGroovyFile(path).trim())
-                .endsWith(writer.toString().trim());
+        assertTrue(sourceGroovyFile(path).trim().
+                endsWith(writer.toString().trim()));
     }
 
     @ParameterizedTest
@@ -56,12 +59,15 @@ class GroovyExporterTest extends TestBase {
     void shouldExportJsonStringAsGroovyCode(String path) throws Throwable {
         // load the node, so we know what type it is
         GroovyScriptRunner engine = getRunner();
-        Node result = (Node) engine.runScript(path + ".groovy");
-        assertThat(result).isInstanceOf(Node.class);
+        final Object output = engine.runScript(path + ".groovy");
+        assertNotNull(output);
+        assertTrue(output instanceof Node);
+        final Node<?> result = (Node<?>) output;
+
 
         // load the node from actual json
         String actualJSON = ResourceGroovyMethods.getText(new File(path + ".json"), "utf-8");
-        Node node = GoCDJsonSerializer.fromJson(actualJSON, result.getClass());
+        Node<?> node = GoCDJsonSerializer.fromJson(actualJSON, result.getClass());
 
         // serialize to groovy
         StringWriter writer = new StringWriter();
@@ -69,8 +75,8 @@ class GroovyExporterTest extends TestBase {
         exporter.export(node);
 
         // should be same as groovy code
-        assertThat(sourceGroovyFile(path).trim())
-                .endsWith(writer.toString().trim());
+        assertTrue(sourceGroovyFile(path).trim().
+                endsWith(writer.toString().trim()));
     }
 
     private String sourceGroovyFile(String path) throws IOException {
