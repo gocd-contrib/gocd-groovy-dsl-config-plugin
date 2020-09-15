@@ -14,66 +14,72 @@
  * limitations under the License.
  */
 
-ext {
-  deps = [:]
-  vers = [:]
-}
-
 static def versionOf(String dependencySpec) {
   return dependencySpec.split(':').last()
 }
 
-// Dependabot will parse these.
-// Keep plaintext versions here so Dependabot can parse the versions; don't interpolate version variables here
-// because Dependabot is not smart enough to understand those.
-project.deps.ant = 'org.apache.ant:ant:1.10.8'
-project.deps.classgraph = 'io.github.classgraph:classgraph:4.8.90'
-project.deps.commonsLang = 'org.apache.commons:commons-lang3:3.11'
-project.deps.commonsText = 'org.apache.commons:commons-text:1.9'
-project.deps.dom4j = 'dom4j:dom4j:1.6.1'
-project.deps.glassfish = 'org.glassfish:javax.el:3.0.0'
-project.deps.groovy = 'org.codehaus.groovy:groovy:2.5.12'
-project.deps.groovySandbox = "org.kohsuke:groovy-sandbox:1.24"
-project.deps.guava = 'com.google.guava:guava:29.0-jre'
-project.deps.hamcrestCore = 'org.hamcrest:hamcrest-core:2.2'
-project.deps.hibernateValidator = 'org.hibernate.validator:hibernate-validator:6.1.5.Final'
-project.deps.ivy = 'org.apache.ivy:ivy:2.5.0'
-project.deps.jacksonCore = 'com.fasterxml.jackson.core:jackson-core:2.11.2'
-project.deps.jcommander = 'com.beust:jcommander:1.78'
-project.deps.jhighlight = 'org.codelibs:jhighlight:1.0.3'
-project.deps.jsonFluent = 'net.javacrumbs.json-unit:json-unit-fluent:2.19.0'
-project.deps.junitJupiterApi = 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-project.deps.lombok = 'org.projectlombok:lombok:1.18.12'
-project.deps.mockito = 'org.mockito:mockito-core:3.5.10'
-project.deps.pluginApi = 'cd.go.plugin:go-plugin-api:20.7.0'
-project.deps.reflections = 'org.reflections:reflections:0.9.12'
-project.deps.retrofit = 'com.squareup.retrofit2:retrofit:2.9.0'
-project.deps.validateApi = 'javax.validation:validation-api:2.0.1.Final'
+final Map<String, String> libraries = [
+  // Dependabot will parse these.
+  // Keep plaintext versions here so Dependabot can parse the versions; don't interpolate version variables here
+  // because Dependabot is not smart enough to understand those.
+  ant               : 'org.apache.ant:ant:1.10.8',
+  classgraph        : 'io.github.classgraph:classgraph:4.8.90',
+  commonsLang       : 'org.apache.commons:commons-lang3:3.11',
+  commonsText       : 'org.apache.commons:commons-text:1.9',
+  dom4j             : 'dom4j:dom4j:1.6.1',
+  glassfish         : 'org.glassfish:javax.el:3.0.0',
+  groovy            : 'org.codehaus.groovy:groovy:2.5.12',
+  groovySandbox     : "org.kohsuke:groovy-sandbox:1.24",
+  guava             : 'com.google.guava:guava:29.0-jre',
+  hamcrestCore      : 'org.hamcrest:hamcrest-core:2.2',
+  hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.1.5.Final',
+  ivy               : 'org.apache.ivy:ivy:2.5.0',
+  jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.11.2',
+  jcommander        : 'com.beust:jcommander:1.78',
+  jhighlight        : 'org.codelibs:jhighlight:1.0.3',
+  jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.19.0',
+  junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.7.0',
+  lombok            : 'org.projectlombok:lombok:1.18.12',
+  mockito           : 'org.mockito:mockito-core:3.5.10',
+  pluginApi         : 'cd.go.plugin:go-plugin-api:20.7.0',
+  reflections       : 'org.reflections:reflections:0.9.12',
+  retrofit          : 'com.squareup.retrofit2:retrofit:2.9.0',
+  validateApi       : 'javax.validation:validation-api:2.0.1.Final',
+]
 
 // Parse some versions that are shared with related deps; this way we can DRY and keep these adjunct deps
 // up-to-date.
-final String groovyVersion = versionOf(project.deps.groovy as String)
-final String hamcrestVersion = versionOf(project.deps.hamcrestCore as String)
-final String hibernateVersion = versionOf(project.deps.hibernateValidator as String)
-final String jacksonVersion = versionOf(project.deps.jacksonCore as String)
-final String junitJupiterVersion = versionOf(project.deps.junitJupiterApi as String)
-final String retrofitVersion = versionOf(project.deps.retrofit as String)
+final String groovyVersion = versionOf(libraries.groovy)
+final String hamcrestVersion = versionOf(libraries.hamcrestCore)
+final String hibernateVersion = versionOf(libraries.hibernateValidator)
+final String jacksonVersion = versionOf(libraries.jacksonCore)
+final String junitJupiterVersion = versionOf(libraries.junitJupiterApi)
+final String retrofitVersion = versionOf(libraries.retrofit)
 
 // RELATED: these deps share versions with others; we put these after the main deps because Dependabot cannot parse
 // interpolated versions. When Dependabot updates the parent dependency, these will get updated for free too.
-project.deps.groovyAll = "org.codehaus.groovy:groovy-all:${groovyVersion}"
-project.deps.groovyDateUtil = "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
-project.deps.groovyJson = "org.codehaus.groovy:groovy-json:${groovyVersion}"
-project.deps.groovySql = "org.codehaus.groovy:groovy-sql:${groovyVersion}"
-project.deps.groovySwing = "org.codehaus.groovy:groovy-swing:${groovyVersion}"
-project.deps.groovyXml = "org.codehaus.groovy:groovy-xml:${groovyVersion}"
-project.deps.hamcrestLib = "org.hamcrest:hamcrest-library:${hamcrestVersion}"
-project.deps.hibernateValidatorAnnotationProcessor = "org.hibernate.validator:hibernate-validator-annotation-processor:${hibernateVersion}"
-project.deps.jacksonAnnotations = "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
-project.deps.jacksonDatabind = "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-project.deps.junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
-project.deps.junitJupiterParams = "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
-project.deps.retrofitJacksonConv = "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
+libraries.groovyAll = "org.codehaus.groovy:groovy-all:${groovyVersion}"
+libraries.groovyDateUtil = "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
+libraries.groovyJson = "org.codehaus.groovy:groovy-json:${groovyVersion}"
+libraries.groovySql = "org.codehaus.groovy:groovy-sql:${groovyVersion}"
+libraries.groovySwing = "org.codehaus.groovy:groovy-swing:${groovyVersion}"
+libraries.groovyXml = "org.codehaus.groovy:groovy-xml:${groovyVersion}"
+libraries.hamcrestLib = "org.hamcrest:hamcrest-library:${hamcrestVersion}"
+libraries.hibernateValidatorAnnotationProcessor = "org.hibernate.validator:hibernate-validator-annotation-processor:${hibernateVersion}"
+libraries.jacksonAnnotations = "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+libraries.jacksonDatabind = "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+libraries.junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+libraries.junitJupiterParams = "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
+libraries.retrofitJacksonConv = "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
 
 // Export versions that are needed outside of this file
-project.vers.groovyVersion = groovyVersion
+final Map<String, String> versions = [
+  groovyVersion: groovyVersion
+]
+
+ext {
+  //noinspection GroovyAssignabilityCheck
+  deps = libraries
+  //noinspection GroovyAssignabilityCheck
+  vers = versions
+}
