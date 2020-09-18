@@ -11,6 +11,7 @@ Table of Contents
 * [Install](#install)
 * [Linting or verifying your DSL locally](#linting-or-verifying-your-dsl-locally)
    * [Lint usage](#lint-usage)
+* [Support for Branches and PRs](#support-for-branches-and-prs)
 * [Example](#example)
 * [License](#license)
       
@@ -81,9 +82,22 @@ If you're using an IDE like IntelliJ or Eclipse, you can import the `dsl.jar` fi
 compileOnly group: 'cd.go.groovydsl', name: 'dsl', version: 'XXX'
 ```
 
+## Support for Branches and PRs
+
+Often you would want to run your builds against multiple branches and PRs. Manually configuring pipelines/workflow for each branch/PR could be cumbersome.
+The plugin provides an ability to templatize a pipeline or an entire workflow to run your builds against each branch and PR. Once a template is defined,
+the plugin scans the configured repository at a regular interval and for each available branch/PR it builds the corresponding pipelines.
+
+The plugin also provides notification capability, you can configure the plugin to notify your pull requests with the build status.
+
+For a working example, refer to the [Groovy Script](https://github.com/gocd/pr-pipelines-workflow/blob/master/.gocd/build.gocd.groovy) which generates the PR workflow
+under the pipeline group `gocd-pull_8567-Groovy_plugin_branch_PR_feature_example` on https://build.gocd.org. You will have to login as Guest user to view this pipeline group.
+
+You can refer to [PR support examples](example/src/main/groovy/pull_request_support) for comprehensive examples for each provider.
+
 ## Example
 
-Here is a simple example of the DSL, there are mode examples in the [examples directory](example/src/main/groovy).
+Here is a simple example of the DSL, there are more examples in the [examples directory](example/src/main/groovy).
 
 ```groovy
 import cd.go.contrib.plugins.configrepo.groovy.dsl.*
