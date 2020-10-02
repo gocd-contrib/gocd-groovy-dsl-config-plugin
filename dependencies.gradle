@@ -34,7 +34,7 @@ final Map<String, String> libraries = [
   hamcrestCore      : 'org.hamcrest:hamcrest-core:2.2',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.1.5.Final',
   ivy               : 'org.apache.ivy:ivy:2.5.0',
-  jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.11.2',
+  jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.11.3',
   jcommander        : 'com.beust:jcommander:1.78',
   jhighlight        : 'org.codelibs:jhighlight:1.0.3',
   jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.19.0',
