@@ -30,7 +30,7 @@ final Map<String, String> libraries = [
   glassfish         : 'org.glassfish:javax.el:3.0.0',
   groovy            : 'org.codehaus.groovy:groovy:2.5.12',
   groovySandbox     : "org.kohsuke:groovy-sandbox:1.24",
-  guava             : 'com.google.guava:guava:29.0-jre',
+  guava             : 'com.google.guava:guava:30.0-jre',
   hamcrestCore      : 'org.hamcrest:hamcrest-core:2.2',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.1.5.Final',
   ivy               : 'org.apache.ivy:ivy:2.5.0',
