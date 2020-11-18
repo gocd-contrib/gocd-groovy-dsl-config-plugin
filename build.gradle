@@ -39,8 +39,8 @@ java {
 
 gocdPlugin {
   id = 'cd.go.contrib.plugins.configrepo.groovy'
-  pluginVersion = '1.1.0'
-  goCdVersion = '20.8.0'
+  pluginVersion = '1.2.0'
+  goCdVersion = '20.9.0'
   name = 'GoCD Groovy Configuration plugin'
   description = 'GoCD pipelines and environments configuration in Groovy'
   vendorName = 'ThoughtWorks, Inc.'
