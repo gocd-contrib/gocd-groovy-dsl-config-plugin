@@ -41,7 +41,7 @@ final Map<String, String> libraries = [
   junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.7.0',
   lombok            : 'org.projectlombok:lombok:1.18.12',
   mockito           : 'org.mockito:mockito-core:3.5.11',
-  pluginApi         : 'cd.go.plugin:go-plugin-api:20.8.0',
+  pluginApi         : 'cd.go.plugin:go-plugin-api:20.10.0',
   reflections       : 'org.reflections:reflections:0.9.12',
   retrofit          : 'com.squareup.retrofit2:retrofit:2.9.0',
   validateApi       : 'javax.validation:validation-api:2.0.1.Final',
