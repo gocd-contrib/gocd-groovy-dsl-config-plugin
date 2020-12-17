@@ -32,7 +32,7 @@ final Map<String, String> libraries = [
   groovySandbox     : "org.kohsuke:groovy-sandbox:1.24",
   guava             : 'com.google.guava:guava:29.0-jre',
   hamcrestCore      : 'org.hamcrest:hamcrest-core:2.2',
-  hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.1.5.Final',
+  hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.1.7.Final',
   ivy               : 'org.apache.ivy:ivy:2.5.0',
   jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.11.2',
   jcommander        : 'com.beust:jcommander:1.78',
