@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-static def versionOf(String dependencySpec) {
+static String versionOf(String dependencySpec) {
   return dependencySpec.split(':').last()
 }
 
