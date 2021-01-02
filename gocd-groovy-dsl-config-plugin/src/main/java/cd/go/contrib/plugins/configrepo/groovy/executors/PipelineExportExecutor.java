@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,11 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
 import cd.go.contrib.plugins.configrepo.groovy.export.GroovyExporter;
-import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
+import cd.go.contrib.plugins.configrepo.groovy.util.GroovyScriptRunner;
 import com.google.common.collect.ImmutableMap;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -68,8 +67,8 @@ public class PipelineExportExecutor implements RequestExecutor {
                 .build());
     }
 
-    private Pipeline getPipelineAfterParsing(String exportedSource) throws IOException {
-        Object maybeConfig = new GroovyScriptRunner(null, Pipeline.class.getPackage().getName()).runScriptWithText(exportedSource);
+    private Pipeline getPipelineAfterParsing(String exportedSource) {
+        final Object maybeConfig = new GroovyScriptRunner(Pipeline.class.getPackage().getName()).runScriptWithText(exportedSource);
         if (maybeConfig instanceof GoCD) {
             return ((GoCD) maybeConfig).pipelines(null).get(0);
         }

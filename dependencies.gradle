@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-static def versionOf(String dependencySpec) {
+static String versionOf(String dependencySpec) {
   return dependencySpec.split(':').last()
 }
 
@@ -22,26 +22,26 @@ final Map<String, String> libraries = [
   // Dependabot will parse these.
   // Keep plaintext versions here so Dependabot can parse the versions; don't interpolate version variables here
   // because Dependabot is not smart enough to understand those.
-  ant               : 'org.apache.ant:ant:1.10.8',
-  classgraph        : 'io.github.classgraph:classgraph:4.8.90',
+  ant               : 'org.apache.ant:ant:1.10.9',
+  classgraph        : 'io.github.classgraph:classgraph:4.8.98',
   commonsLang       : 'org.apache.commons:commons-lang3:3.11',
   commonsText       : 'org.apache.commons:commons-text:1.9',
   dom4j             : 'dom4j:dom4j:1.6.1',
   glassfish         : 'org.glassfish:javax.el:3.0.0',
-  groovy            : 'org.codehaus.groovy:groovy:2.5.12',
+  groovy            : 'org.codehaus.groovy:groovy:3.0.7',
   groovySandbox     : "org.kohsuke:groovy-sandbox:1.24",
-  guava             : 'com.google.guava:guava:29.0-jre',
+  guava             : 'com.google.guava:guava:30.1-jre',
   hamcrestCore      : 'org.hamcrest:hamcrest-core:2.2',
-  hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.1.5.Final',
+  hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.2.0.Final',
   ivy               : 'org.apache.ivy:ivy:2.5.0',
-  jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.11.2',
+  jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.12.0',
   jcommander        : 'com.beust:jcommander:1.78',
   jhighlight        : 'org.codelibs:jhighlight:1.0.3',
-  jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.19.0',
+  jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.22.0',
   junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.7.0',
-  lombok            : 'org.projectlombok:lombok:1.18.12',
-  mockito           : 'org.mockito:mockito-core:3.5.11',
-  pluginApi         : 'cd.go.plugin:go-plugin-api:20.8.0',
+  lombok            : 'org.projectlombok:lombok:1.18.16',
+  mockito           : 'org.mockito:mockito-core:3.6.28',
+  pluginApi         : 'cd.go.plugin:go-plugin-api:20.10.0',
   reflections       : 'org.reflections:reflections:0.9.12',
   retrofit          : 'com.squareup.retrofit2:retrofit:2.9.0',
   validateApi       : 'javax.validation:validation-api:2.0.1.Final',

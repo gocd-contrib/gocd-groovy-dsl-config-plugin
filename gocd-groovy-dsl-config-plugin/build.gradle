@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ dependencies {
   implementation project(':groovy-export')
   implementation project(':json')
   implementation project(':resolvers')
-  implementation project(':sandbox')
+  implementation project(':util')
   implementation project.deps.groovy
 
   extractedAtTopLevel project(':jar-class-loader')

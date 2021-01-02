@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
+import cd.go.contrib.plugins.configrepo.groovy.util.GroovyScriptRunner;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -42,9 +42,9 @@ public abstract class TestBase {
         }
     }
 
-    protected GroovyScriptRunner getRunner() throws IOException {
+    protected GroovyScriptRunner getRunner() {
         if (runner == null) {
-            runner = new GroovyScriptRunner(".", Pipeline.class.getPackage().getName());
+            runner = new GroovyScriptRunner(Pipeline.class.getPackage().getName());
         }
         return runner;
     }
