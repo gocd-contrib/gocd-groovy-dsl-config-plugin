@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.Branches;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.ConfigValues;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.Notifications;
-import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
+import cd.go.contrib.plugins.configrepo.groovy.util.GroovyScriptRunner;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
@@ -44,7 +44,7 @@ public class ParseContentExecutor implements RequestExecutor {
 
     @Override
     public GoPluginApiResponse execute() throws Throwable {
-        final GroovyScriptRunner engine = new GroovyScriptRunner(null, Pipeline.class.getPackage().getName());
+        final GroovyScriptRunner engine = new GroovyScriptRunner(Pipeline.class.getPackage().getName());
         final JsonConfigCollection result = new JsonConfigCollection();
 
         BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpConfig, () -> {

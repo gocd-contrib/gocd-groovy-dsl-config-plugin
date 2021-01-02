@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package cd.go.contrib.plugins.configrepo.groovy.export;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Node;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.TestBase;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
-import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
+import cd.go.contrib.plugins.configrepo.groovy.util.GroovyScriptRunner;
 import com.google.common.io.Files;
 import org.codehaus.groovy.runtime.ResourceGroovyMethods;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.Branches;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.ConfigValues;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.Notifications;
-import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
+import cd.go.contrib.plugins.configrepo.groovy.util.GroovyScriptRunner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.codehaus.groovy.runtime.IOGroovyMethods;
@@ -62,7 +62,7 @@ public class Main {
             final String contents = IOGroovyMethods.getText(getFileAsStream(args.file), "utf-8");
 
             BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpConfig, () -> {
-                Object maybeConfig = getRunner().runScriptWithText(contents);
+                final Object maybeConfig = getRunner().runScriptWithText(contents);
                 if (maybeConfig instanceof GoCD) {
                     System.out.print(" Ok!");
                     GoCD configFromFile = (GoCD) maybeConfig;
@@ -95,7 +95,7 @@ public class Main {
 
     private GroovyScriptRunner getRunner() {
         if (engine == null) {
-            engine = new GroovyScriptRunner(".", Pipeline.class.getPackage().getName());
+            engine = new GroovyScriptRunner(Pipeline.class.getPackage().getName());
         }
         return engine;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ dependencies {
   testImplementation project.deps.junitJupiterParams
   testRuntimeOnly project.deps.junitJupiterEngine
 
-  testImplementation project(':sandbox')
+  testImplementation project(':util')
   testImplementation project.deps.jsonFluent
   testImplementation project.deps.groovy
   testImplementation project.deps.hibernateValidator

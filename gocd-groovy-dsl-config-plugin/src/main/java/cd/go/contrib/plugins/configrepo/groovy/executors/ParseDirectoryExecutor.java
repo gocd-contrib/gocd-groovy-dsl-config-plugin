@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ThoughtWorks, Inc.
+ * Copyright 2021 ThoughtWorks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import cd.go.contrib.plugins.configrepo.groovy.meta.Configurations;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.Branches;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.ConfigValues;
 import cd.go.contrib.plugins.configrepo.groovy.resolvers.Notifications;
-import cd.go.contrib.plugins.configrepo.groovy.sandbox.GroovyScriptRunner;
+import cd.go.contrib.plugins.configrepo.groovy.util.GroovyScriptRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
@@ -61,7 +61,7 @@ public class ParseDirectoryExecutor implements RequestExecutor {
 
         this.directory = (String) map.get("directory");
         this.configurations = new Configurations((List<Map<String, String>>) map.get("configurations"));
-        this.engine = new GroovyScriptRunner(directory, Pipeline.class.getPackage().getName());
+        this.engine = new GroovyScriptRunner(Pipeline.class.getPackage().getName());
     }
 
     public GoPluginApiResponse execute() throws JsonProcessingException {
@@ -84,7 +84,7 @@ public class ParseDirectoryExecutor implements RequestExecutor {
         for (final String file : files) {
             try {
                 BranchStrategy.with(Branches::real, () -> KeyVal.with(ConfigValues.real(this.configurations), () -> Notifies.with(Notifications.realConfig(namespace), () -> {
-                    Object maybeConfig = engine.runScript(file);
+                    final Object maybeConfig = engine.runScript(directory + "/" + file);
 
                     if (maybeConfig instanceof GoCD) {
                         GoCD configFromFile = (GoCD) maybeConfig;
