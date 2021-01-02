@@ -17,7 +17,7 @@ Table of Contents
       
 ## A note about security
 
-This plugin evaluates untrusted code, on the GoCD server. A malicious script can do significant damage (steal keys and secrets, remove files and directories, install malware, etc). Since evaluating the groovy code in a sandbox is currently a work in progress, **please** use this plugin only with GoCD servers and repositories where you completely trust your users.
+This plugin evaluates untrusted code on the GoCD server. A malicious script can do significant damage (steal keys and secrets, remove files and directories, install malware, etc). As such, **please** use this plugin only with GoCD servers and repositories where you completely trust your users.
 
 ## Install
 
@@ -152,7 +152,7 @@ GoCD.script {
 ## License
 
 ```plain
-Copyright 2019, ThoughtWorks, Inc.
+Copyright 2021, ThoughtWorks, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
