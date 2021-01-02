@@ -29,11 +29,8 @@ final Map<String, String> libraries = [
   dom4j             : 'dom4j:dom4j:1.6.1',
   glassfish         : 'org.glassfish:javax.el:3.0.0',
   groovy            : 'org.codehaus.groovy:groovy:3.0.7',
-  groovySandbox     : "org.kohsuke:groovy-sandbox:1.24",
   guava             : 'com.google.guava:guava:30.1-jre',
-  hamcrestCore      : 'org.hamcrest:hamcrest-core:2.2',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.2.0.Final',
-  ivy               : 'org.apache.ivy:ivy:2.5.0',
   jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.12.0',
   jcommander        : 'com.beust:jcommander:1.78',
   jhighlight        : 'org.codelibs:jhighlight:1.0.3',
@@ -50,7 +47,6 @@ final Map<String, String> libraries = [
 // Parse some versions that are shared with related deps; this way we can DRY and keep these adjunct deps
 // up-to-date.
 final String groovyVersion = versionOf(libraries.groovy)
-final String hamcrestVersion = versionOf(libraries.hamcrestCore)
 final String hibernateVersion = versionOf(libraries.hibernateValidator)
 final String jacksonVersion = versionOf(libraries.jacksonCore)
 final String junitJupiterVersion = versionOf(libraries.junitJupiterApi)
@@ -58,13 +54,7 @@ final String retrofitVersion = versionOf(libraries.retrofit)
 
 // RELATED: these deps share versions with others; we put these after the main deps because Dependabot cannot parse
 // interpolated versions. When Dependabot updates the parent dependency, these will get updated for free too.
-libraries.groovyAll = "org.codehaus.groovy:groovy-all:${groovyVersion}"
-libraries.groovyDateUtil = "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
 libraries.groovyJson = "org.codehaus.groovy:groovy-json:${groovyVersion}"
-libraries.groovySql = "org.codehaus.groovy:groovy-sql:${groovyVersion}"
-libraries.groovySwing = "org.codehaus.groovy:groovy-swing:${groovyVersion}"
-libraries.groovyXml = "org.codehaus.groovy:groovy-xml:${groovyVersion}"
-libraries.hamcrestLib = "org.hamcrest:hamcrest-library:${hamcrestVersion}"
 libraries.hibernateValidatorAnnotationProcessor = "org.hibernate.validator:hibernate-validator-annotation-processor:${hibernateVersion}"
 libraries.jacksonAnnotations = "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
 libraries.jacksonDatabind = "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
