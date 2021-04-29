@@ -1,0 +1,31 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: friday
+    timezone: Etc/UCT
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: io.github.classgraph:classgraph
+    versions:
+    - 4.8.102
+    - 4.8.103
+  - dependency-name: com.fasterxml.jackson.core:jackson-core
+    versions:
+    - 2.12.2
+  - dependency-name: org.mockito:mockito-core
+    versions:
+    - 3.7.7
+    - 3.8.0
+  - dependency-name: net.javacrumbs.json-unit:json-unit-fluent
+    versions:
+    - 2.23.0
+    - 2.24.0
+  - dependency-name: org.projectlombok:lombok
+    versions:
+    - 1.18.18
+  - dependency-name: org.hibernate.validator:hibernate-validator
+    versions:
+    - 7.0.0.Final
