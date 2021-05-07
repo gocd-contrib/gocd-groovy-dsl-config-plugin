@@ -23,7 +23,7 @@ final Map<String, String> libraries = [
   // Keep plaintext versions here so Dependabot can parse the versions; don't interpolate version variables here
   // because Dependabot is not smart enough to understand those.
   ant               : 'org.apache.ant:ant:1.10.9',
-  classgraph        : 'io.github.classgraph:classgraph:4.8.98',
+  classgraph        : 'io.github.classgraph:classgraph:4.8.105',
   commonsLang       : 'org.apache.commons:commons-lang3:3.11',
   commonsText       : 'org.apache.commons:commons-text:1.9',
   dom4j             : 'dom4j:dom4j:1.6.1',
