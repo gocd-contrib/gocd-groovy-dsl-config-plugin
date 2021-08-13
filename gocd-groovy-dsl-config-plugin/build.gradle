@@ -42,6 +42,7 @@ dependencies {
   annotationProcessor project.deps.hibernateValidatorAnnotationProcessor
 
   compileOnly project.deps.pluginApi
+  testCompileOnly project.deps.pluginApi
 
   testRuntimeOnly project.deps.junitJupiterEngine
   testImplementation project.deps.junitJupiterApi
