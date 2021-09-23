@@ -24,7 +24,7 @@ final Map<String, String> libraries = [
   // because Dependabot is not smart enough to understand those.
   ant               : 'org.apache.ant:ant:1.10.11',
   classgraph        : 'io.github.classgraph:classgraph:4.8.98',
-  commonsLang       : 'org.apache.commons:commons-lang3:3.11',
+  commonsLang       : 'org.apache.commons:commons-lang3:3.12.0',
   commonsText       : 'org.apache.commons:commons-text:1.9',
   dom4j             : 'dom4j:dom4j:1.6.1',
   glassfish         : 'org.glassfish:javax.el:3.0.0',
