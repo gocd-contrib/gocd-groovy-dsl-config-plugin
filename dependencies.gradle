@@ -39,7 +39,7 @@ final Map<String, String> libraries = [
   lombok            : 'org.projectlombok:lombok:1.18.20',
   mockito           : 'org.mockito:mockito-core:4.0.0',
   pluginApi         : 'cd.go.plugin:go-plugin-api:21.1.0',
-  reflections       : 'org.reflections:reflections:0.9.12',
+  reflections       : 'org.reflections:reflections:0.10.1',
   retrofit          : 'com.squareup.retrofit2:retrofit:2.9.0',
   validateApi       : 'javax.validation:validation-api:2.0.1.Final',
 ]
