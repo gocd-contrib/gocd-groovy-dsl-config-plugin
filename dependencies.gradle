@@ -32,7 +32,7 @@ final Map<String, String> libraries = [
   guava             : 'com.google.guava:guava:31.0.1-jre',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:6.2.0.Final',
   jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.13.1',
-  jcommander        : 'com.beust:jcommander:1.81',
+  jcommander        : 'com.beust:jcommander:1.82',
   jhighlight        : 'org.codelibs:jhighlight:1.0.3',
   jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.28.0',
   junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.8.2',
