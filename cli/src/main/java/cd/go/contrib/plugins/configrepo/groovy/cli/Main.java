@@ -30,7 +30,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.codehaus.groovy.runtime.IOGroovyMethods;
 
-import javax.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolation;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

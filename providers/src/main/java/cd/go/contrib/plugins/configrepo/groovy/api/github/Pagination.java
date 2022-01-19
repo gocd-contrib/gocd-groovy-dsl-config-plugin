@@ -16,7 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.api.github;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import java.util.regex.Pattern;
 
 public class Pagination {

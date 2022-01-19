@@ -16,9 +16,9 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl.validate;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidatorFactory;
 import java.util.Set;
 import java.util.function.Consumer;
 

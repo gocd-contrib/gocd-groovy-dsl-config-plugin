@@ -22,8 +22,8 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.ConnectionConfig;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ValidationException;
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.List;

@@ -16,7 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.meta;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 public class PlainText implements ConfigProperty {
 

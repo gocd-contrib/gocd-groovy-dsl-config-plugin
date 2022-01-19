@@ -28,8 +28,8 @@ import cd.go.contrib.plugins.configrepo.groovy.exceptions.NotificationFailure;
 import cd.go.contrib.plugins.configrepo.groovy.meta.NotifyPayload;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ValidationException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;

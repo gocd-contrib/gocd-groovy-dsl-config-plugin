@@ -16,8 +16,8 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl.connection;
 
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
 import java.util.function.Consumer;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.connection.Type.Bitbucket;

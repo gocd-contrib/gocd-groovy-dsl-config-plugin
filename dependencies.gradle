@@ -27,7 +27,7 @@ final Map<String, String> libraries = [
   commonsLang       : 'org.apache.commons:commons-lang3:3.12.0',
   commonsText       : 'org.apache.commons:commons-text:1.9',
   dom4j             : 'org.dom4j:dom4j:2.1.3',
-  glassfish         : 'org.glassfish:javax.el:3.0.0',
+  glassfish         : 'org.glassfish:jakarta.el:4.0.2',
   groovy            : 'org.codehaus.groovy:groovy:3.0.9',
   guava             : 'com.google.guava:guava:31.0.1-jre',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:7.0.1.Final',
@@ -41,7 +41,7 @@ final Map<String, String> libraries = [
   pluginApi         : 'cd.go.plugin:go-plugin-api:21.4.0',
   reflections       : 'org.reflections:reflections:0.10.2',
   retrofit          : 'com.squareup.retrofit2:retrofit:2.9.0',
-  validateApi       : 'javax.validation:validation-api:2.0.1.Final',
+  validateApi       : 'jakarta.validation:jakarta.validation-api:3.0.1',
 ]
 
 // Parse some versions that are shared with related deps; this way we can DRY and keep these adjunct deps
