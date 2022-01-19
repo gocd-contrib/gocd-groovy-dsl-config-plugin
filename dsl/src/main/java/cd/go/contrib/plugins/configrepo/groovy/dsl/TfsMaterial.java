@@ -26,7 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import java.util.function.Consumer;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;

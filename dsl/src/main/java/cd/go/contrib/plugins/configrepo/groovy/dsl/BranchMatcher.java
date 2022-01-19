@@ -28,7 +28,7 @@ import groovy.transform.stc.SimpleType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.regex.Pattern;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable.redelegate;

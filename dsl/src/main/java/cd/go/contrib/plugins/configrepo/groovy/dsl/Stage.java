@@ -26,7 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static groovy.lang.Closure.DELEGATE_ONLY;
 import static lombok.AccessLevel.NONE;

@@ -16,7 +16,7 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl.connection;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import java.util.function.Consumer;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.connection.Type.git;

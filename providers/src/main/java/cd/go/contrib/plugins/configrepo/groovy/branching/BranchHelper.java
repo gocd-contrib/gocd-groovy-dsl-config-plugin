@@ -22,8 +22,8 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.ScmMaterial;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.Attributes;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.strategies.BranchStrategy;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ValidationException;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Collections;
