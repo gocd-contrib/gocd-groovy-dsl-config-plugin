@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-buildscript {
-  repositories {
-    gradlePluginPortal()
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-    classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0"
-  }
+plugins {
+  id 'java'
+  id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
 }
 
-apply plugin: 'java'
-apply plugin: 'com.bmuschko.nexus'
-apply plugin: "io.codearte.nexus-staging"
 apply from: 'dependencies.gradle'
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/master/helper.gradle?_=${(int) (new Date().toInstant().epochSecond / 60)}"
 
@@ -79,8 +69,12 @@ subprojects {
   }
 }
 
-nexusStaging {
+nexusPublishing {
   packageGroup = 'cd.go'
-  username = System.getenv('GOCD_NEXUS_USERNAME')
-  password = System.getenv('GOCD_NEXUS_PASSWORD')
+  repositories {
+    sonatype {
+      username = System.getenv('GOCD_NEXUS_USERNAME')
+      password = System.getenv('GOCD_NEXUS_PASSWORD')
+    }
+  }
 }

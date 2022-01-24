@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-apply plugin: 'groovy' // technically groovy is not needed, but the javadoc build fails for a NPE, not sure why
-apply plugin: 'jacoco'
-apply plugin: 'com.bmuschko.nexus'
-apply plugin: 'maven-publish'
+plugins {
+  id 'groovy'
+  id 'jacoco'
+  id 'maven-publish'
+  id 'signing'
+}
 
 configurations {
   doclet
@@ -50,12 +52,6 @@ dependencies {
 
 test {
   useJUnitPlatform()
-}
-
-extraArchive {
-  sources = false
-  tests = true
-  javadoc = false
 }
 
 sourceSets {
@@ -128,75 +124,54 @@ publishing {
       from components.java
       artifact sourcesJar
       artifact javadocJar
-    }
-  }
-}
 
-modifyPom {
-  project {
-    name project.name
-    groupId = project.group
-    artifactId = project.name
-    packaging 'jar'
-    description project.description
-    url 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
-    inceptionYear 2019
+      pom {
+        name = project.name
+        description = project.description
+        url = 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
+        inceptionYear = '2019'
 
-    scm {
-      url 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
-      connection 'scm:https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
-      developerConnection 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
-    }
+        licenses {
+          license {
+            name = 'Apache License, Version 2.0'
+            url = 'https://www.apache.org/licenses/LICENSE-2.0'
+            distribution = 'repo'
+          }
+        }
+        developers {
+          developer {
+            id = 'GoCD Committers'
+            email = 'go-cd-dev@googlegroups.com'
+            url = 'https://www.gocd.org'
+          }
+        }
+        scm {
+          url = 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
+          connection = 'scm:https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
+          developerConnection = 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin'
+        }
 
-    issueManagement {
-      url 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin/issues'
-      system 'GitHub'
-    }
+        organization {
+          name = 'ThoughtWorks, Inc.'
+          url = 'https://www.thoughtworks.com'
+        }
 
-    licenses {
-      license {
-        name 'Apache License, Version 2.0'
-        url 'https://www.apache.org/licenses/LICENSE-2.0'
-        distribution 'repo'
-      }
-    }
-
-    organization {
-      name 'ThoughtWorks, Inc.'
-      url 'https://www.thoughtworks.com'
-    }
-
-    developers {
-      developer {
-        id 'GoCD Committers'
-        email 'go-cd-dev@googlegroups.com'
-        url 'https://www.gocd.org'
+        issueManagement {
+          url = 'https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin/issues'
+          system = 'GitHub'
+        }
       }
     }
   }
 }
 
 signing {
-  project.ext.'signing.keyId' = System.getenv('GOCD_GPG_KEY_ID')
-  project.ext.'signing.password' = System.getenv('GOCD_GPG_PASSPHRASE')
-  project.ext.'signing.secretKeyRingFile' = System.getenv('GOCD_GPG_KEYRING_FILE')
-  project.ext.nexusUsername = System.getenv('GOCD_NEXUS_USERNAME')
-  project.ext.nexusPassword = System.getenv('GOCD_NEXUS_PASSWORD')
+  sign publishing.publications.mavenJava
 }
 
-nexus {
-  nexusUsername = project.nexusUsername
-  nexusPassword = project.nexusPassword
-}
-
-nexusStaging {
-  packageGroup = 'cd.go'
-
-  /* To get the staging id, you can either:
-    - Use the 'getStagingProfile' task added by the 'io.codearte.nexus-staging' plugin
-    - Log-in on sonatype.org, go to staging profile, select `cd.go`, id = last part of URL */
-//  stagingProfileId = '8f73aacb1d399b'
-}
+project.ext.'signing.password' = System.getenv('GOCD_GPG_PASSPHRASE')
+project.ext.'signing.keyId' = System.getenv('GOCD_GPG_KEY_ID')
+project.ext.'signing.secretKeyRingFile' = System.getenv('GOCD_GPG_KEYRING_FILE')
 
 artifacts {
   archives jar

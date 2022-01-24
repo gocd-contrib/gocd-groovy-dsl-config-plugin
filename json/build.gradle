@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.bmuschko.nexus'
-apply plugin: 'maven-publish'
-
 dependencies {
   implementation project(':dsl')
 
@@ -38,19 +35,15 @@ test {
   useJUnitPlatform()
 }
 
-extraArchive {
-  sources = false
-  tests = true
-  javadoc = false
+task testsJar(type: Jar, dependsOn: testClasses) {
+  archiveClassifier = 'tests'
+  from sourceSets.test.output
 }
-
 
 configurations {
-  testArchives
+  tests
 }
 
-project.afterEvaluate {
-  artifacts {
-    testArchives testsJar
-  }
+artifacts {
+  tests testsJar
 }
