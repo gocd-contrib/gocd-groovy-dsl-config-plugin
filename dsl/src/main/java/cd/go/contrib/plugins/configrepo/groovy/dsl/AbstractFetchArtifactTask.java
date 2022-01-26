@@ -34,7 +34,6 @@ public abstract class AbstractFetchArtifactTask extends Task<AbstractFetchArtifa
     protected String artifactOrigin = "gocd";
 
     @JsonProperty("pipeline")
-    @NotEmpty
     protected String pipeline;
 
     @JsonProperty("stage")
