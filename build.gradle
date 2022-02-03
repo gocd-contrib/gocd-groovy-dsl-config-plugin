@@ -33,7 +33,7 @@ apply from: 'dependencies.gradle'
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/master/helper.gradle?_=${(int) (new Date().toInstant().epochSecond / 60)}"
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_15
+  sourceCompatibility = JavaVersion.VERSION_11
   targetCompatibility = JavaVersion.VERSION_11
 }
 
