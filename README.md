@@ -37,7 +37,7 @@ This plugin evaluates untrusted code on the GoCD server. A malicious script can 
 
 ## Linting or verifying your DSL locally
 
-There is some basic standalone linting abilities provided by the plugin:
+There are some basic standalone linting abilities provided by the plugin:
 
 ```shell
 java -jar groovy-dsl-plugin.jar syntax file1
