@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.bmuschko.nexus'
-apply plugin: 'maven-publish'
-
 dependencies {
   implementation project(':dsl')
   implementation project(':json')
@@ -24,7 +21,7 @@ dependencies {
   implementation project.deps.commonsLang
   implementation project.deps.commonsText
 
-  testImplementation project(path: ':json', configuration: 'testArchives')
+  testImplementation project(path: ':json', configuration: 'tests')
   testImplementation project(':util')
   testImplementation project.deps.guava
   testImplementation project.deps.junitJupiterApi
