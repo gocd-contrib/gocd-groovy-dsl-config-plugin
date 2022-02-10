@@ -25,6 +25,8 @@ configurations {
   doclet
 }
 
+description = "Groovy DSL for GoCD pipeline definitions, for use with the gocd-groovy-dsl-plugin"
+
 dependencies {
   doclet project(':doclet')
   annotationProcessor project.deps.lombok
