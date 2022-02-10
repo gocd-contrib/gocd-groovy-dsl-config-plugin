@@ -29,4 +29,32 @@ jobs:
           java-version: 17
           distribution: adopt
       - name: Release
-        run: ./gradlew githubRelease
+        run: ./gradlew verifyExpRelease githubRelease
+  release_dsl_maven_central:
+    needs: build_and_release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: adopt
+#      - name: Import GPG key
+#        id: import_gpg
+#        uses: crazy-max/ghaction-import-gpg@v4
+#        with:
+#          gpg_private_key: ${{ secrets.GOCD_GPG_PRIVATE_KEY }}
+#          passphrase: ${{ secrets.GOCD_GPG_PASSPHRASE }}
+      - name: Import GPG key
+        run: echo "TODO - need to get gpg key into signing-key.gpg or into gpg-agent and then use https://docs.gradle.org/current/userguide/signing_plugin.html#sec:using_gpg_agent" && exit 1
+      - name: Release DSL to Maven Central
+        env:
+          GOCD_NEXUS_USERNAME: "arvindsv"
+          GOCD_NEXUS_PASSWORD:  "${{ secrets.GOCD_NEXUS_PASSWORD }}"
+          GOCD_GPG_KEY_ID: "${{ secrets.GOCD_GPG_KEY_ID }}"
+          GOCD_GPG_KEYRING_FILE: "signing-key.gpg"
+          GOCD_GPG_PASSPHRASE: "${{ secrets.GOCD_GPG_PASSPHRASE }}"
+        run: ./gradlew clean dsl:publishToSonatype closeAndReleaseSonatypeStagingRepository
