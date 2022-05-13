@@ -19,11 +19,11 @@ package cd.go.contrib.plugins.configrepo.doclet;
 import com.sun.source.doctree.DocTree;
 import com.sun.source.doctree.TextTree;
 import com.sun.source.doctree.UnknownInlineTagTree;
-import com.uwyn.jhighlight.renderer.GroovyXhtmlRenderer;
-import com.uwyn.jhighlight.renderer.XhtmlRenderer;
 import jdk.javadoc.doclet.Taglet;
 import org.codehaus.groovy.runtime.ResourceGroovyMethods;
 import org.codehaus.groovy.runtime.StringGroovyMethods;
+import org.codelibs.jhighlight.renderer.GroovyXhtmlRenderer;
+import org.codelibs.jhighlight.renderer.XhtmlRenderer;
 
 import javax.lang.model.element.Element;
 import java.io.IOException;
@@ -67,11 +67,6 @@ public class IncludeCodeTaglet implements Taglet {
         return buf.toString();
     }
 
-//    @Override
-//    public String toString(Tag tag) {
-//        return "<code>" + readLines("/" + tag.text().trim().replaceAll("^\"|\"$", "").replaceAll("^'|'$", "")) + "</code>";
-//    }
-
     private String readLines(String resourceFile) {
         URL resource = IncludeCodeTaglet.class.getResource(resourceFile);
         try {
@@ -91,7 +86,7 @@ public class IncludeCodeTaglet implements Taglet {
             });
             CharSequence joinedLines = String.join("\n", lines);
             if (hasWithBlock.get()) {
-                joinedLines = StringGroovyMethods.reverse((CharSequence) StringGroovyMethods.reverse(joinedLines).replaceFirst("}", ""));
+                joinedLines = StringGroovyMethods.reverse(StringGroovyMethods.reverse(joinedLines).replaceFirst("}", ""));
             }
             String code = StringGroovyMethods.stripIndent(joinedLines).trim();
 
@@ -110,14 +105,4 @@ public class IncludeCodeTaglet implements Taglet {
             throw new RuntimeException("Could not invoke method getCssClassDefinitions", e);
         }
     }
-
-
-//    public static void register(Map<String, Taglet> tagletMap) {
-//        IncludeCodeTaglet tag = new IncludeCodeTaglet();
-//        Taglet t = tagletMap.get(tag.getName());
-//        if (t != null) {
-//            tagletMap.remove(tag.getName());
-//        }
-//        tagletMap.put(tag.getName(), tag);
-//    }
 }
