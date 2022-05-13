@@ -34,7 +34,7 @@ final Map<String, String> libraries = [
   jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.13.2',
   jcommander        : 'com.beust:jcommander:1.82',
   jhighlight        : 'org.codelibs:jhighlight:1.0.3',
-  jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.34.0',
+  jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.35.0',
   junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.8.2',
   lombok            : 'org.projectlombok:lombok:1.18.24',
   mockito           : 'org.mockito:mockito-core:4.5.1',
