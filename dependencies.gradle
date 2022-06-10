@@ -41,7 +41,7 @@ final Map<String, String> libraries = [
   pluginApi         : 'cd.go.plugin:go-plugin-api:22.1.0',
   reflections       : 'org.reflections:reflections:0.10.2',
   retrofit          : 'com.squareup.retrofit2:retrofit:2.9.0',
-  validateApi       : 'jakarta.validation:jakarta.validation-api:3.0.1',
+  validateApi       : 'jakarta.validation:jakarta.validation-api:3.0.2',
 ]
 
 // Parse some versions that are shared with related deps; this way we can DRY and keep these adjunct deps
