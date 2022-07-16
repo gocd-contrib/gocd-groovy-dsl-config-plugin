@@ -74,7 +74,7 @@ task delombok(type: JavaExec) {
   outputs.cacheIf { true }
 
   classpath = sourceSets.main.compileClasspath
-  main 'lombok.launch.Main'
+  mainClass.set('lombok.launch.Main')
 
   args("delombok")
   args('--encoding=utf-8')
