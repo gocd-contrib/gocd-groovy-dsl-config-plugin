@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 ThoughtWorks, Inc.
+ * Copyright 2022 Thoughtworks, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,7 +117,7 @@ javadoc {
 
   options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-${project.vers.groovyVersion}/html/gapi")
   title = "GoCD Groovy DSL API ${version}"
-  options.footer = 'Copyright (c) 2019 ThoughtWorks, Inc.'
+  options.footer = 'Copyright (c) 2019 Thoughtworks, Inc.'
 }
 
 publishing {
@@ -154,7 +154,7 @@ publishing {
         }
 
         organization {
-          name = 'ThoughtWorks, Inc.'
+          name = 'Thoughtworks, Inc.'
           url = 'https://www.thoughtworks.com'
         }
 
