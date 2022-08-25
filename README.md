@@ -62,7 +62,11 @@ Usage: java -jar groovy-dsl-plugin.jar [options] [command] [command options]
             Default: false
 ```
 
-## Auto complete in your IDE
+## How do I know which parts of the DSL to use?
+
+Generally speaking, the philosophy of this plugin is to allow for IDE and Groovy language-driven support rather than providing static documentation of the structure as with other non-language-based GoCD "pipelines as code" plugins. Alongside getting clues from examples, we'd generally suggest following the below steps to set up an IDE with the DSL dependency and being able to benefit from auto-completion/suggests as well as viewing the API documentation inline with editing.
+
+### Auto complete in your IDE
 
 If you're using an IDE like IntelliJ or Eclipse, you can import the `dsl.jar` file from the [downloads page](https://github.com/gocd-contrib/gocd-groovy-dsl-config-plugin/releases), or using the following maven co-ordinates in your build script:
 
@@ -77,10 +81,20 @@ If you're using an IDE like IntelliJ or Eclipse, you can import the `dsl.jar` fi
 ```
 
 ```groovy
-// gradle
-// get version from https://mvnrepository.com/artifact/cd.go.groovydsl/dsl
-compileOnly group: 'cd.go.groovydsl', name: 'dsl', version: 'XXX'
+// groovy build.gradle
+dependencies {
+  // get version from https://mvnrepository.com/artifact/cd.go.groovydsl/dsl
+  compileOnly group: 'cd.go.groovydsl', name: 'dsl', version: 'XXX'
+}
 ```
+
+### Static DSL reference documentation
+
+If you don't use an IDE, an alternative is to use the API Javadocs. Since the intent is for this to be downloaded and viewing in an IDE it is not published somewhere statically, but you can download/view localy:
+1. Find the relevant version of the plugin from https://mvnrepository.com/artifact/cd.go.groovydsl/dsl
+2. Navigate to Files < View All
+3. Download the `dsl-${version}-javadoc.jar`
+4. Unzip it and open `index.html` in a browser
 
 ## Support for Branches and PRs
 
