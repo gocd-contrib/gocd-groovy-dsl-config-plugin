@@ -101,6 +101,7 @@ public class ShellTask extends Task<ShellTask> {
 
     public ExecTask toExecTask() {
         ExecTask execTask = new ExecTask();
+        execTask.setRunIf(getRunIf());
         execTask.setWorkingDir(getWorkingDir());
 
         execTask.getCommandLine().add(getShell());
