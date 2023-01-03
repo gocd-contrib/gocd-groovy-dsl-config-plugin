@@ -38,6 +38,7 @@ dependencies {
   implementation project.deps.commonsLang
   implementation project.deps.guava
   implementation project.deps.validateApi
+  runtimeOnly project.deps.slf4j
 
   annotationProcessor project.deps.hibernateValidatorAnnotationProcessor
 

@@ -51,6 +51,9 @@ public class Main {
     }
 
     public static void main(String[] argv) {
+        System.setProperty("org.jboss.logging.provider", "slf4j");
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "ERROR");
+
         Syntax args = parseArgsAndBlowUpIfRequired(argv);
 
         new Main(args).run();
@@ -64,7 +67,7 @@ public class Main {
             BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpConfig, () -> {
                 final Object maybeConfig = getRunner().runScriptWithText(contents);
                 if (maybeConfig instanceof GoCD) {
-                    System.out.print(" Ok!");
+                    System.out.println(" Ok!");
                     GoCD configFromFile = (GoCD) maybeConfig;
 
                     validate(configFromFile, violations -> {
