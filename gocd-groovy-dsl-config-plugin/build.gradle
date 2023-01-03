@@ -79,6 +79,14 @@ jar {
   }
 }
 
+def executableJarSanityTest = tasks.register("executableJarSanityTest", JavaExec) {
+  classpath = files(jar.outputs.files.findAll { it.name.endsWith('.jar') })
+  dependsOn jar
+  args('syntax', rootProject.file('example/src/main/groovy/pull_request_support/github-prs.gocd.groovy').toString())
+}
+
+check.dependsOn executableJarSanityTest
+
 test {
   useJUnitPlatform()
 }

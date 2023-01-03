@@ -30,6 +30,7 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ValidationException;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +44,10 @@ import static java.util.stream.Collectors.joining;
 
 public class Notifications {
 
-    private static final Logger LOG = Logger.getLoggerFor(Notifications.class);
+    private static class Delayed {
+        // Delay initialization until usage, to avoid use of logger during CLI executable/validation usage.
+        private static final Logger LOG = Logger.getLoggerFor(Notifications.class);
+    }
 
     /** Maps a namespace to a Map of materials to notification configurations. */
     private static final Map<String, Map<String, Set<ConnectionConfig>>> registrar = new ConcurrentHashMap<>();
@@ -63,7 +67,7 @@ public class Notifications {
             validate(spec, invalidNotifyConfig(git, spec));
             final String key = keyFor(git);
 
-            LOG.debug("Registering material [{}] to notify {}", key, spec.identifier());
+            Delayed.LOG.debug("Registering material [{}] to notify {}", key, spec.identifier());
 
             if (!registered.containsKey(key)) {
                 registered.put(key, new ConnectionConfigSet());
@@ -94,7 +98,7 @@ public class Notifications {
     public static void realEmit(final NotifyPayload p) {
         notifiersMatchingKey(p.key()).forEach(cfg -> {
             try {
-                LOG.debug("Notifying {} on {}", cfg.identifier(), p);
+                Delayed.LOG.debug("Notifying {} on {}", cfg.identifier(), p);
                 publish(cfg, p.revision(), p.label(), p.status(), p.url());
             } catch (IOException e) {
                 final String message = format("Failed to publish to endpoint [%s] with payload: %s", cfg.identifier(), p.toString());
@@ -118,15 +122,15 @@ public class Notifications {
      * @return a {@link ConnectionConfigSet} of matching notifiers
      */
     private static ConnectionConfigSet notifiersMatchingKey(final String key) {
-        LOG.debug("Finding notifiers matching build cause [{}] in all registration partitions", key);
+        Delayed.LOG.debug("Finding notifiers matching build cause [{}] in all registration partitions", key);
 
         return registrar.keySet().stream().reduce(new ConnectionConfigSet(), (memo, ns) -> {
             Map<String, Set<ConnectionConfig>> map = registrar.get(ns);
             if (map.containsKey(key)) {
-                LOG.debug("  > Located match in namespace partition: {}", ns);
+                Delayed.LOG.debug("  > Located match in namespace partition: {}", ns);
                 memo.addAll(map.get(key));
             } else {
-                LOG.debug("  > No match found in namespace: {}", ns);
+                Delayed.LOG.debug("  > No match found in namespace: {}", ns);
             }
             return memo;
         }, (a, b) -> {
