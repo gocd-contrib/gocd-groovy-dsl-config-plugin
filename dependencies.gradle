@@ -35,7 +35,7 @@ final Map<String, String> libraries = [
   jcommander        : 'com.beust:jcommander:1.82',
   jhighlight        : 'org.codelibs:jhighlight:1.1.0',
   jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.36.0',
-  junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.9.1',
+  junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.9.2',
   lombok            : 'org.projectlombok:lombok:1.18.24',
   mockito           : 'org.mockito:mockito-core:4.11.0',
   pluginApi         : 'cd.go.plugin:go-plugin-api:22.3.0',
