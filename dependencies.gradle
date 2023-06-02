@@ -31,7 +31,7 @@ final Map<String, String> libraries = [
   groovy            : 'org.codehaus.groovy:groovy:3.0.17',
   guava             : 'com.google.guava:guava:32.0.0-jre',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:8.0.0.Final',
-  jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.15.1',
+  jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.15.2',
   jcommander        : 'com.beust:jcommander:1.82',
   jhighlight        : 'org.codelibs:jhighlight:1.1.0',
   jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:2.38.0',
