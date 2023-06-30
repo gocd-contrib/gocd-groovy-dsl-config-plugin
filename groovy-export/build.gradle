@@ -23,7 +23,12 @@ dependencies {
 
   testImplementation project(path: ':json', configuration: 'tests')
   testImplementation project(':util')
-  testImplementation project.deps.guava
+  testImplementation(project.deps.guava)  {
+    // see https://github.com/google/guava/pull/6606
+    exclude(module: 'error_prone_annotations')
+    exclude(module: 'checker-qual')
+    exclude(module: 'jsr305')
+  }
   testImplementation project.deps.junitJupiterApi
   testImplementation project.deps.junitJupiterParams
   testRuntimeOnly project.deps.junitJupiterEngine

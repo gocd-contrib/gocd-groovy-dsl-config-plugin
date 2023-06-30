@@ -36,7 +36,12 @@ dependencies {
   implementation project.deps.jacksonDatabind
   implementation project.deps.ant
   implementation project.deps.commonsLang
-  implementation project.deps.guava
+  implementation(project.deps.guava) {
+    // see https://github.com/google/guava/pull/6606
+    exclude(module: 'error_prone_annotations')
+    exclude(module: 'checker-qual')
+    exclude(module: 'jsr305')
+  }
   implementation project.deps.validateApi
   runtimeOnly project.deps.slf4j
 
