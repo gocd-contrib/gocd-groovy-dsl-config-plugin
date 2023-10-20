@@ -46,10 +46,6 @@ gocdPlugin {
 
   prerelease = !"No".equalsIgnoreCase(System.getenv('PRERELEASE'))
   assetsToRelease = [project(':gocd-groovy-dsl-config-plugin').tasks.jar, project(':dsl').tasks.jar]
-
-  licenseReport {
-    excludes = ['com.google.guava:guava-parent']
-  }
 }
 
 allprojects {
