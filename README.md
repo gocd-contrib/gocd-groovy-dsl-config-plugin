@@ -1,4 +1,7 @@
-[![Join the chat at https://gitter.im/gocd/configrepo-plugins](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gocd/configrepo-plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![javadoc.io](https://javadoc.io/badge2/cd.go.groovydsl/dsl/javadoc.io.svg)](https://javadoc.io/doc/cd.go.groovydsl/dsl) [![Maven Central](https://img.shields.io/maven-central/v/cd.go.groovydsl/dsl.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22cd.go.groovydsl%22%20AND%20a:%22dsl%22)
+[![Google Groups](https://img.shields.io/badge/Google_Groups-user_help-purple)](https://groups.google.com/g/go-cd)
+[![GitHub Discussions](https://img.shields.io/badge/GitHub_discussions-user_&amp;_dev_chat-green)](https://github.com/gocd/gocd/discussions)
+[![javadoc.io](https://javadoc.io/badge2/cd.go.groovydsl/dsl/javadoc.io.svg)](https://javadoc.io/doc/cd.go.groovydsl/dsl)
+[![Maven Central](https://img.shields.io/maven-central/v/cd.go.groovydsl/dsl.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22cd.go.groovydsl%22%20AND%20a:%22dsl%22)
 
 ## GoCD Groovy DSL Configuration Plugin
 
