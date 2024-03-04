@@ -106,8 +106,6 @@ javadoc {
   options.tagletPath = (configurations.doclet.files + sourceSets.examples.allSource.srcDirs) as List
   options.taglets = ['cd.go.contrib.plugins.configrepo.doclet.IncludeCodeTaglet']
 
-  // workaround for https://bugs.openjdk.java.net/browse/JDK-8212233
-  options.source = '8'
   options.encoding = 'utf-8'
   options.addStringOption '-Xdoclint:-syntax,-html,-reference,-accessibility'
   options.addBooleanOption('html5', true)
@@ -115,9 +113,8 @@ javadoc {
   options.overview('overview.html')
   options.showFromPublic()
 
-  options.links('https://docs.oracle.com/javase/9/docs/api', "http://docs.groovy-lang.org/docs/groovy-${project.vers.groovyVersion}/html/gapi")
+  options.links("https://docs.oracle.com/en/java/javase/${project.sourceCompatibility}/docs/api", "https://docs.groovy-lang.org/docs/groovy-${project.vers.groovyVersion}/html/gapi")
   title = "GoCD Groovy DSL API ${version}"
-  options.footer = 'Copyright (c) 2019 Thoughtworks, Inc.'
 }
 
 publishing {
