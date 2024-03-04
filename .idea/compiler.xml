@@ -7,15 +7,15 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/8.0.0.Final/81b6f2ca1aae1ef997629841ea5b42324e226428/hibernate-validator-annotation-processor-8.0.0.Final.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/8.0.1.Final/8094be40a387df929a791c57539dfc6c8c948c27/hibernate-validator-annotation-processor-8.0.1.Final.jar" />
         </processorPath>
         <module name="gocd-groovy-dsl-config-plugin.dsl.main" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/8.0.0.Final/81b6f2ca1aae1ef997629841ea5b42324e226428/hibernate-validator-annotation-processor-8.0.0.Final.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator-annotation-processor/8.0.1.Final/8094be40a387df929a791c57539dfc6c8c948c27/hibernate-validator-annotation-processor-8.0.1.Final.jar" />
         </processorPath>
         <module name="gocd-groovy-dsl-config-plugin.gocd-groovy-dsl-config-plugin.main" />
         <module name="gocd-groovy-dsl-config-plugin.dsl-validation.main" />
@@ -23,7 +23,7 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
         </processorPath>
         <module name="gocd-groovy-dsl-config-plugin.resolvers.main" />
       </profile>
