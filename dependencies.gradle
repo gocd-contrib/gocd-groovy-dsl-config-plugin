@@ -28,7 +28,7 @@ final Map<String, String> libraries = [
   commonsText       : 'org.apache.commons:commons-text:1.11.0',
   dom4j             : 'org.dom4j:dom4j:2.1.4',
   glassfish         : 'org.glassfish:jakarta.el:4.0.2',
-  groovy            : 'org.codehaus.groovy:groovy:3.0.20',
+  groovy            : 'org.apache.groovy:groovy:4.0.19',
   guava             : 'com.google.guava:guava:33.0.0-jre',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:8.0.1.Final',
   jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.16.1',
@@ -55,7 +55,7 @@ final String retrofitVersion = versionOf(libraries.retrofit)
 
 // RELATED: these deps share versions with others; we put these after the main deps because Dependabot cannot parse
 // interpolated versions. When Dependabot updates the parent dependency, these will get updated for free too.
-libraries.groovyJson = "org.codehaus.groovy:groovy-json:${groovyVersion}"
+libraries.groovyJson = "org.apache.groovy:groovy-json:${groovyVersion}"
 libraries.hibernateValidatorAnnotationProcessor = "org.hibernate.validator:hibernate-validator-annotation-processor:${hibernateVersion}"
 libraries.jacksonAnnotations = "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
 libraries.jacksonDatabind = "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
