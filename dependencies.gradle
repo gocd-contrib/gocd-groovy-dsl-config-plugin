@@ -41,7 +41,7 @@ final Map<String, String> libraries = [
   pluginApi         : 'cd.go.plugin:go-plugin-api:23.5.0',
   reflections       : 'org.reflections:reflections:0.10.2',
   retrofit          : 'com.squareup.retrofit2:retrofit:2.11.0',
-  slf4j             : 'org.slf4j:slf4j-simple:2.0.12',
+  slf4j             : 'org.slf4j:slf4j-simple:2.0.13',
   validateApi       : 'jakarta.validation:jakarta.validation-api:3.0.2',
 ]
 
