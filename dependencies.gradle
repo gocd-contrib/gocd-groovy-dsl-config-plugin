@@ -25,7 +25,7 @@ final Map<String, String> libraries = [
   ant               : 'org.apache.ant:ant:1.10.14',
   classgraph        : 'io.github.classgraph:classgraph:4.8.170',
   commonsLang       : 'org.apache.commons:commons-lang3:3.14.0',
-  commonsText       : 'org.apache.commons:commons-text:1.11.0',
+  commonsText       : 'org.apache.commons:commons-text:1.12.0',
   dom4j             : 'org.dom4j:dom4j:2.1.4',
   glassfish         : 'org.glassfish:jakarta.el:4.0.2',
   groovy            : 'org.apache.groovy:groovy:4.0.21',
