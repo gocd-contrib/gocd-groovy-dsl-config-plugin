@@ -29,7 +29,7 @@ final Map<String, String> libraries = [
   dom4j             : 'org.dom4j:dom4j:2.1.4',
   glassfish         : 'org.glassfish:jakarta.el:4.0.2',
   groovy            : 'org.apache.groovy:groovy:4.0.21',
-  guava             : 'com.google.guava:guava:33.1.0-jre',
+  guava             : 'com.google.guava:guava:33.2.0-jre',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:8.0.1.Final',
   jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.17.0',
   jcommander        : 'com.beust:jcommander:1.82',
