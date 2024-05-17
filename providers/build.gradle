@@ -25,6 +25,10 @@ dependencies {
   implementation project.deps.commonsLang
   implementation project.deps.retrofit
   implementation project.deps.retrofitJacksonConv
+  constraints {
+    // Force upgrade transitive dependencies of fabric client to versions without vulnerabilities
+    implementation project.deps.okio
+  }
   implementation project.deps.validateApi
 
   testImplementation project.deps.junitJupiterApi
