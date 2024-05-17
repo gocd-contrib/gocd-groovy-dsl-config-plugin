@@ -26,8 +26,9 @@ dependencies {
   implementation project.deps.retrofit
   implementation project.deps.retrofitJacksonConv
   constraints {
-    // Force upgrade transitive dependencies of fabric client to versions without vulnerabilities
-    implementation project.deps.okio
+    implementation(project.deps.okio) {
+      because 'Retrofit uses an older version with vulnerable dependencies'
+    }
   }
   implementation project.deps.validateApi
 
