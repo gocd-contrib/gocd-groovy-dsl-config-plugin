@@ -43,7 +43,7 @@ final Map<String, String> libraries = [
   reflections       : 'org.reflections:reflections:0.10.2',
   retrofit          : 'com.squareup.retrofit2:retrofit:2.11.0',
   slf4j             : 'org.slf4j:slf4j-simple:2.0.13',
-  validateApi       : 'jakarta.validation:jakarta.validation-api:3.0.2',
+  validateApi       : 'jakarta.validation:jakarta.validation-api:3.1.0',
 ]
 
 // Parse some versions that are shared with related deps; this way we can DRY and keep these adjunct deps
