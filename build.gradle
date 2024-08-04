@@ -73,8 +73,8 @@ nexusPublishing {
   packageGroup = 'cd.go'
   repositories {
     sonatype {
-      username = System.getenv('GOCD_NEXUS_USERNAME')
-      password = System.getenv('GOCD_NEXUS_PASSWORD')
+      username = System.getenv('MAVEN_CENTRAL_TOKEN_USERNAME')
+      password = System.getenv('MAVEN_CENTRAL_TOKEN_PASSWORD')
     }
   }
 }

@@ -10,8 +10,8 @@ export GITHUB_TOKEN=...
 
 To Maven Central **Staging only** (of the DSL)
 ```shell
-export GOCD_NEXUS_USERNAME=
-export GOCD_NEXUS_PASSWORD=
+export MAVEN_CENTRAL_TOKEN_USERNAME=
+export MAVEN_CENTRAL_TOKEN_PASSWORD=
 export GOCD_GPG_KEY_ID=
 export GOCD_GPG_KEYRING_FILE=
 export GOCD_GPG_PASSPHRASE=
@@ -20,8 +20,8 @@ export GOCD_GPG_PASSPHRASE=
 
 To Maven Central **and release publicly**
 ```shell
-export GOCD_NEXUS_USERNAME=
-export GOCD_NEXUS_PASSWORD=
+export MAVEN_CENTRAL_TOKEN_USERNAME=
+export MAVEN_CENTRAL_TOKEN_PASSWORD=
 export GOCD_GPG_KEY_ID=
 export GOCD_GPG_KEYRING_FILE=
 export GOCD_GPG_PASSPHRASE=
