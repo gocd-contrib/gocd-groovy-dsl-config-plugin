@@ -42,6 +42,7 @@ dependencies {
     exclude(module: 'error_prone_annotations')
     exclude(module: 'checker-qual')
     exclude(module: 'jsr305')
+    exclude(module: 'j2objc-annotations')
   }
   implementation project.deps.validateApi
   runtimeOnly project.deps.slf4j
