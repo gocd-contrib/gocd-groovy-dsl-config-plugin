@@ -35,7 +35,7 @@ final Map<String, String> libraries = [
   jcommander        : 'com.beust:jcommander:1.82',
   jhighlight        : 'org.codelibs:jhighlight:1.1.0',
   jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:4.1.0',
-  junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.11.3',
+  junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.11.4',
   lombok            : 'org.projectlombok:lombok:1.18.36',
   mockito           : 'org.mockito:mockito-core:5.14.2',
   okio              : 'com.squareup.okio:okio:1.17.6',
