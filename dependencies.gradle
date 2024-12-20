@@ -30,7 +30,7 @@ final Map<String, String> libraries = [
   glassfish         : 'org.glassfish:jakarta.el:4.0.2',
   groovy            : 'org.apache.groovy:groovy:4.0.24',
   guava             : 'com.google.guava:guava:33.4.0-jre',
-  hibernateValidator: 'org.hibernate.validator:hibernate-validator:8.0.1.Final',
+  hibernateValidator: 'org.hibernate.validator:hibernate-validator:8.0.2.Final',
   jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.18.2',
   jcommander        : 'com.beust:jcommander:1.82',
   jhighlight        : 'org.codelibs:jhighlight:1.1.0',
