@@ -20,7 +20,7 @@ Table of Contents
       
 ## A note about security
 
-This plugin evaluates untrusted code on the GoCD server. A malicious script can do significant damage (steal keys and secrets, remove files and directories, install malware, etc). As such, **please** use this plugin only with GoCD servers and repositories where you completely trust your users.
+This plugin evaluates untrusted code on the GoCD server. A malicious script can do significant damage (steal keys and secrets, remove files and directories, install malware, etc). As such, **please** use this plugin only with GoCD servers and repositories where you completely trust the users who will have permissions to commit to the groovy-based config repo.
 
 ## Install
 
