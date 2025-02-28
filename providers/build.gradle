@@ -32,9 +32,12 @@ dependencies {
   }
   implementation project.deps.validateApi
 
+  testImplementation platform(project.deps.junitJupiterBom)
   testImplementation project.deps.junitJupiterApi
-  testRuntimeOnly project.deps.junitJupiterEngine
   testImplementation project.deps.junitJupiterParams
+  testRuntimeOnly project.deps.junitJupiterEngine
+  testRuntimeOnly project.deps.junitJupiterPlatformLauncher
+
   testImplementation project.deps.mockito
   testImplementation project.deps.groovyJson
 }

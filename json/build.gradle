@@ -17,12 +17,15 @@
 dependencies {
   implementation project(':dsl')
 
+  implementation platform(project.deps.jacksonBom)
   implementation project.deps.jacksonCore
   implementation project.deps.jacksonDatabind
 
+  testImplementation platform(project.deps.junitJupiterBom)
   testImplementation project.deps.junitJupiterApi
   testImplementation project.deps.junitJupiterParams
   testRuntimeOnly project.deps.junitJupiterEngine
+  testRuntimeOnly project.deps.junitJupiterPlatformLauncher
 
   testImplementation project(':util')
   testImplementation project.deps.jsonFluent

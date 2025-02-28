@@ -31,11 +31,11 @@ final Map<String, String> libraries = [
   groovy            : 'org.apache.groovy:groovy:4.0.25',
   guava             : 'com.google.guava:guava:33.4.0-jre',
   hibernateValidator: 'org.hibernate.validator:hibernate-validator:8.0.2.Final',
-  jacksonCore       : 'com.fasterxml.jackson.core:jackson-core:2.18.2',
+  jacksonBom        : 'com.fasterxml.jackson:jackson-bom:2.18.2',
   jcommander        : 'com.beust:jcommander:1.82',
   jhighlight        : 'org.codelibs:jhighlight:1.1.0',
   jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:4.1.0',
-  junitJupiterApi   : 'org.junit.jupiter:junit-jupiter-api:5.12.0',
+  junitJupiterBom   : 'org.junit:junit-bom:5.12.0',
   lombok            : 'org.projectlombok:lombok:1.18.36',
   mockito           : 'org.mockito:mockito-core:5.15.2',
   okio              : 'com.squareup.okio:okio:1.17.6',
@@ -50,19 +50,21 @@ final Map<String, String> libraries = [
 // up-to-date.
 final String groovyVersion = versionOf(libraries.groovy)
 final String hibernateVersion = versionOf(libraries.hibernateValidator)
-final String jacksonVersion = versionOf(libraries.jacksonCore)
-final String junitJupiterVersion = versionOf(libraries.junitJupiterApi)
 final String retrofitVersion = versionOf(libraries.retrofit)
 
 // RELATED: these deps share versions with others; we put these after the main deps because Dependabot cannot parse
 // interpolated versions. When Dependabot updates the parent dependency, these will get updated for free too.
 libraries.groovyJson = "org.apache.groovy:groovy-json:${groovyVersion}"
 libraries.hibernateValidatorAnnotationProcessor = "org.hibernate.validator:hibernate-validator-annotation-processor:${hibernateVersion}"
-libraries.jacksonAnnotations = "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
-libraries.jacksonDatabind = "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-libraries.junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
-libraries.junitJupiterParams = "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
 libraries.retrofitJacksonConv = "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
+
+libraries.jacksonCore = "com.fasterxml.jackson.core:jackson-core"
+libraries.jacksonAnnotations = "com.fasterxml.jackson.core:jackson-annotations"
+libraries.jacksonDatabind = "com.fasterxml.jackson.core:jackson-databind"
+libraries.junitJupiterApi = "org.junit.jupiter:junit-jupiter-api"
+libraries.junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine"
+libraries.junitJupiterPlatformLauncher = "org.junit.platform:junit-platform-launcher"
+libraries.junitJupiterParams = "org.junit.jupiter:junit-jupiter-params"
 
 // Export versions that are needed outside of this file
 final Map<String, String> versions = [

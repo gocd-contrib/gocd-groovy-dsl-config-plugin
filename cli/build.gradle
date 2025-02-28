@@ -22,6 +22,7 @@ dependencies {
   implementation project(':util')
   implementation project.deps.jcommander
   implementation project.deps.groovy
+  implementation platform(project.deps.jacksonBom)
   implementation project.deps.jacksonCore
   implementation project.deps.hibernateValidator
   implementation project.deps.glassfish
