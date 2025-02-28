@@ -32,8 +32,10 @@ dependencies {
 
   extractedAtTopLevel project(':jar-class-loader')
 
+  implementation platform(project.deps.jacksonBom)
   implementation project.deps.jacksonAnnotations
   implementation project.deps.jacksonDatabind
+
   implementation project.deps.ant
   implementation project.deps.commonsLang
   implementation(project.deps.guava) {
@@ -52,9 +54,12 @@ dependencies {
   compileOnly project.deps.pluginApi
   testCompileOnly project.deps.pluginApi
 
-  testRuntimeOnly project.deps.junitJupiterEngine
+  testImplementation platform(project.deps.junitJupiterBom)
   testImplementation project.deps.junitJupiterApi
   testImplementation project.deps.junitJupiterParams
+  testRuntimeOnly project.deps.junitJupiterEngine
+  testRuntimeOnly project.deps.junitJupiterPlatformLauncher
+
   testImplementation project.deps.groovy
   testImplementation project.deps.groovyJson
   testImplementation project.deps.mockito
