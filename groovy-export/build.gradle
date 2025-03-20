@@ -26,9 +26,8 @@ dependencies {
   testImplementation(project.deps.guava)  {
     // see https://github.com/google/guava/pull/6606
     exclude(module: 'listenablefuture')
+    exclude(module: 'jspecify')
     exclude(module: 'error_prone_annotations')
-    exclude(module: 'checker-qual')
-    exclude(module: 'jsr305')
     exclude(module: 'j2objc-annotations')
   }
 
