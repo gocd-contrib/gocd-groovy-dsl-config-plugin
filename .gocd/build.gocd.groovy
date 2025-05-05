@@ -32,8 +32,6 @@ GoCD.script {
       materials {
         git {
           url = "https://git.gocd.io/git/gocd-contrib/gocd-groovy-dsl-config-plugin"
-          shallowClone = false
-          branch = repo['mainBranch']
         }
       }
       group = "plugins"
@@ -96,7 +94,6 @@ GoCD.script {
         }
         git('groovy') {
           url = "https://git.gocd.io/git/gocd-contrib/gocd-groovy-dsl-config-plugin"
-          shallowClone = false
           destination = 'groovy'
         }
         dependency('GroovyPipeline') {
