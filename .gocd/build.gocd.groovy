@@ -50,7 +50,7 @@ GoCD.script {
         }
 
         stage("github-preview-release") {
-          environmentVariables       = [GITHUB_USER : 'gocd-ci-user']
+          environmentVariables       = [GITHUB_USER : 'gocd-contrib']
           secureEnvironmentVariables = releaseCredentials()
           jobs {
             job("create-preview-release") {
@@ -66,7 +66,7 @@ GoCD.script {
 
         stage("github-release") {
           approval { type = 'manual' }
-          environmentVariables       = [GITHUB_USER : 'gocd-ci-user', PRERELEASE: "NO"]
+          environmentVariables       = [GITHUB_USER : 'gocd-contrib', PRERELEASE: "NO"]
           secureEnvironmentVariables = releaseCredentials()
           jobs {
             job("create-release") {
