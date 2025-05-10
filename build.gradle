@@ -73,6 +73,7 @@ nexusPublishing {
   packageGroup = 'cd.go'
   repositories {
     sonatype {
+      nexusUrl = uri('https://ossrh-staging-api.central.sonatype.com/service/local/')
       username = System.getenv('MAVEN_CENTRAL_TOKEN_USERNAME')
       password = System.getenv('MAVEN_CENTRAL_TOKEN_PASSWORD')
     }
