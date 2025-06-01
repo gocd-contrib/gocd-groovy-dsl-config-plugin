@@ -23,14 +23,14 @@ apply from: 'dependencies.gradle'
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/master/helper.gradle?_=${(int) (new Date().toInstant().epochSecond / 60)}"
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
 }
 
 gocdPlugin {
   id = 'cd.go.contrib.plugins.configrepo.groovy'
-  pluginVersion = '2.2.1'
-  goCdVersion = '20.8.0'
+  pluginVersion = '3.0.0'
+  goCdVersion = '22.1.0'
   name = 'GoCD Groovy Configuration plugin'
   description = 'GoCD pipelines and environments configuration in Groovy'
   vendorName = 'Thoughtworks, Inc.'
@@ -53,13 +53,13 @@ allprojects {
   version = gocdPlugin.fullVersion(project)
 
   java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
 
   tasks.withType(JavaCompile) {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
 }
 
