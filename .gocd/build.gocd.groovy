@@ -42,7 +42,7 @@ GoCD.script {
               elasticProfileId = 'ecs-gocd-dev-build'
               tasks {
                 bash {
-                  commandString = './gradlew assemble check'
+                  commandString = './gradlew assemble check --warning-mode all'
                 }
               }
             }
@@ -57,7 +57,7 @@ GoCD.script {
               elasticProfileId = 'ecs-gocd-dev-build'
               tasks {
                 bash {
-                  commandString = './gradlew githubRelease'
+                  commandString = './gradlew githubRelease --warning-mode all'
                 }
               }
             }
@@ -73,7 +73,7 @@ GoCD.script {
               elasticProfileId = 'ecs-gocd-dev-build'
               tasks {
                 bash {
-                  commandString = './gradlew githubRelease'
+                  commandString = './gradlew githubRelease --warning-mode all'
                 }
               }
             }
@@ -137,7 +137,7 @@ GoCD.script {
                   workingDir = "groovy"
                 }
                 bash {
-                  commandString = './gradlew clean dsl:publishToSonatype closeAndReleaseSonatypeStagingRepository'
+                  commandString = './gradlew clean dsl:publishToSonatype closeAndReleaseSonatypeStagingRepository --warning-mode all'
                   workingDir = "groovy"
                 }
               }
@@ -161,7 +161,7 @@ GoCD.script {
               elasticProfileId = 'ecs-gocd-dev-build'
               tasks {
                 bash {
-                  commandString = './gradlew assemble check'
+                  commandString = './gradlew assemble check --warning-mode all'
                 }
               }
             }
