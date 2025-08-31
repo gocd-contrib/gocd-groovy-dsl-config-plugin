@@ -19,7 +19,7 @@ package cd.go.contrib.plugins.configrepo.groovy.requests;
 import cd.go.contrib.plugins.configrepo.groovy.RequestExecutor;
 import cd.go.contrib.plugins.configrepo.groovy.executors.ValidateConfigurationExecutor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class ValidatePluginSettingsRequest extends HashMap<String, String> {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    private static final ObjectMapper MAPPER = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
     @SuppressWarnings("unchecked")
     public static ValidatePluginSettingsRequest fromJSON(String json) throws IOException {
