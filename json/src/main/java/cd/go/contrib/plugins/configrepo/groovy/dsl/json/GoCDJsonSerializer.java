@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
@@ -49,13 +50,14 @@ public abstract class GoCDJsonSerializer {
     }
 
     protected static ObjectMapper mapper(JsonFactory jf) {
-        return new ObjectMapper(jf)
-                .registerModule(module())
+        return JsonMapper.builder(jf)
                 .disable(MapperFeature.AUTO_DETECT_CREATORS)
                 .disable(MapperFeature.AUTO_DETECT_SETTERS)
                 .disable(MapperFeature.AUTO_DETECT_FIELDS)
                 .disable(MapperFeature.AUTO_DETECT_GETTERS)
                 .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+                .build()
+                .registerModule(module())
                 .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
                 ;
     }

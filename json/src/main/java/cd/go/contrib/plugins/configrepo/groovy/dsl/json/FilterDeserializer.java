@@ -42,11 +42,10 @@ public class FilterDeserializer extends StdDeserializer<Filter> {
     @Override
     public Filter deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         TreeNode node = p.getCodec().readTree(p);
-        if (node instanceof ObjectNode) {
+        if (node instanceof ObjectNode objectNode) {
             boolean isWhitelist;
             ArrayNode itemsAsArray;
 
-            ObjectNode objectNode = (ObjectNode) node;
             if (objectNode.has("ignore")) {
                 isWhitelist = false;
                 itemsAsArray = (ArrayNode) objectNode.get("ignore");
@@ -54,10 +53,10 @@ public class FilterDeserializer extends StdDeserializer<Filter> {
                 isWhitelist = true;
                 itemsAsArray = (ArrayNode) objectNode.get("includes");
             } else {
-                throw new UnrecognizedPropertyException(p, "Filter contains neither a whitelist nor an ignore", p.getCurrentLocation(), getClass(), "filter", null);
+                throw new UnrecognizedPropertyException(p, "Filter contains neither a whitelist nor an ignore", p.currentLocation(), getClass(), "filter", null);
             }
 
-            if (itemsAsArray == null || itemsAsArray.size() == 0) {
+            if (itemsAsArray == null || itemsAsArray.isEmpty()) {
                 return null;
             }
             List<String> items = StreamSupport
