@@ -22,9 +22,8 @@ plugins {
 apply from: 'dependencies.gradle'
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/master/helper.gradle?_=${(int) (new Date().toInstant().epochSecond / 60)}"
 
-java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+tasks.withType(JavaCompile).configureEach {
+  options.release = 17
 }
 
 gocdPlugin {
@@ -52,14 +51,8 @@ allprojects {
   group = 'cd.go.groovydsl'
   version = gocdPlugin.fullVersion(project)
 
-  java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-  }
-
-  tasks.withType(JavaCompile) {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+  tasks.withType(JavaCompile).configureEach {
+    options.release = 17
   }
 }
 
