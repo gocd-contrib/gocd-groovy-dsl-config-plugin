@@ -87,7 +87,7 @@ If you're using an IDE like IntelliJ or Eclipse, you can import the `dsl.jar` fi
 // groovy build.gradle
 dependencies {
   // get version from https://mvnrepository.com/artifact/cd.go.groovydsl/dsl
-  compileOnly group: 'cd.go.groovydsl', name: 'dsl', version: 'XXX'
+  compileOnly 'cd.go.groovydsl:dsl:XXX'
 }
 ```
 
