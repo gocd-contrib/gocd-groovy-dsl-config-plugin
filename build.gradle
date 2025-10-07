@@ -48,6 +48,7 @@ gocdPlugin {
   pluginProject = project(':gocd-groovy-dsl-config-plugin')
 
   prerelease = !"No".equalsIgnoreCase(System.getenv('PRERELEASE'))
+  prereleaseDryrun = !"Yes".equalsIgnoreCase(System.getenv('PRERELEASE'))
   assetsToRelease = [project(':gocd-groovy-dsl-config-plugin').tasks.jar, project(':dsl').tasks.jar]
 }
 
