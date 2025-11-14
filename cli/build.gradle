@@ -24,6 +24,5 @@ dependencies {
   implementation project.deps.groovy
   implementation platform(project.deps.jacksonBom)
   implementation project.deps.jacksonCore
-  implementation project.deps.hibernateValidator
-  implementation project.deps.glassfish
+  implementation project.deps.jakartaValidationApi
 }

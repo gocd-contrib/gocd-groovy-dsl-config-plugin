@@ -22,27 +22,27 @@ final Map<String, String> libraries = [
   // Dependabot will parse these.
   // Keep plaintext versions here so Dependabot can parse the versions; don't interpolate version variables here
   // because Dependabot is not smart enough to understand those.
-  ant               : 'org.apache.ant:ant:1.10.15',
-  classgraph        : 'io.github.classgraph:classgraph:4.8.184',
-  commonsLang       : 'org.apache.commons:commons-lang3:3.19.0',
-  commonsText       : 'org.apache.commons:commons-text:1.14.0',
-  glassfish         : 'org.glassfish:jakarta.el:4.0.2',
-  groovy            : 'org.apache.groovy:groovy:5.0.2',
-  guava             : 'com.google.guava:guava:33.5.0-jre',
-  hibernateValidator: 'org.hibernate.validator:hibernate-validator:9.1.0.Final',
-  jacksonBom        : 'com.fasterxml.jackson:jackson-bom:2.20.1',
-  jcommander        : 'com.beust:jcommander:1.82',
-  jhighlight        : 'org.codelibs:jhighlight:1.1.0',
-  jsonFluent        : 'net.javacrumbs.json-unit:json-unit-fluent:4.1.1',
-  junitJupiterBom   : 'org.junit:junit-bom:6.0.1',
-  lombok            : 'org.projectlombok:lombok:1.18.42',
-  mockito           : 'org.mockito:mockito-core:5.20.0',
-  okio              : 'com.squareup.okio:okio:1.17.6',
-  pluginApi         : 'cd.go.plugin:go-plugin-api:25.3.0',
-  reflections       : 'org.reflections:reflections:0.10.2',
-  retrofit          : 'com.squareup.retrofit2:retrofit:3.0.0',
-  slf4j             : 'org.slf4j:slf4j-simple:2.0.17',
-  validateApi       : 'jakarta.validation:jakarta.validation-api:3.1.1',
+  ant                 : 'org.apache.ant:ant:1.10.15',
+  classgraph          : 'io.github.classgraph:classgraph:4.8.184',
+  commonsLang         : 'org.apache.commons:commons-lang3:3.19.0',
+  commonsText         : 'org.apache.commons:commons-text:1.14.0',
+  glassfishExpressly  : 'org.glassfish.expressly:expressly:6.0.0',
+  groovy              : 'org.apache.groovy:groovy:5.0.2',
+  guava               : 'com.google.guava:guava:33.5.0-jre',
+  hibernateValidator  : 'org.hibernate.validator:hibernate-validator:9.1.0.Final',
+  jacksonBom          : 'com.fasterxml.jackson:jackson-bom:2.20.1',
+  jakartaValidationApi: 'jakarta.validation:jakarta.validation-api:3.1.1',
+  jcommander          : 'com.beust:jcommander:1.82',
+  jhighlight          : 'org.codelibs:jhighlight:1.1.0',
+  jsonFluent          : 'net.javacrumbs.json-unit:json-unit-fluent:4.1.1',
+  junitBom            : 'org.junit:junit-bom:6.0.1',
+  lombok              : 'org.projectlombok:lombok:1.18.42',
+  mockito             : 'org.mockito:mockito-core:5.20.0',
+  okio                : 'com.squareup.okio:okio:1.17.6',
+  pluginApi           : 'cd.go.plugin:go-plugin-api:25.3.0',
+  reflections         : 'org.reflections:reflections:0.10.2',
+  retrofit            : 'com.squareup.retrofit2:retrofit:3.0.0',
+  slf4j               : 'org.slf4j:slf4j-simple:2.0.17',
 ]
 
 // Parse some versions that are shared with related deps; this way we can DRY and keep these adjunct deps
@@ -60,10 +60,10 @@ libraries.retrofitJacksonConv = "com.squareup.retrofit2:converter-jackson:${retr
 libraries.jacksonCore = "com.fasterxml.jackson.core:jackson-core"
 libraries.jacksonAnnotations = "com.fasterxml.jackson.core:jackson-annotations"
 libraries.jacksonDatabind = "com.fasterxml.jackson.core:jackson-databind"
-libraries.junitJupiterApi = "org.junit.jupiter:junit-jupiter-api"
-libraries.junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine"
-libraries.junitJupiterPlatformLauncher = "org.junit.platform:junit-platform-launcher"
-libraries.junitJupiterParams = "org.junit.jupiter:junit-jupiter-params"
+libraries.junitApi = "org.junit.jupiter:junit-jupiter-api"
+libraries.junitEngine = "org.junit.jupiter:junit-jupiter-engine"
+libraries.junitPlatformLauncher = "org.junit.platform:junit-platform-launcher"
+libraries.junitParams = "org.junit.jupiter:junit-jupiter-params"
 
 // Export versions that are needed outside of this file
 final Map<String, String> versions = [

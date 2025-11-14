@@ -20,7 +20,7 @@ dependencies {
   implementation project(':providers')
 
   implementation project.deps.groovy
-  implementation project.deps.validateApi
+  implementation project.deps.jakartaValidationApi
 
   compileOnly project.deps.pluginApi
 

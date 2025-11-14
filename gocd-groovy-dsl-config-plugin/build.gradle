@@ -45,7 +45,7 @@ dependencies {
     exclude(module: 'error_prone_annotations')
     exclude(module: 'j2objc-annotations')
   }
-  implementation project.deps.validateApi
+  implementation project.deps.jakartaValidationApi
   runtimeOnly project.deps.slf4j
 
   annotationProcessor project.deps.hibernateValidatorAnnotationProcessor
@@ -53,11 +53,11 @@ dependencies {
   compileOnly project.deps.pluginApi
   testCompileOnly project.deps.pluginApi
 
-  testImplementation platform(project.deps.junitJupiterBom)
-  testImplementation project.deps.junitJupiterApi
-  testImplementation project.deps.junitJupiterParams
-  testRuntimeOnly project.deps.junitJupiterEngine
-  testRuntimeOnly project.deps.junitJupiterPlatformLauncher
+  testImplementation platform(project.deps.junitBom)
+  testImplementation project.deps.junitApi
+  testImplementation project.deps.junitParams
+  testRuntimeOnly project.deps.junitEngine
+  testRuntimeOnly project.deps.junitPlatformLauncher
 
   testImplementation project.deps.groovy
   testImplementation project.deps.groovyJson

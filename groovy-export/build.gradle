@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+plugins {
+  id 'java-library'
+}
+
 dependencies {
   implementation project(':dsl')
   implementation project(':json')
@@ -21,7 +25,7 @@ dependencies {
   implementation project.deps.commonsLang
   implementation project.deps.commonsText
 
-  testImplementation project(path: ':json', configuration: 'tests')
+  testImplementation testFixtures(project(':json'))
   testImplementation project(':util')
   testImplementation(project.deps.guava)  {
     // see https://github.com/google/guava/pull/6606
@@ -31,11 +35,11 @@ dependencies {
     exclude(module: 'j2objc-annotations')
   }
 
-  testImplementation platform(project.deps.junitJupiterBom)
-  testImplementation project.deps.junitJupiterApi
-  testImplementation project.deps.junitJupiterParams
-  testRuntimeOnly project.deps.junitJupiterEngine
-  testRuntimeOnly project.deps.junitJupiterPlatformLauncher
+  testImplementation platform(project.deps.junitBom)
+  testImplementation project.deps.junitApi
+  testImplementation project.deps.junitParams
+  testRuntimeOnly project.deps.junitEngine
+  testRuntimeOnly project.deps.junitPlatformLauncher
 }
 
 test {

@@ -41,13 +41,13 @@ dependencies {
   implementation project.deps.jacksonAnnotations
 
   implementation project.deps.commonsLang
-  implementation project.deps.validateApi
+  implementation project.deps.jakartaValidationApi
 
-  testImplementation platform(project.deps.junitJupiterBom)
-  testImplementation project.deps.junitJupiterApi
-  testImplementation project.deps.junitJupiterParams
-  testRuntimeOnly project.deps.junitJupiterEngine
-  testRuntimeOnly project.deps.junitJupiterPlatformLauncher
+  testImplementation platform(project.deps.junitBom)
+  testImplementation project.deps.junitApi
+  testImplementation project.deps.junitParams
+  testRuntimeOnly project.deps.junitEngine
+  testRuntimeOnly project.deps.junitPlatformLauncher
 
   testImplementation project.deps.reflections
   testImplementation project.deps.classgraph

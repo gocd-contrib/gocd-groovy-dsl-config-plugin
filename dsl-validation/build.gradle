@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+plugins {
+  id 'java-library'
+}
 
 dependencies {
   annotationProcessor project.deps.hibernateValidatorAnnotationProcessor
-  implementation project.deps.validateApi
-  implementation project.deps.glassfish
+  api project.deps.jakartaValidationApi
+  runtimeOnly project.deps.hibernateValidator
+  runtimeOnly project.deps.glassfishExpressly
 }
