@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-rootProject.name = 'gocd-groovy-dsl-config-plugin'
+plugins {
+  id 'groovy'
+}
 
-include ':cli'
-include ':resolvers'
-include ':providers'
-include ':doclet'
-include ':dsl'
-include ':dsl-validation'
-include ':example'
-include ':gocd-groovy-dsl-config-plugin'
-include ':groovy-export'
-include ':jar-class-loader'
-include ':json'
-include ':util'
-include ':pipelines'
-project(":pipelines").projectDir = file(".gocd")
+dependencies {
+  compileOnly project.deps.groovy
+  compileOnly project(':dsl')
+}
+
+sourceSets {
+  main {
+    groovy {
+      srcDirs = ['.']
+    }
+  }
+}

@@ -85,9 +85,26 @@ If you're using an IDE like IntelliJ or Eclipse, you can import the `dsl.jar` fi
 
 ```groovy
 // groovy build.gradle
+plugins {
+  id 'groovy'
+}
+
+repositories {
+  mavenCentral()
+}
+
 dependencies {
+  compileOnly 'org.apache.groovy:groovy:5.0.2'
   // get version from https://mvnrepository.com/artifact/cd.go.groovydsl/dsl
   compileOnly 'cd.go.groovydsl:dsl:XXX'
+}
+
+sourceSets {
+  main {
+    groovy {
+      srcDirs = ['.']
+    }
+  }
 }
 ```
 
