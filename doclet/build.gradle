@@ -20,6 +20,9 @@ plugins {
 
 dependencies {
   implementation project.deps.jhighlight
+  constraints {
+    implementation project.deps.commonsIO
+  }
   implementation localGroovy()
   compileOnly files("${System.getProperty('java.home')}/../lib/tools.jar")
 }
