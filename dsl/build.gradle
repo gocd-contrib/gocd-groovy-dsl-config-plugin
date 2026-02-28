@@ -66,11 +66,10 @@ sourceSets {
   }
 }
 
-
-task delombok(type: JavaExec) {
+tasks.register('delombok', JavaExec) {
   inputs.files(sourceSets.main.compileClasspath.files)
 
-  ext.outputDir = file("${buildDir}/delombok")
+  ext.outputDir = layout.buildDirectory.dir('delombok')
   outputs.dir(outputDir)
   outputs.cacheIf { true }
 
@@ -87,16 +86,20 @@ task delombok(type: JavaExec) {
   }
 }
 
-task sourcesJar(type: Jar) {
+def sourcesJar = tasks.register('sourcesJar', Jar) {
   dependsOn delombok
   archiveClassifier = 'sources'
   from delombok.outputDir
 }
 
-task javadocJar(type: Jar) {
+def javadocJar = tasks.register('javadocJar', Jar) {
   dependsOn javadoc
   from javadoc
   archiveClassifier = 'javadoc'
+}
+
+tasks.named('assemble') {
+  dependsOn(sourcesJar, javadocJar)
 }
 
 javadoc {
@@ -120,7 +123,7 @@ javadoc {
 
 publishing {
   publications {
-    mavenJava(MavenPublication) {
+    register('mavenJava', MavenPublication) {
       from components.java
       artifact sourcesJar
       artifact javadocJar
@@ -133,7 +136,8 @@ publishing {
 
         licenses {
           license {
-            name = 'Apache License, Version 2.0'
+            name = 'Apache-2.0'
+            comments = 'Apache License, Version 2.0'
             url = 'https://www.apache.org/licenses/LICENSE-2.0'
             distribution = 'repo'
           }
@@ -152,8 +156,8 @@ publishing {
         }
 
         organization {
-          name = 'Thoughtworks, Inc.'
-          url = 'https://www.thoughtworks.com'
+          name = 'GoCD Community'
+          url = 'https://github.com/gocd-contrib'
         }
 
         issueManagement {
@@ -166,15 +170,10 @@ publishing {
 }
 
 signing {
+  required = System.getenv('GOCD_GPG_KEY_ID') != null
   sign publishing.publications.mavenJava
 }
 
-project.ext.'signing.password' = System.getenv('GOCD_GPG_PASSPHRASE')
 project.ext.'signing.keyId' = System.getenv('GOCD_GPG_KEY_ID')
+project.ext.'signing.password' = System.getenv('GOCD_GPG_PASSPHRASE')
 project.ext.'signing.secretKeyRingFile' = System.getenv('GOCD_GPG_KEYRING_FILE')
-
-artifacts {
-  archives jar
-  archives javadocJar
-  archives sourcesJar
-}
