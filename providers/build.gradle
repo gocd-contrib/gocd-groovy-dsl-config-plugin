@@ -25,6 +25,7 @@ dependencies {
   implementation project.deps.commonsLang
   implementation project.deps.retrofit
   implementation project.deps.retrofitJacksonConv
+  implementation platform(project.deps.jacksonBom)
   constraints {
     implementation(project.deps.okio) {
       because 'Retrofit uses an older version with vulnerable dependencies'
