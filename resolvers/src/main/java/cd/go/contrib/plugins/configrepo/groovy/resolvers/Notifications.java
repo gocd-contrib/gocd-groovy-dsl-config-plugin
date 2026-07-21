@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -50,7 +51,7 @@ public class Notifications {
     }
 
     /** Maps a namespace to a Map of materials to notification configurations. */
-    private static final Map<String, Map<String, Set<ConnectionConfig>>> registrar = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, ConcurrentMap<String, Set<ConnectionConfig>>> registrar = new ConcurrentHashMap<>();
 
     private static final ThreadLocal<Consumer<NotifyPayload>> emitter = ThreadLocal.withInitial(() -> n -> {
     });
@@ -60,19 +61,16 @@ public class Notifications {
         // we clear and reinitialize the namespaced storage that holds the notification configs under the given
         // namespace each time we parse. The namespace limits this purge to notifiers created through the  parsing
         // of this config repo material.
+        Delayed.LOG.debug("Clearing notifications for namespace [{}]", namespace);
         registrar.put(namespace, new ConcurrentHashMap<>()); // clear and reinitialize namespace storage
-        final Map<String, Set<ConnectionConfig>> registered = registrar.get(namespace);
+        final ConcurrentMap<String, Set<ConnectionConfig>> registered = registrar.get(namespace);
 
         return (git, spec) -> {
             validate(spec, invalidNotifyConfig(git, spec));
             final String key = keyFor(git);
 
-            Delayed.LOG.debug("Registering material [{}] to notify {}", key, spec.identifier());
-
-            if (!registered.containsKey(key)) {
-                registered.put(key, new ConnectionConfigSet());
-            }
-            registered.get(key).add(spec);
+            Delayed.LOG.debug("Namespace [{}] registering material [{}] to notify {} for ", namespace, key, spec.identifier());
+            registered.computeIfAbsent(key, k -> new ConnectionConfigSet()).add(spec);
         };
     }
 
@@ -127,10 +125,10 @@ public class Notifications {
         return registrar.keySet().stream().reduce(new ConnectionConfigSet(), (memo, ns) -> {
             Map<String, Set<ConnectionConfig>> map = registrar.get(ns);
             if (map.containsKey(key)) {
-                Delayed.LOG.debug("  > Located match in namespace partition: {}", ns);
+                Delayed.LOG.debug("  > Located match in namespace: {}", ns);
                 memo.addAll(map.get(key));
             } else {
-                Delayed.LOG.debug("  > No match found in namespace: {}", ns);
+                Delayed.LOG.debug("  > No match found in namespace: {} (of {} registrations)", ns, map.size());
             }
             return memo;
         }, (a, b) -> {
