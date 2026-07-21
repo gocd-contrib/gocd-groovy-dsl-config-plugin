@@ -52,7 +52,7 @@ public class StageStatusExecutor implements RequestExecutor {
         final String status = stageRequest.state();
         final String url = stageRequest.stageUrl(pluginRequest.getPluginSettings().serverBaseUrl());
 
-        LOG.debug("Received stage status event for {}", label);
+        LOG.debug("Received stage status event for {} at {}", label, status);
 
         stageRequest.buildCausesOfType("git").forEach(c -> {
             LOG.debug("  > Looking at {} build cause [key: {}] @ revision {}", c.type(), c.key(), c.revision());
