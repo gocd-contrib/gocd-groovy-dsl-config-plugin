@@ -28,9 +28,22 @@ public class CommitStatusGitHub {
 
         public static States getFrom(String value) {
             return switch (value.toLowerCase()) {
-                case "building" -> pending;
                 case "passed" -> success;
-                case "failing", "failed", "cancelled" -> failure;
+                case "building", "unknown", "failing" -> pending;
+                case "failed", "cancelled" -> failure;
+                default ->
+                    throw new IllegalArgumentException(format("Don't know how to map [%s] to a GitHub commit status state", value));
+            };
+        }
+
+        public static String getDescriptionFrom(String value) {
+            return switch (value.toLowerCase()) {
+                case "passed" -> "Stage passed.";
+                case "building" -> "Stage is building.";
+                case "unknown" -> "Stage status is unknown.";
+                case "failing" -> "Stage is failing.";
+                case "failed" -> "Stage failed.";
+                case "cancelled" -> "Stage was cancelled.";
                 default ->
                     throw new IllegalArgumentException(format("Don't know how to map [%s] to a GitHub commit status state", value));
             };
@@ -38,17 +51,21 @@ public class CommitStatusGitHub {
     }
 
     public CommitStatusGitHub(String state, String context, String targetUrl) {
-        this(States.getFrom(state), context, targetUrl);
+        this(States.getFrom(state), States.getDescriptionFrom(state), context, targetUrl);
     }
 
-    public CommitStatusGitHub(States state, String context, String targetUrl) {
+    public CommitStatusGitHub(States state, String description, String context, String targetUrl) {
         this.state = state;
+        this.description = description;
         this.context = context;
         this.targetUrl = targetUrl;
     }
 
     @JsonProperty
     private final States state;
+
+    @JsonProperty
+    private final String description;
 
     @JsonProperty
     private final String context;
