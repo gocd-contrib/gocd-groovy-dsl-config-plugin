@@ -25,7 +25,6 @@ import com.thoughtworks.go.plugin.api.GoPlugin;
 import com.thoughtworks.go.plugin.api.GoPluginIdentifier;
 import com.thoughtworks.go.plugin.api.annotation.Extension;
 import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
-import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
@@ -35,8 +34,6 @@ import static java.util.Collections.singletonMap;
 
 @Extension
 public class BuildStatusNotificationPlugin implements GoPlugin {
-
-    public static final Logger LOG = Logger.getLoggerFor(BuildStatusNotificationPlugin.class);
 
     public static final String NOTIFICATIONS_INTERESTED_IN = "notifications-interested-in";
 
