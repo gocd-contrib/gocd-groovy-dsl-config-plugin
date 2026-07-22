@@ -56,14 +56,12 @@ public class Notifications {
     private static final ThreadLocal<Consumer<NotifyPayload>> emitter = ThreadLocal.withInitial(() -> n -> {
     });
 
-    public static BiConsumer<GitMaterial, ConnectionConfig> realConfig(final String namespace) {
+    public static BiConsumer<GitMaterial, ConnectionConfig> registerer(final String namespace) {
         // Because we do not have a means to detect the removal of notification configurations during parseDirectory(),
         // we clear and reinitialize the namespaced storage that holds the notification configs under the given
         // namespace each time we parse. The namespace limits this purge to notifiers created through the  parsing
         // of this config repo material.
-        Delayed.LOG.debug("Clearing notifications for namespace [{}]", namespace);
-        registrar.put(namespace, new ConcurrentHashMap<>()); // clear and reinitialize namespace storage
-        final ConcurrentMap<String, Set<ConnectionConfig>> registered = registrar.get(namespace);
+        var registered = clear(namespace);
 
         return (git, spec) -> {
             validate(spec, invalidNotifyConfig(git, spec));
@@ -72,6 +70,13 @@ public class Notifications {
             Delayed.LOG.debug("Namespace [{}] registering material [{}] to notify {} for ", namespace, key, spec.identifier());
             registered.computeIfAbsent(key, k -> new ConnectionConfigSet()).add(spec);
         };
+    }
+
+    private static ConcurrentMap<String, Set<ConnectionConfig>> clear(String namespace) {
+        ConcurrentMap<String, Set<ConnectionConfig>> registered = registrar.computeIfAbsent(namespace, k -> new ConcurrentHashMap<>());
+        Delayed.LOG.debug("Clearing for re-parse {} notification materials for namespace [{}]", registered.size(), namespace);
+        registered.clear();
+        return registered;
     }
 
     public static void validatingNoOpConfig(GitMaterial git, ConnectionConfig spec) {

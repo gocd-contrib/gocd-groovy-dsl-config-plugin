@@ -17,8 +17,10 @@
 package cd.go.contrib.plugins.configrepo.groovy.executors;
 
 import cd.go.contrib.plugins.configrepo.groovy.*;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.GitMaterial;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.GoCD;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Pipeline;
+import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.ConnectionConfig;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.json.GoCDJsonSerializer;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.KeyVal;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Notifies;
@@ -42,6 +44,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ParseDirectoryExecutor implements RequestExecutor {
 
@@ -81,13 +84,13 @@ public class ParseDirectoryExecutor implements RequestExecutor {
 
         final String namespace = Paths.get(directory).getFileName().toString(); // flyweight material directory name
 
+        BiConsumer<GitMaterial, ConnectionConfig> notificationRegisterer = Notifications.registerer(namespace);
         for (final String file : files) {
             try {
-                BranchStrategy.with(Branches::real, () -> KeyVal.with(ConfigValues.real(this.configurations), () -> Notifies.with(Notifications.realConfig(namespace), () -> {
+                BranchStrategy.with(Branches::real, () -> KeyVal.with(ConfigValues.real(this.configurations), () -> Notifies.with(notificationRegisterer, () -> {
                     final Object maybeConfig = engine.runScript(directory + "/" + file);
 
-                    if (maybeConfig instanceof GoCD) {
-                        GoCD configFromFile = (GoCD) maybeConfig;
+                    if (maybeConfig instanceof GoCD configFromFile) {
                         result.addConfig(file, configFromFile);
                         GroovyDslPlugin.LOG.debug("Found pipeline configs at " + new File(directory, file));
                     } else {
