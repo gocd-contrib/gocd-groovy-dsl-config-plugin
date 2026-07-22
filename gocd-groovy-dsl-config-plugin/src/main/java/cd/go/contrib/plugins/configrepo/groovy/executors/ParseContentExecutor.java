@@ -47,7 +47,7 @@ public class ParseContentExecutor implements RequestExecutor {
         final GroovyScriptRunner engine = new GroovyScriptRunner(Pipeline.class.getPackage().getName());
         final JsonConfigCollection result = new JsonConfigCollection();
 
-        BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpConfig, () -> {
+        BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpRegisterer, () -> {
             for (Map.Entry<String, String> entry : contents.entrySet()) {
                 final String filename = entry.getKey();
                 final String content = entry.getValue();

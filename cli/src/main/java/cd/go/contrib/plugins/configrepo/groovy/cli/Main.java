@@ -28,10 +28,9 @@ import cd.go.contrib.plugins.configrepo.groovy.resolvers.Notifications;
 import cd.go.contrib.plugins.configrepo.groovy.util.GroovyScriptRunner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import jakarta.validation.ConstraintViolation;
 import org.codehaus.groovy.runtime.IOGroovyMethods;
 
-import jakarta.validation.ConstraintViolation;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -64,7 +63,7 @@ public class Main {
             System.out.print("Parsing file " + getLocation(args.file) + ".");
             final String contents = IOGroovyMethods.getText(getFileAsStream(args.file), "utf-8");
 
-            BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpConfig, () -> {
+            BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpRegisterer, () -> {
                 final Object maybeConfig = getRunner().runScriptWithText(contents);
                 if (maybeConfig instanceof GoCD configFromFile) {
                     System.out.println(" Ok!");

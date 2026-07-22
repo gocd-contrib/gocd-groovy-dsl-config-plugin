@@ -81,7 +81,7 @@ public class Notifications {
         return registered;
     }
 
-    public static void validatingNoOpConfig(GitMaterial git, ConnectionConfig spec) {
+    public static void validatingNoOpRegisterer(GitMaterial git, ConnectionConfig spec) {
         validate(spec, invalidNotifyConfig(git, spec));
     }
 
@@ -131,9 +131,10 @@ public class Notifications {
 
         return registrar.keySet().stream().reduce(new ConnectionConfigSet(), (memo, ns) -> {
             Map<String, Set<ConnectionConfig>> map = registrar.get(ns);
-            if (map.containsKey(key)) {
+            Set<ConnectionConfig> configs = map.get(key);
+            if (configs != null) {
                 Delayed.LOG.debug("  > Located match in namespace: {}", ns);
-                memo.addAll(map.get(key));
+                memo.addAll(configs);
             } else {
                 Delayed.LOG.debug("  > No match found in namespace: {} (of {} registrations)", ns, map.size());
             }
