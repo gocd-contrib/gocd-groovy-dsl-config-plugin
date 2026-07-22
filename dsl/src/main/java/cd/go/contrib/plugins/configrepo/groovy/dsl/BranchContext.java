@@ -19,11 +19,11 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.ConnectionConfig;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.util.TextUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter

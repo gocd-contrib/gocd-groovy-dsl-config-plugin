@@ -20,12 +20,12 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Notifies;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.function.Consumer;
 

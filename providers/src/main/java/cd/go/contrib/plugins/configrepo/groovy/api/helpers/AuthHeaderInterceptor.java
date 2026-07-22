@@ -16,12 +16,12 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.api.helpers;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Base64;
 

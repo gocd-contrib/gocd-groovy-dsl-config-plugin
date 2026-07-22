@@ -16,12 +16,12 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 

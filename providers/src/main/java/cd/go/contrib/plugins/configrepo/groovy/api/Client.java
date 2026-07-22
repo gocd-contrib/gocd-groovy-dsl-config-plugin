@@ -25,12 +25,12 @@ import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.Bitbucket;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.BitbucketSelfHosted;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.GitHub;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.connection.GitLab;
+import jakarta.validation.constraints.NotBlank;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import jakarta.validation.constraints.NotBlank;
 import java.util.function.Consumer;
 
 import static org.apache.commons.lang3.StringUtils.*;

@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 
 public class Boot {
 

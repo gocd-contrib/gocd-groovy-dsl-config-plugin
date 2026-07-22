@@ -17,12 +17,11 @@
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import jakarta.validation.constraints.NotEmpty;
 
 @Getter
 @Setter

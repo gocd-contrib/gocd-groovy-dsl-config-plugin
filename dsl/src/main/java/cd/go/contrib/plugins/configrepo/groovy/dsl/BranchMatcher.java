@@ -25,10 +25,10 @@ import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.regex.Pattern;
 
 import static cd.go.contrib.plugins.configrepo.groovy.dsl.mixins.Configurable.redelegate;

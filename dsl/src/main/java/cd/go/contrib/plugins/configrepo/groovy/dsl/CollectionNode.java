@@ -16,9 +16,9 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
+import jakarta.validation.Valid;
 import lombok.*;
 
-import jakarta.validation.Valid;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;

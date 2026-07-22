@@ -19,12 +19,12 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl.json;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.Node;
 import cd.go.contrib.plugins.configrepo.groovy.dsl.TestBase;
 import cd.go.contrib.plugins.configrepo.groovy.util.GroovyScriptRunner;
+import jakarta.validation.ConstraintViolation;
 import net.javacrumbs.jsonunit.fluent.JsonFluentAssert;
 import org.codehaus.groovy.runtime.ResourceGroovyMethods;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import jakarta.validation.ConstraintViolation;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;

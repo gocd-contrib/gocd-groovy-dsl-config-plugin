@@ -19,12 +19,11 @@ package cd.go.contrib.plugins.configrepo.groovy.dsl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import jakarta.validation.constraints.NotEmpty;
 
 import static lombok.AccessLevel.NONE;
 

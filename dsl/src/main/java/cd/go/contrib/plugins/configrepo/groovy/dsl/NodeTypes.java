@@ -16,9 +16,6 @@
 
 package cd.go.contrib.plugins.configrepo.groovy.dsl;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 public class NodeTypes {

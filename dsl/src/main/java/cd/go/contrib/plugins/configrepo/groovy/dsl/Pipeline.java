@@ -22,13 +22,13 @@ import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
