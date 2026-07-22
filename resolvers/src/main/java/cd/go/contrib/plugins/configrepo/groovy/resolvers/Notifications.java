@@ -103,7 +103,7 @@ public class Notifications {
     public static void realEmit(final NotifyPayload p) {
         notifiersMatchingKey(p.key()).forEach(cfg -> {
             try {
-                Delayed.LOG.debug("Notifying {} on {}", cfg.identifier(), p);
+                Delayed.LOG.info("Notifying {} on {}", cfg.identifier(), p);
                 publish(cfg, p.revision(), p.label(), p.status(), p.url());
             } catch (IOException e) {
                 final String message = format("Failed to publish to endpoint [%s] with payload: %s", cfg.identifier(), p);
