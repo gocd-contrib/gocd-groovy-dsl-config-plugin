@@ -74,8 +74,10 @@ public class Notifications {
 
     private static ConcurrentMap<String, Set<ConnectionConfig>> clear(String namespace) {
         ConcurrentMap<String, Set<ConnectionConfig>> registered = registrar.computeIfAbsent(namespace, k -> new ConcurrentHashMap<>());
-        Delayed.LOG.debug("Clearing for re-parse {} notification materials for namespace [{}]", registered.size(), namespace);
-        registered.clear();
+        if (!registered.isEmpty()) {
+            Delayed.LOG.debug("Clearing for re-parse {} notification materials for namespace [{}]", registered.size(), namespace);
+            registered.clear();
+        }
         return registered;
     }
 
