@@ -84,14 +84,14 @@ public class IndentedStringWriter {
     }
 
     public void property(String name, List<String> propertyValue) throws IOException {
-        if (propertyValue != null && propertyValue.size() > 0) {
+        if (propertyValue != null && !propertyValue.isEmpty()) {
             String commaSeparatedValues = propertyValue.stream().map(this::quoteValue).collect(Collectors.joining(", "));
             println(MessageFormat.format("{0} = [{1}]", name, commaSeparatedValues));
         }
     }
 
     public void property(String name, Map<String, String> propertyValue) throws Throwable {
-        if (propertyValue != null && propertyValue.size() > 0) {
+        if (propertyValue != null && !propertyValue.isEmpty()) {
             println(name + " = " + "[");
             withIndent(() -> {
                 TreeMap<String, String> formattedProperties = new TreeMap<>();
@@ -104,14 +104,12 @@ public class IndentedStringWriter {
                     }
                 });
 
-                String longestVariableName = formattedProperties.keySet().stream().max(Comparator.comparingInt(String::length)).get();
+                String longestVariableName = formattedProperties.keySet().stream().max(Comparator.comparingInt(String::length)).orElseThrow();
 
                 formattedProperties.forEach((k, v) -> {
                     try {
                         println(rightPad(k, longestVariableName.length()) + ": " + v + ",");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (IOException ignore) {}
                 });
             });
             println("]");

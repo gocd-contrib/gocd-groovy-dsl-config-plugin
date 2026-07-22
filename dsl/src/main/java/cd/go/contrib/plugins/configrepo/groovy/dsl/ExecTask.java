@@ -114,8 +114,8 @@ public class ExecTask extends Task<ExecTask> {
 
         ExecTask execTask = (ExecTask) o;
 
-        if (workingDir != null ? !workingDir.equals(execTask.workingDir) : execTask.workingDir != null) return false;
-        return commandLine != null ? commandLine.equals(execTask.commandLine) : execTask.commandLine == null;
+        return Objects.equals(workingDir, execTask.workingDir)
+            && Objects.equals(commandLine, execTask.commandLine);
     }
 
     @Override

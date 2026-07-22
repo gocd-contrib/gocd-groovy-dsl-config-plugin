@@ -63,10 +63,10 @@ public class Boot {
             PrintStream out = new PrintStream(new FileOutputStream(getOutFile(), true), true);
             System.setErr(out);
             System.setOut(out);
-        } catch (FileNotFoundException ignore) {
+        } catch (FileNotFoundException e) {
             // cannot redirect out and err to file, so we don't
             log("Unable to redirect stdout/stderr to file " + getOutFile() + ". Will continue without redirecting stdout/stderr.");
-            ignore.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -97,11 +97,10 @@ public class Boot {
             List<URL> jarsInJar = jarFile.stream()
                     .filter(FIND_JAR_FILES_UNDER_LIB_FOLDER)
                     .map(jarEntry -> Handler.toOneJarUrl(jarEntry.getName()))
-                    .collect(Collectors.toList());
+                    .toList();
 
             log("Extracting jars files: " + jarsInJar);
-            List<URL> urls = new ArrayList<>();
-            urls.addAll(jarsInJar);
+            List<URL> urls = new ArrayList<>(jarsInJar);
 
             ClassLoader jcl = new URLClassLoader(urls.toArray(new URL[0]), getClass().getClassLoader());
             Thread.currentThread().setContextClassLoader(jcl);

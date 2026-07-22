@@ -45,26 +45,16 @@ public class GroovyDslPlugin implements GoPlugin {
     @Override
     public GoPluginApiResponse handle(GoPluginApiRequest request) {
         try {
-            switch (Request.fromString(request.requestName())) {
-                case PARSE_DIRECTORY:
-                    return new ParseDirectoryExecutor(pluginRequest, request).execute();
-                case PLUGIN_SETTINGS_GET_CONFIGURATION:
-                    return new GetPluginConfigurationExecutor().execute();
-                case PLUGIN_SETTINGS_VALIDATE_CONFIGURATION:
-                    return ValidatePluginSettingsRequest.fromJSON(request.requestBody()).executor().execute();
-                case GET_CAPABILITIES:
-                    return new CapabilitiesExecutor().execute();
-                case PIPELINE_EXPORT:
-                    return PipelineExportRequest.fromJSON(request.requestBody()).executor().execute();
-                case PARSE_CONTENT:
-                    return ParseContentRequest.fromJSON(request.requestBody()).executor().execute();
-                case PLUGIN_SETTINGS_GET_VIEW:
-                    return new GetViewRequestExecutor().execute();
-                case GET_ICON:
-                    return new GetPluginSettingsIconExecutor().execute();
-                default:
-                    throw new UnhandledRequestTypeException(request.requestName());
-            }
+            return switch (Request.fromString(request.requestName())) {
+                case PARSE_DIRECTORY -> new ParseDirectoryExecutor(pluginRequest, request).execute();
+                case PLUGIN_SETTINGS_GET_CONFIGURATION -> new GetPluginConfigurationExecutor().execute();
+                case PLUGIN_SETTINGS_VALIDATE_CONFIGURATION -> ValidatePluginSettingsRequest.fromJSON(request.requestBody()).executor().execute();
+                case GET_CAPABILITIES -> new CapabilitiesExecutor().execute();
+                case PIPELINE_EXPORT -> PipelineExportRequest.fromJSON(request.requestBody()).executor().execute();
+                case PARSE_CONTENT -> ParseContentRequest.fromJSON(request.requestBody()).executor().execute();
+                case PLUGIN_SETTINGS_GET_VIEW -> new GetViewRequestExecutor().execute();
+                case GET_ICON -> new GetPluginSettingsIconExecutor().execute();
+            };
         } catch (Throwable e) {
             LOG.error("Failed to handle request " + request.requestName() + " due to:", e);
             return DefaultGoPluginApiResponse.error("Failed to handle request " + request.requestName() + " due to:" + e.getMessage());

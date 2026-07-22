@@ -104,7 +104,7 @@ public class Notifications {
                 Delayed.LOG.debug("Notifying {} on {}", cfg.identifier(), p);
                 publish(cfg, p.revision(), p.label(), p.status(), p.url());
             } catch (IOException e) {
-                final String message = format("Failed to publish to endpoint [%s] with payload: %s", cfg.identifier(), p.toString());
+                final String message = format("Failed to publish to endpoint [%s] with payload: %s", cfg.identifier(), p);
                 throw new NotificationFailure(message, e);
             }
         });

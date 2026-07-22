@@ -27,18 +27,13 @@ public class CommitStatusBitbucketSelfHosted {
         SUCCESSFUL, INPROGRESS, FAILED;
 
         public static States getFrom(String value) {
-            switch (value.toLowerCase()) {
-                case "building":
-                    return INPROGRESS;
-                case "passed":
-                    return SUCCESSFUL;
-                case "failing":
-                case "failed":
-                case "cancelled":
-                    return FAILED;
-                default:
+            return switch (value.toLowerCase()) {
+                case "building" -> INPROGRESS;
+                case "passed" -> SUCCESSFUL;
+                case "failing", "failed", "cancelled" -> FAILED;
+                default ->
                     throw new IllegalArgumentException(format("Don't know how to map [%s] to a Bitbucket Server commit status state", value));
-            }
+            };
         }
 
     }

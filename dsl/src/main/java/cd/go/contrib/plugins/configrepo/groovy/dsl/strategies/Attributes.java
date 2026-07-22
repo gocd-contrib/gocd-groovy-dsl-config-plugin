@@ -74,9 +74,7 @@ public interface Attributes<T extends ConnectionConfig> {
 
         @Override
         public Basic.Git asConnectionConfig() {
-            return new Basic.Git(self -> {
-                self.url = url;
-            });
+            return new Basic.Git(self -> self.url = url);
         }
     }
 

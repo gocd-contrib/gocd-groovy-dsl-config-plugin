@@ -58,8 +58,7 @@ public abstract class GoCDJsonSerializer {
                 .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
                 .build()
                 .registerModule(module())
-                .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
-                ;
+                .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY);
     }
 
     public static SimpleModule module() {
@@ -68,8 +67,7 @@ public abstract class GoCDJsonSerializer {
                 .addSerializer(GitHubPRMaterial.class, new GithubPRMaterialSerializer())
                 .addSerializer(Filter.class, new FilterSerializer())
                 .addDeserializer(Filter.class, new FilterDeserializer())
-                .addDeserializer(Task.class, new TaskDeserializer())
-                ;
+                .addDeserializer(Task.class, new TaskDeserializer());
     }
 
 }

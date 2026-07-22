@@ -30,11 +30,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNullElse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class JsonDeserializeTest extends TestBase {
 
@@ -43,7 +41,7 @@ class JsonDeserializeTest extends TestBase {
     void testGroovyToJSON(String path) throws IOException {
         GroovyScriptRunner engine = getRunner();
         Object result = engine.runScript(path + ".groovy");
-        assertTrue(result instanceof Node);
+        assertInstanceOf(Node.class, result);
 
         String actualJson = GoCDJsonSerializer.toJsonString(result);
         String expectedJSON = ResourceGroovyMethods.getText(new File(path + ".json"), "utf-8");
@@ -56,8 +54,7 @@ class JsonDeserializeTest extends TestBase {
         GroovyScriptRunner engine = getRunner();
         Object result = engine.runScript(path + ".groovy");
         AtomicReference<Set<ConstraintViolation<Object>>> constraintViolations = new AtomicReference<>();
-        Consumer<Set<ConstraintViolation<Object>>> consumer = errors -> constraintViolations.set(errors);
-        validate(result, consumer);
+        validate(result, constraintViolations::set);
 
         assertTrue(requireNonNullElse(constraintViolations.get(), Collections.emptySet()).isEmpty());
     }

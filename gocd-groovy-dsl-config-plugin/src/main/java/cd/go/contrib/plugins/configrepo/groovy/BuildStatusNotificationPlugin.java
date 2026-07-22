@@ -54,17 +54,16 @@ public class BuildStatusNotificationPlugin implements GoPlugin {
     @Override
     public GoPluginApiResponse handle(GoPluginApiRequest request) {
         try {
-            switch (request.requestName()) {
-                case NOTIFICATIONS_INTERESTED_IN:
-                    return DefaultGoPluginApiResponse.success(JSON.writeValueAsString(
-                            singletonMap("notifications", singletonList(STAGE_STATUS))
-                    ));
-                case STAGE_STATUS:
+            return switch (request.requestName()) {
+                case NOTIFICATIONS_INTERESTED_IN -> DefaultGoPluginApiResponse.success(JSON.writeValueAsString(
+                    singletonMap("notifications", singletonList(STAGE_STATUS))
+                ));
+                case STAGE_STATUS -> {
                     final StageNotificationsRequest stageRequest = StageNotificationsRequest.fromJSON(request.requestBody());
-                    return new StageStatusExecutor(pluginRequest, stageRequest, Notifications::realEmit).execute();
-                default:
-                    throw new UnhandledRequestTypeException(request.requestName());
-            }
+                    yield new StageStatusExecutor(pluginRequest, stageRequest, Notifications::realEmit).execute();
+                }
+                default -> throw new UnhandledRequestTypeException(request.requestName());
+            };
         } catch (Throwable e) {
             return DefaultGoPluginApiResponse.error("Failed to handle request " + request.requestName() + " due to:" + e.getMessage());
         }

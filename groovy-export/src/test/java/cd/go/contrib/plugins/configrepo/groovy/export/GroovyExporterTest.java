@@ -32,8 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GroovyExporterTest extends TestBase {
 
@@ -43,7 +42,7 @@ class GroovyExporterTest extends TestBase {
         GroovyScriptRunner engine = getRunner();
         final Object output = engine.runScript(path + ".groovy");
         assertNotNull(output);
-        assertTrue(output instanceof Node);
+        assertInstanceOf(Node.class, output);
         final Node<?> result = (Node<?>) output;
 
         StringWriter writer = new StringWriter();
@@ -61,7 +60,7 @@ class GroovyExporterTest extends TestBase {
         GroovyScriptRunner engine = getRunner();
         final Object output = engine.runScript(path + ".groovy");
         assertNotNull(output);
-        assertTrue(output instanceof Node);
+        assertInstanceOf(Node.class, output);
         final Node<?> result = (Node<?>) output;
 
 
@@ -81,7 +80,7 @@ class GroovyExporterTest extends TestBase {
 
     private String sourceGroovyFile(String path) throws IOException {
         StringWriter writer = new StringWriter();
-        @SuppressWarnings("UnstableApiUsage") List<String> strings = Files.readLines(new File(path + ".groovy"), UTF_8);
+        List<String> strings = Files.readLines(new File(path + ".groovy"), UTF_8);
         String collect = strings.stream()
                 .filter(line -> !(line.startsWith("package ") || line.startsWith("import ")))
                 .collect(Collectors.joining("\n"));

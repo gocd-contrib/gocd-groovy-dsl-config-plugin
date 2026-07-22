@@ -43,20 +43,14 @@ public class BranchHelper {
     }
 
     public static RefProvider createProvider(BranchStrategy s) {
-        switch (s.type()) {
-            case git:
-                return BasicGitRefProvider.create((Attributes.GitBranch) s.attrs());
-            case GitHub:
-                return GitHubRefProvider.create((Attributes.GitHubPR) s.attrs());
-            case GitLab:
-                return GitLabRefProvider.create((Attributes.GitLabMR) s.attrs());
-            case Bitbucket:
-                return BitbucketRefProvider.create((Attributes.BitbucketPR) s.attrs());
-            case BitbucketSelfHosted:
-                return BitbucketSelfHostedRefProvider.create((Attributes.BitbucketSelfHostedPR) s.attrs());
-            default:
-                throw new IllegalArgumentException("Unsupported branch matching type: " + s.type());
-        }
+        return switch (s.type()) {
+            case git -> BasicGitRefProvider.create((Attributes.GitBranch) s.attrs());
+            case GitHub -> GitHubRefProvider.create((Attributes.GitHubPR) s.attrs());
+            case GitLab -> GitLabRefProvider.create((Attributes.GitLabMR) s.attrs());
+            case Bitbucket -> BitbucketRefProvider.create((Attributes.BitbucketPR) s.attrs());
+            case BitbucketSelfHosted ->
+                BitbucketSelfHostedRefProvider.create((Attributes.BitbucketSelfHostedPR) s.attrs());
+        };
     }
 
     public static BranchContext createContext(Attributes<?> attrs, MergeCandidate merge) {

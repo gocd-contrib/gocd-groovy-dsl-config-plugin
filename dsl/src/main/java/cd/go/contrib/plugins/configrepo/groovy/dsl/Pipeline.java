@@ -235,8 +235,6 @@ public class Pipeline extends HasEnvironmentVariables<Pipeline> {
             return;
         }
 
-        allParams.forEach(var -> {
-            params.put(var.get("name"), var.get("value"));
-        });
+        allParams.forEach(var -> params.put(var.get("name"), var.get("value")));
     }
 }

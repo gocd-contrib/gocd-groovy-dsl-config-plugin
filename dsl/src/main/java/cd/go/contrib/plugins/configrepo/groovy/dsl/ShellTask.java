@@ -110,7 +110,7 @@ public class ShellTask extends Task<ShellTask> {
             execTask.getCommandLine().add("-l");
         }
 
-        if (!(getCommandString() == null || ((CharSequence) getCommandString()).length() == 0)) {
+        if (!(getCommandString() == null || getCommandString().isEmpty())) {
             execTask.getCommandLine().add("-c");
             execTask.getCommandLine().add(getCommandString());
         } else {

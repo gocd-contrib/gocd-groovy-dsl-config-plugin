@@ -40,11 +40,7 @@ public @interface RunInstanceCount {
     Class<? extends Payload>[] payload() default {};
 
     class CheckRunInstanceCount implements ConstraintValidator<RunInstanceCount, Object> {
-
-        public void initialize(RunInstanceCount constraint) {
-        }
-
-        public boolean isValid(Object obj, ConstraintValidatorContext context) {
+                public boolean isValid(Object obj, ConstraintValidatorContext context) {
             if (obj == null) {
                 return true;
             }
@@ -53,7 +49,7 @@ public @interface RunInstanceCount {
             }
             if (obj instanceof String) {
                 try {
-                    return Integer.valueOf((String) obj) > 0;
+                    return Integer.parseInt((String) obj) > 0;
                 } catch (NumberFormatException ignore) {
                 }
             }

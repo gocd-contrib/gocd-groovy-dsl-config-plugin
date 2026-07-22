@@ -53,8 +53,7 @@ public class ParseContentExecutor implements RequestExecutor {
                 final String content = entry.getValue();
                 final Object maybeConfig = engine.runScriptWithText(content);
 
-                if (maybeConfig instanceof GoCD) {
-                    final GoCD configFromFile = (GoCD) maybeConfig;
+                if (maybeConfig instanceof GoCD configFromFile) {
                     result.addConfig(filename, configFromFile);
                     GroovyDslPlugin.LOG.debug("Found pipeline configs at {}", filename);
                 } else {

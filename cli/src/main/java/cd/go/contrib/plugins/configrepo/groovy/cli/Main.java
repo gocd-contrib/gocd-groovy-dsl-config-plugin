@@ -66,9 +66,8 @@ public class Main {
 
             BranchStrategy.with(Branches::stubbed, () -> KeyVal.with(ConfigValues::stubbed, () -> Notifies.with(Notifications::validatingNoOpConfig, () -> {
                 final Object maybeConfig = getRunner().runScriptWithText(contents);
-                if (maybeConfig instanceof GoCD) {
+                if (maybeConfig instanceof GoCD configFromFile) {
                     System.out.println(" Ok!");
-                    GoCD configFromFile = (GoCD) maybeConfig;
 
                     validate(configFromFile, violations -> {
                         System.out.println("Found " + violations.size() + " validation errors!");
@@ -106,7 +105,7 @@ public class Main {
     private static InputStream getFileAsStream(String file) {
         InputStream s = null;
         try {
-            s = "-".equals(file) ? System.in : new FileInputStream(new File(file));
+            s = "-".equals(file) ? System.in : new FileInputStream(file);
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
             System.exit(FAILED_EXIT);

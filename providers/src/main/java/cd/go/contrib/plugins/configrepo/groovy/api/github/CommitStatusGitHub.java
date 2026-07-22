@@ -27,18 +27,13 @@ public class CommitStatusGitHub {
         success, pending, failure, error;
 
         public static States getFrom(String value) {
-            switch (value.toLowerCase()) {
-                case "building":
-                    return pending;
-                case "passed":
-                    return success;
-                case "failing":
-                case "failed":
-                case "cancelled":
-                    return failure;
-                default:
+            return switch (value.toLowerCase()) {
+                case "building" -> pending;
+                case "passed" -> success;
+                case "failing", "failed", "cancelled" -> failure;
+                default ->
                     throw new IllegalArgumentException(format("Don't know how to map [%s] to a GitHub commit status state", value));
-            }
+            };
         }
     }
 

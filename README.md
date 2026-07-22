@@ -13,7 +13,6 @@ Table of Contents
 * [A note about security](#a-note-about-security)
 * [Install](#install)
 * [Linting or verifying your DSL locally](#linting-or-verifying-your-dsl-locally)
-   * [Lint usage](#lint-usage)
 * [Support for Branches and PRs](#support-for-branches-and-prs)
 * [Example](#example)
 * [License](#license)
@@ -41,12 +40,6 @@ This plugin evaluates untrusted code on the GoCD server. A malicious script can 
 ## Linting or verifying your DSL locally
 
 There are some basic standalone linting abilities provided by the plugin:
-
-```shell
-java -jar groovy-dsl-plugin.jar syntax file1
-```
-
-### Lint and validation of Groovy DSL
 
 ```shell
 $ java -jar groovy-dsl-plugin.jar

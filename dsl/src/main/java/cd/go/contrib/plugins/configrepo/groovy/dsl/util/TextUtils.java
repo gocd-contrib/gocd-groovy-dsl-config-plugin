@@ -35,13 +35,10 @@ public class TextUtils {
             return fullRef;
         }
 
-        switch (matcher.group(1)) {
-            case "tags":
-            case "heads":
-                return matcher.group(2);
-            default:
-                return fullRef.substring("refs/".length());
-        }
+        return switch (matcher.group(1)) {
+            case "tags", "heads" -> matcher.group(2);
+            default -> fullRef.substring("refs/".length());
+        };
     }
 
     public static String sanitizeName(String ref) {

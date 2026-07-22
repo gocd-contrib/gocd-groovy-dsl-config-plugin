@@ -16,6 +16,8 @@
 
 package cd.go.contrib.plugins.configrepo.groovy;
 
+import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
+
 public enum Request {
 
     PARSE_DIRECTORY("parse-directory"),
@@ -34,7 +36,7 @@ public enum Request {
         this.requestName = requestName;
     }
 
-    public static Request fromString(String requestName) {
+    public static Request fromString(String requestName) throws UnhandledRequestTypeException {
         if (requestName != null) {
             for (Request request : Request.values()) {
                 if (requestName.equalsIgnoreCase(request.requestName)) {
@@ -43,7 +45,7 @@ public enum Request {
             }
         }
 
-        return null;
+        throw new UnhandledRequestTypeException(requestName);
     }
 
     private static class Constants {

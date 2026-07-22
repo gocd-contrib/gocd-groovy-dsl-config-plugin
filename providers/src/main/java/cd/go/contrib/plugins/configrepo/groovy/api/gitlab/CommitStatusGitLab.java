@@ -25,19 +25,14 @@ public class CommitStatusGitLab {
         pending, running, success, failed, canceled;
 
         public static States getFrom(String value) {
-            switch (value.toLowerCase()) {
-                case "building":
-                    return running;
-                case "passed":
-                    return success;
-                case "failing":
-                case "failed":
-                    return failed;
-                case "cancelled":
-                    return canceled;
-                default:
+            return switch (value.toLowerCase()) {
+                case "building" -> running;
+                case "passed" -> success;
+                case "failing", "failed" -> failed;
+                case "cancelled" -> canceled;
+                default ->
                     throw new IllegalArgumentException(format("Don't know how to map [%s] to a GitLab commit status state", value));
-            }
+            };
         }
     }
 

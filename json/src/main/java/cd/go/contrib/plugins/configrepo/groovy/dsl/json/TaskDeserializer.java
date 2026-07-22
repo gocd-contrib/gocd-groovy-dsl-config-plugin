@@ -45,8 +45,7 @@ public class TaskDeserializer extends StdDeserializer<Task> {
     @Override
     public Task deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException, JsonProcessingException {
         TreeNode node = jsonParser.getCodec().readTree(jsonParser);
-        if (node instanceof ObjectNode) {
-            ObjectNode objectNode = (ObjectNode) node;
+        if (node instanceof ObjectNode objectNode) {
             if (objectNode.has("type")) {
                 String type = objectNode.get("type").asText();
                 String runIf = objectNode.get("run_if").asText();
@@ -65,7 +64,7 @@ public class TaskDeserializer extends StdDeserializer<Task> {
                             List<String> args = StreamSupport
                                     .stream(spliteratorUnknownSize(arguments.elements(), Spliterator.ORDERED), false)
                                     .map(JsonNode::asText)
-                                    .collect(toList());
+                                    .toList();
                             execTask.getCommandLine().addAll(args);
                         }
                         return execTask;

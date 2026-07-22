@@ -80,7 +80,7 @@ public @interface CheckAtLeastOneNotEmpty {
         }
 
         private boolean isBlank(String string) {
-            return string == null || string.trim().length() == 0;
+            return string == null || string.isBlank();
         }
     }
 

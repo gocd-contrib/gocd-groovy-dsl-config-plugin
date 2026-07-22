@@ -66,11 +66,7 @@ public class GroovyExporter {
     }
 
     public void fullExport(Node node) throws Throwable {
-        this.writer.newEntity("GoCD.script", () -> {
-            this.writer.newEntity("pipelines", () -> {
-                export(node);
-            });
-        });
+        this.writer.newEntity("GoCD.script",() -> this.writer.newEntity("pipelines", () -> export(node)));
     }
 
     public void export(Node node) throws Throwable {
@@ -83,14 +79,10 @@ public class GroovyExporter {
         if (node instanceof NamedNode) {
             // assume it's a method with signature `(String, Closure)`
             String setterMethodNames = methodThatReturnsNode.get(0).getName();
-            writer.newEntity(setterMethodNames, ((NamedNode) node).getName(), () -> {
-                exportPropertiesOf(node);
-            });
+            writer.newEntity(setterMethodNames, ((NamedNode) node).getName(), () -> exportPropertiesOf(node));
         } else {
             String setterMethodNames = methodThatReturnsNode.get(0).getName();
-            writer.newEntity(setterMethodNames, () -> {
-                exportPropertiesOf(node);
-            });
+            writer.newEntity(setterMethodNames, () -> exportPropertiesOf(node));
         }
     }
 
@@ -176,7 +168,7 @@ public class GroovyExporter {
                 .filter(field -> Node.class.isAssignableFrom(field.getType()))
                 .filter(field -> !CollectionNode.class.isAssignableFrom(field.getType()))
                 .sorted(Comparator.comparing(Field::getName))
-                .collect(Collectors.toList());
+                .toList();
 
 
         for (Field nonCollectionField : nonCollectionFields) {
@@ -199,7 +191,7 @@ public class GroovyExporter {
                 .stream()
                 .filter(field -> CollectionNode.class.isAssignableFrom(field.getType()))
                 .sorted(Comparator.comparing(Field::getName))
-                .collect(Collectors.toList());
+                .toList();
 
         for (Field childCollectionField : childCollectionFields) {
             exportChildCollectionField(node, childCollectionField);
@@ -221,7 +213,7 @@ public class GroovyExporter {
 
     private List<Method> getAllMethodsReturning(Class<? extends Node> type) {
         return NodeTypes.ALL_KNOWN_NODE_TYPES.stream()
-                .flatMap(aClass -> getAllMethods(aClass))
+                .flatMap(GroovyExporter::getAllMethods)
                 .filter(method -> type.isAssignableFrom(method.getReturnType()))
                 .filter(method -> !method.isSynthetic())
                 .filter(method -> Modifier.isPublic(method.getModifiers()))

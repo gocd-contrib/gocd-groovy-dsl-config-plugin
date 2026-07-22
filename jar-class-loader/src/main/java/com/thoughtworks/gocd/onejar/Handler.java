@@ -44,7 +44,7 @@ public class Handler extends URLStreamHandler {
         if (handlerPackage == null || handlerPackage.trim().isEmpty()) {
             handlerPackage = "";
         }
-        if (handlerPackage.length() > 0) {
+        if (!handlerPackage.isEmpty()) {
             handlerPackage = "|" + handlerPackage;
         }
         handlerPackage = Boot.class.getPackage().getName() + handlerPackage;
