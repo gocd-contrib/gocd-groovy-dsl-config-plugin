@@ -66,11 +66,12 @@ sourceSets {
   }
 }
 
-tasks.register('delombok', JavaExec) {
+def delombokOutputDir = layout.buildDirectory.dir('delombok')
+
+def delombok = tasks.register('delombok', JavaExec) {
   inputs.files(sourceSets.main.compileClasspath.files)
 
-  ext.outputDir = layout.buildDirectory.dir('delombok')
-  outputs.dir(outputDir)
+  outputs.dir(delombokOutputDir)
   outputs.cacheIf { true }
 
   classpath = sourceSets.main.compileClasspath
@@ -82,14 +83,14 @@ tasks.register('delombok', JavaExec) {
 
   sourceSets.main.java.srcDirs.each {
     inputs.dir(it)
-    args(it, "-d", outputDir)
+    args(it, "-d", delombokOutputDir.get())
   }
 }
 
 def sourcesJar = tasks.register('sourcesJar', Jar) {
   dependsOn delombok
   archiveClassifier = 'sources'
-  from delombok.outputDir
+  from delombokOutputDir
 }
 
 def javadocJar = tasks.register('javadocJar', Jar) {
@@ -106,7 +107,7 @@ javadoc {
   dependsOn delombok
   dependsOn configurations.doclet
 
-  source = delombok.outputDir
+  source = delombokOutputDir
   options.tagletPath = (configurations.doclet.files + sourceSets.examples.allSource.srcDirs) as List
   options.taglets = ['cd.go.contrib.plugins.configrepo.doclet.IncludeCodeTaglet']
 
@@ -117,7 +118,9 @@ javadoc {
   options.overview('overview.html')
   options.showFromPublic()
 
-  options.links("https://docs.oracle.com/en/java/javase/11/docs/api", "https://docs.groovy-lang.org/docs/groovy-${project.vers.groovyVersion}/html/gapi")
+  options.links("https://docs.oracle.com/en/java/javase/17/docs/api", "https://docs.groovy-lang.org/docs/groovy-${project.vers.groovyVersion}/html/gapi")
+  // Fail fast, rather than hanging the build, if a `links` host is unreachable (javadoc sets no HTTP timeouts by default)
+  options.jFlags('-Dsun.net.client.defaultConnectTimeout=5000', '-Dsun.net.client.defaultReadTimeout=10000')
   title = "GoCD Groovy DSL API ${version}"
 }
 
