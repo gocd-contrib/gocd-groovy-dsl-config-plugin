@@ -35,9 +35,7 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.DirectoryScanner;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.PatternSet;
+import org.codehaus.plexus.util.DirectoryScanner;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +43,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 public class ParseDirectoryExecutor implements RequestExecutor {
 
@@ -115,21 +114,24 @@ public class ParseDirectoryExecutor implements RequestExecutor {
     private String[] getFilesMatchingPattern() throws ServerRequestFailedException {
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(directory);
+        scanner.setIncludes(splitPatterns(pluginRequest.getPluginSettings().includeFilePattern()));
 
-        PatternSet patternSet = new PatternSet();
-        Project project = new Project();
-        project.setBaseDir(new File(directory));
-
-        patternSet.setIncludes(pluginRequest.getPluginSettings().includeFilePattern());
-        scanner.setIncludes(patternSet.getIncludePatterns(project));
-
-        if (StringUtils.isNotBlank(pluginRequest.getPluginSettings().excludeFilePattern())) {
-            patternSet.setExcludes(pluginRequest.getPluginSettings().excludeFilePattern());
-            scanner.setExcludes(patternSet.getExcludePatterns(project));
+        String excludeFilePattern = pluginRequest.getPluginSettings().excludeFilePattern();
+        if (StringUtils.isNotBlank(excludeFilePattern)) {
+            scanner.setExcludes(splitPatterns(excludeFilePattern));
         }
+        scanner.addDefaultExcludes();
 
         scanner.scan();
         return scanner.getIncludedFiles();
+    }
+
+    /** Splits a comma- or space-separated list of patterns, as previously done by Ant's {@code PatternSet}. */
+    private static String[] splitPatterns(String patterns) {
+        return Stream.of(patterns.split("[, ]"))
+                .filter(StringUtils::isNotBlank)
+                .map(String::trim)
+                .toArray(String[]::new);
     }
 
 }

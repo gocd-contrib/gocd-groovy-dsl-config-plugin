@@ -22,7 +22,6 @@ final Map<String, String> libraries = [
   // Dependabot will parse these.
   // Keep plaintext versions here so Dependabot can parse the versions; don't interpolate version variables here
   // because Dependabot is not smart enough to understand those.
-  ant                 : 'org.apache.ant:ant:1.10.17',
   classgraph          : 'io.github.classgraph:classgraph:4.8.186',
   commonsIO           : 'commons-io:commons-io:2.22.0',
   commonsLang         : 'org.apache.commons:commons-lang3:3.20.0',
@@ -40,6 +39,7 @@ final Map<String, String> libraries = [
   lombok              : 'org.projectlombok:lombok:1.18.46',
   mockito             : 'org.mockito:mockito-core:5.23.0',
   okio                : 'com.squareup.okio:okio:1.17.6',
+  plexusUtils         : 'org.codehaus.plexus:plexus-utils:4.0.3',
   pluginApi           : 'cd.go.plugin:go-plugin-api:26.1.0',
   reflections         : 'org.reflections:reflections:0.10.2',
   retrofit            : 'com.squareup.retrofit2:retrofit:3.0.0',

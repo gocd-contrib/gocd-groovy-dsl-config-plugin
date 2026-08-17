@@ -21,7 +21,6 @@ dependencies {
   implementation project(':dsl-validation')
 
   implementation project.deps.groovy
-  implementation project.deps.ant
   implementation project.deps.commonsLang
   implementation project.deps.retrofit
   implementation project.deps.retrofitJacksonConv

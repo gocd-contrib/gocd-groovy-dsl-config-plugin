@@ -18,14 +18,15 @@ package cd.go.contrib.plugins.configrepo.groovy.utils;
 
 import cd.go.contrib.plugins.configrepo.groovy.exceptions.CommandFailedException;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static org.codehaus.groovy.runtime.ProcessGroovyMethods.consumeProcessErrorStream;
 import static org.codehaus.groovy.runtime.ProcessGroovyMethods.execute;
-import static org.codehaus.groovy.runtime.ProcessGroovyMethods.waitForProcessOutput;
 
 public class CommandUtils {
 
@@ -42,7 +43,17 @@ public class CommandUtils {
     }
 
     public static void runReadingLines(Process p, Consumer<String> eachLine, OutputStream err) {
-        waitForProcessOutput(p, new LineProcessingOutputStream(eachLine), err);
+        Thread errPump = consumeProcessErrorStream(p, err);
+        try (BufferedReader out = p.inputReader()) {
+            out.lines().forEach(eachLine);
+            p.waitFor();
+            errPump.join();
+        } catch (IOException e) {
+            throw failed("Failed to read process output", e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw failed("Interrupted while waiting for process to complete", e);
+        }
     }
 
     public static CommandFailedException failed(String message) {

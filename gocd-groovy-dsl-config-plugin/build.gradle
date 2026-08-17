@@ -36,7 +36,7 @@ dependencies {
   implementation project.deps.jacksonAnnotations
   implementation project.deps.jacksonDatabind
 
-  implementation project.deps.ant
+  implementation project.deps.plexusUtils
   implementation project.deps.commonsLang
   implementation(project.deps.guava) {
     // see https://github.com/google/guava/pull/6606

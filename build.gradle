@@ -32,7 +32,7 @@ tasks.withType(JavaCompile).configureEach {
 
 gocdPlugin {
   id = 'cd.go.contrib.plugins.configrepo.groovy'
-  pluginVersion = '3.1.1'
+  pluginVersion = '3.1.2'
   goCdVersion = '22.1.0'
   name = 'GoCD Groovy Configuration plugin'
   description = 'GoCD pipelines and environments configuration in Groovy'
