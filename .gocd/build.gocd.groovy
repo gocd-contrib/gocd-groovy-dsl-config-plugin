@@ -146,28 +146,5 @@ GoCD.script {
         }
       }
     }
-
-    pipeline("gocd-contrib-gocd-groovy-dsl-config-plugin-pr") {
-      materials {
-        githubPR("gocd-groovy-dsl-config-plugin-material") {
-          url = "https://git.gocd.io/git/gocd-contrib/gocd-groovy-dsl-config-plugin"
-        }
-      }
-      group = "plugins-pr"
-      stages {
-        stage("test") {
-          jobs {
-            job("test") {
-              elasticProfileId = 'ecs-gocd-dev-build'
-              tasks {
-                bash {
-                  commandString = './gradlew assemble check --warning-mode all'
-                }
-              }
-            }
-          }
-        }
-      }
-    }
   }
 }
