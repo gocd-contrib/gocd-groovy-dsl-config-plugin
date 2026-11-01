@@ -28,7 +28,7 @@ final Map<String, String> libraries = [
   commonsText         : 'org.apache.commons:commons-text:1.15.0',
   glassfishExpressly  : 'org.glassfish.expressly:expressly:6.0.0',
   groovy              : 'org.apache.groovy:groovy:6.0.0',
-  guava               : 'com.google.guava:guava:33.7.1-jre',
+  guava               : 'com.google.guava:guava:33.7.2-jre',
   hibernateValidator  : 'org.hibernate.validator:hibernate-validator:9.1.4.Final',
   jacksonBom          : 'com.fasterxml.jackson:jackson-bom:2.22.3',
   jakartaValidationApi: 'jakarta.validation:jakarta.validation-api:3.1.1',
