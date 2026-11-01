@@ -22,15 +22,15 @@ final Map<String, String> libraries = [
   // Dependabot will parse these.
   // Keep plaintext versions here so Dependabot can parse the versions; don't interpolate version variables here
   // because Dependabot is not smart enough to understand those.
-  classgraph          : 'io.github.classgraph:classgraph:4.8.196',
+  classgraph          : 'io.github.classgraph:classgraph:5.0.1',
   commonsIO           : 'commons-io:commons-io:2.22.0',
-  commonsLang         : 'org.apache.commons:commons-lang3:3.20.0',
+  commonsLang         : 'org.apache.commons:commons-lang3:3.21.0',
   commonsText         : 'org.apache.commons:commons-text:1.15.0',
   glassfishExpressly  : 'org.glassfish.expressly:expressly:6.0.0',
   groovy              : 'org.apache.groovy:groovy:6.0.0',
   guava               : 'com.google.guava:guava:33.7.2-jre',
-  hibernateValidator  : 'org.hibernate.validator:hibernate-validator:9.1.4.Final',
-  jacksonBom          : 'com.fasterxml.jackson:jackson-bom:2.22.3',
+  hibernateValidator  : 'org.hibernate.validator:hibernate-validator:9.1.5.Final',
+  jacksonBom          : 'com.fasterxml.jackson:jackson-bom:2.22.4',
   jakartaValidationApi: 'jakarta.validation:jakarta.validation-api:3.1.1',
   jcommander          : 'com.beust:jcommander:1.82',
   jhighlight          : 'org.codelibs:jhighlight:2.0.0',
