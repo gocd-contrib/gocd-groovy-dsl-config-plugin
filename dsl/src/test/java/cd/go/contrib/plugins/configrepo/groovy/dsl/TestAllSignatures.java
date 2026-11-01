@@ -54,6 +54,7 @@ class TestAllSignatures {
     }
 
     private static final ScanResult scanResult = new ClassGraph()
+            .enableClasspath()
             .enableClassInfo()
             .enableMethodInfo()
             .ignoreClassVisibility()
@@ -111,11 +112,19 @@ class TestAllSignatures {
         }
     }
 
-    private static Stream<Class<Node>> allNodeTypes() {
-        return scanResult.getSubclasses(Node.class.getName()).loadClasses(Node.class).stream();
+    private static Stream<Class<? extends Node>> allNodeTypes() {
+        return scanResult.getAllSubclasses(Node.class).getNames().stream().map(TestAllSignatures::loadNodeType);
     }
 
-    private static Stream<Class<Node>> allNonAbstractNodeTypes() {
+    private static Class<? extends Node> loadNodeType(String name) {
+        try {
+            return Class.forName(name, false, Node.class.getClassLoader()).asSubclass(Node.class);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static Stream<Class<? extends Node>> allNonAbstractNodeTypes() {
         return allNodeTypes().filter(aClass -> !Modifier.isAbstract(aClass.getModifiers()));
     }
 
